@@ -51,7 +51,7 @@ public class ControladoPrincipal {
         form.setPregunta("Como te llamas");
         Respuesta resp = new Respuesta();
         resp.setNombreUsuario("alpala");
-        resp.setRespuesta(Arrays.asList("Saul", "Junior"));
+        resp.setRespuesta(Arrays.asList("Junior", "Saul"));
 
         Respuesta resp2 = new Respuesta();
         resp2.setNombreUsuario("erick");
