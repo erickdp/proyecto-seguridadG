@@ -33,9 +33,9 @@ public class ControladoPrincipal {
         return formulario;
     }
 
-    @GetMapping("/obtenerP")
+    @GetMapping("/updateRespuesta")
     public FormularioAlcance getFormP() {
-        FormularioAlcance form = this.formularioAlcanceRepository.findBy_id(new ObjectId("60f75e3c88a4bd71734f8115"));
+        FormularioAlcance form = this.formularioAlcanceRepository.findBy_id(new ObjectId("60f814d323f96f7906931fd3"));
         List<Respuesta> respuestas = form.getRespuestas();
         Respuesta respuesta = new Respuesta();
         respuesta.setNombreUsuario("sam");
@@ -45,4 +45,19 @@ public class ControladoPrincipal {
         return formularioAlcanceRepository.save(form);
     }
 
+    @GetMapping("/addPregunta")
+    public FormularioAlcance addNewPregunta() {
+        FormularioAlcance form = new FormularioAlcance();
+        form.setPregunta("Como te llamas");
+        Respuesta resp = new Respuesta();
+        resp.setNombreUsuario("alpala");
+        resp.setRespuesta(Arrays.asList("Saul", "Junior"));
+
+        Respuesta resp2 = new Respuesta();
+        resp2.setNombreUsuario("erick");
+        resp2.setRespuesta(Arrays.asList("Erick", "Enrique"));
+
+        form.setRespuestas(Arrays.asList(resp, resp2));
+        return formularioAlcanceRepository.save(form);
+    }
 }
