@@ -1,9 +1,7 @@
 package edu.uce.seguridad.controller;
 
 import edu.uce.seguridad.model.FormularioAlcance;
-import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Respuesta;
-import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.FormularioAlcanceRepository;
 import edu.uce.seguridad.repository.PersonaRepository;
 import lombok.AllArgsConstructor;
@@ -13,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/seg")
@@ -26,36 +23,14 @@ public class ControladoPrincipal {
 
     private FormularioAlcanceRepository formularioAlcanceRepository;
 
+    //Probar con este metodo
     @GetMapping("/per")
-    public Persona crearPersona() {
-        Persona persona = new Persona();
-        persona.set_id("1");
-        Usuario usuario = new Usuario();
-        persona.setApellido("Alpala");
-        persona.setApellido("Jr");
-        persona.setDepartamento("Tecnología");
-        persona.setOrganizacion("UCE");
-        usuario.setUsuario("salpala");
-        usuario.setContrasena("123");
-        usuario.setRole("ADMIN");
-        persona.setUsuario(usuario);
-        return repository.save(persona);
-    }
-
-    @GetMapping("/formulario")
-    public FormularioAlcance getForm() {
-        FormularioAlcance form = new FormularioAlcance();
-        form.set_id("1");
-        form.setPregunta("Nombre de tus perros");
-        Respuesta respuesta = new Respuesta();
-        respuesta.setNombreUsuario("salpala");
-        respuesta.setRespuestas(Arrays.asList("Juan", "Mario", "Pedro", "Saul"));
-        Respuesta respuestaA = new Respuesta();
-        respuestaA.setRespuestas(Arrays.asList("Juan", "Mario"));
-        Respuesta respuestaB = new Respuesta();
-        respuestaB.setRespuestas(Arrays.asList("Saul"));
-        form.setRespuestas(Arrays.asList(respuesta, respuestaB, respuestaA));
-        return formularioAlcanceRepository.save(form);
+    public FormularioAlcance crearPersona() {
+        FormularioAlcance formulario = this.formularioAlcanceRepository.findByPregunta("Nombre de tus perros");
+        List<Respuesta> respuestas = formulario.getRespuestas();
+//        Filtro las preguntas por el usuario que me interesa, no importa si tiene varias respuestas como por ejemplo en operador
+        formulario.setRespuestas(respuestas.stream().filter(r -> r.getNombreUsuario().equals("sam")).collect(Collectors.toList()));
+        return formulario;
     }
 
     @GetMapping("/obtenerP")
@@ -64,7 +39,7 @@ public class ControladoPrincipal {
         List<Respuesta> respuestas = form.getRespuestas();
         Respuesta respuesta = new Respuesta();
         respuesta.setNombreUsuario("sam");
-        respuesta.setRespuestas(Arrays.asList("Juan", "Saul"));
+        respuesta.setRespuesta(Arrays.asList("Juan", "Saul"));
         respuestas.add(respuesta);
         form.setRespuestas(respuestas);
         return formularioAlcanceRepository.save(form);

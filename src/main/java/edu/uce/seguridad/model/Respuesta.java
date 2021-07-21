@@ -14,5 +14,5 @@ public class Respuesta {
     @Id
     private String _id;
     private String nombreUsuario;
-    private List<String> respuestas;
+    private List<String> respuesta;
 }
