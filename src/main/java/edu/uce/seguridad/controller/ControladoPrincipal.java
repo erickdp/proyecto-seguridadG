@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/sgcnegocio")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 @AllArgsConstructor
 public class ControladoPrincipal {
 
@@ -60,7 +61,17 @@ public class ControladoPrincipal {
         return this.personaService.agregar(persona);
     }
 
-    //Probar con este metodo
+    @GetMapping("/buscarPorIdentificador/{identificador}")
+    public Persona buscarPorIdentificador(@PathVariable String identificador) {
+        return this.personaService.buscaPorId(identificador);
+    }
+
+    //-----------------------------------------------------//
+
+
+
+
+
     @GetMapping("/per")
     public FormularioAlcance crearPersona() {
         FormularioAlcance formulario = this.formularioAlcanceRepository.findByPregunta("Nombre de tus perros");
