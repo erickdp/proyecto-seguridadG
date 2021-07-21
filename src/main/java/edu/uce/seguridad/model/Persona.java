@@ -1,13 +1,12 @@
 package edu.uce.seguridad.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Persona {
     @Id
     private String _id;
