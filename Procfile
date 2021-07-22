@@ -1,1 +1,1 @@
-web: -Dserver.port=$PORT $JAVA_OPTS -jar target/proyecto-seguridadG-0.0.1-SNAPSHOT.jar
+web -Dserver.port=$PORT $JAVA_OPTS -jar target/proyecto-seguridadG-0.0.1-SNAPSHOT.jar
