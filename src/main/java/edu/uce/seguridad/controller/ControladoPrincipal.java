@@ -31,7 +31,11 @@ public class ControladoPrincipal {
     {
     "nombreUsuario": "salpalal57",
     "contrasena": "13EPL"
+<<<<<<< HEAD
     }
+=======
+    }.
+>>>>>>> ec2d63c8d1a1587b3007d2f2e201111e2190623e
     * */
     @PostMapping("/iniciarSesion")
     public Persona iniciarSesion(

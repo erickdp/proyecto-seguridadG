@@ -1,0 +1,12 @@
+language: java
+branches:
+  only:
+    - master
+notifications:
+  email:
+    recipients:
+      - erickdp@hotmail.com
+install:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script:
+  - mvn verify
