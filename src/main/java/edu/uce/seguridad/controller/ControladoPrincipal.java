@@ -69,46 +69,4 @@ public class ControladoPrincipal {
         return this.personaService.buscaPorId(identificador);
     }
 
-    //-----------------------------------------------------//
-
-
-
-
-
-    @GetMapping("/per")
-    public FormularioAlcance crearPersona() {
-        FormularioAlcance formulario = this.formularioAlcanceRepository.findByPregunta("Nombre de tus perros");
-        List<Respuesta> respuestas = formulario.getRespuestas();
-//        Filtro las preguntas por el usuario que me interesa, no importa si tiene varias respuestas como por ejemplo en operador
-        formulario.setRespuestas(respuestas.stream().filter(r -> r.getNombreUsuario().equals("sam")).collect(Collectors.toList()));
-        return formulario;
-    }
-
-    @GetMapping("/updateRespuesta")
-    public FormularioAlcance getFormP() {
-        FormularioAlcance form = this.formularioAlcanceRepository.findBy_id(new ObjectId("60f814d323f96f7906931fd3"));
-        List<Respuesta> respuestas = form.getRespuestas();
-        Respuesta respuesta = new Respuesta();
-        respuesta.setNombreUsuario("sam");
-        respuesta.setRespuesta(Arrays.asList("Juan", "Saul"));
-        respuestas.add(respuesta);
-        form.setRespuestas(respuestas);
-        return formularioAlcanceRepository.save(form);
-    }
-
-    @GetMapping("/addPregunta")
-    public FormularioAlcance addNewPregunta() {
-        FormularioAlcance form = new FormularioAlcance();
-        form.setPregunta("Como te llamas");
-        Respuesta resp = new Respuesta();
-        resp.setNombreUsuario("alpala");
-        resp.setRespuesta(Arrays.asList("Saul", "Junior"));
-
-        Respuesta resp2 = new Respuesta();
-        resp2.setNombreUsuario("erick");
-        resp2.setRespuesta(Arrays.asList("Erick", "Enrique"));
-        // nuevo colaborador
-        form.setRespuestas(Arrays.asList(resp, resp2));
-        return formularioAlcanceRepository.save(form);
-    }
 }
