@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class FormularioLiderazo {
+public class FormularioLiderazgo {
     @Id
     private String _id;
     private String user;
