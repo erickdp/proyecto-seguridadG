@@ -1,6 +1,5 @@
 package edu.uce.seguridad.controller;
 
-import edu.uce.seguridad.model.FormularioAlcance;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Respuesta;
 import edu.uce.seguridad.model.Usuario;

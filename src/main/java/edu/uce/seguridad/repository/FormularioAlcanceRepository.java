@@ -1,6 +1,5 @@
 package edu.uce.seguridad.repository;
 
-import edu.uce.seguridad.model.FormularioAlcance;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
