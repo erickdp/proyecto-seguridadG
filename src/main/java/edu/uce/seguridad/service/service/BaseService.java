@@ -1,4 +1,4 @@
-package edu.uce.seguridad.service;
+package edu.uce.seguridad.service.service;
 
 import java.util.List;
 
