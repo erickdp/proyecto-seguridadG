@@ -1,6 +1,5 @@
 package edu.uce.seguridad.controller;
 
-import edu.uce.seguridad.model.ListaContacto;
 import edu.uce.seguridad.model.ListaEvaluacion;
 import edu.uce.seguridad.service.service.ListaEvaluacionService;
 import lombok.AllArgsConstructor;
