@@ -46,4 +46,9 @@ public class ListaEvaluacionServiceImp implements ListaEvaluacionService {
             this.repository.delete(listaEvaluacion);
         }
     }
+
+    @Override
+    public List<ListaEvaluacion> buscarPorUserFiltrarPorTipoCalidad(String user) {
+        return this.repository.findByUserOrderByTipoCalidadAsc(user);
+    }
 }

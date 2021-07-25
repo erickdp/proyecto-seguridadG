@@ -49,7 +49,7 @@ public class ListaContactoServiceImp implements ListaContactoService {
     }
 
     @Override
-    public List<ListaContacto> buscarPorUser(String user) {
-        return this.repository.findByUser(user);
+    public List<ListaContacto> buscarPorUserFiltrarPorTipoContacto(String user) {
+        return this.repository.findByUserOrderByTipoContactoAsc(user);
     }
 }

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ListaContactoService extends BaseService<ListaContacto, String> {
 
-    List<ListaContacto> buscarPorUser(String user);
+    List<ListaContacto> buscarPorUserFiltrarPorTipoContacto (String user);
 
 }
