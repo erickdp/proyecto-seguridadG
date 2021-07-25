@@ -1,8 +1,11 @@
 package edu.uce.seguridad.controller;
 
+import edu.uce.seguridad.model.ListaContacto;
 import edu.uce.seguridad.service.service.ListaContactoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/sgcnegocio/listaContacto")
@@ -13,8 +16,8 @@ public class ListaContactoController {
     private ListaContactoService listaContactoService;
 
     @GetMapping
-    public String test() {
-        return "Hello listaContactoService";
+    public List<ListaContacto> test() {
+        return this.listaContactoService.buscarPorUser("654654653213");
     }
 
 }

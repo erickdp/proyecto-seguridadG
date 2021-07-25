@@ -47,4 +47,9 @@ public class ListaContactoServiceImp implements ListaContactoService {
             this.repository.delete(contacto);
         }
     }
+
+    @Override
+    public List<ListaContacto> buscarPorUser(String user) {
+        return this.repository.findByUser(user);
+    }
 }
