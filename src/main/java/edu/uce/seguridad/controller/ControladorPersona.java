@@ -3,7 +3,7 @@ package edu.uce.seguridad.controller;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.FormularioAlcanceRepository;
-import edu.uce.seguridad.service.PersonaService;
+import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sgcnegocio")
 @CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "https://localhost:8080"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT}) // Agregar mas handler dependiendo su necesidad
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
+// Agregar mas handler dependiendo su necesidad
 @AllArgsConstructor
 public class ControladorPersona {
 
