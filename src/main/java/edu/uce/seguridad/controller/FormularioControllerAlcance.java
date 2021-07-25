@@ -1,7 +1,7 @@
 package edu.uce.seguridad.controller;
 
 import edu.uce.seguridad.model.FormularioAlcance;
-import edu.uce.seguridad.service.service.FormularioAlcanceService;
+import edu.uce.seguridad.service.FormularioAlcanceService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
