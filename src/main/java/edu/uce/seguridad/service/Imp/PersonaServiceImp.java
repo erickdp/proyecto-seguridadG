@@ -18,7 +18,7 @@ public class PersonaServiceImp implements PersonaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> buscarTodos() {
+    public List<Persona> buscarTodos()   {
         return this.personaRepository.findAll();
     }
 
