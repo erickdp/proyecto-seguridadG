@@ -8,4 +8,11 @@ public interface PersonaService extends BaseService<Persona, String> {
     Persona buscarPersonaPorUsuario(String nombreUsuario, String contrasena);
 
     List<Persona> buscarPersonaPorOrganizacion(String organizacion);
+
+    List<Persona> buscarPersonaPorRol(String role);
+
+    List<Persona> buscarPersonaPorRoleYOrganizacion(
+            String role,
+            String organizacion
+    );
 }

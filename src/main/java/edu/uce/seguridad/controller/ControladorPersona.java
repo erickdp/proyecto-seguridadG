@@ -157,4 +157,64 @@ public class ControladorPersona {
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
     }
 
+    /*
+    ENDPOINT que devuelve a todos los miembros de un determinado ROLE, el parametro
+    a enviar debe de ser el tipo de role
+    - Si se encuentra las personas se devuelve un estado 302 - FOUND
+    - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    * */
+    @GetMapping("/buscarUsuariosPorRol/{tipoRole}")
+    public ResponseEntity<?> buscarUsuariosPorRol(
+            @PathVariable(value = "tipoRole") String role
+    ) {
+        List<Persona> personas = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            personas = this.personaService.buscarPersonaPorRol(role);
+        } catch (DataAccessException dae) {
+            response.put("respuesta", "Error al encontrar la información.");
+            response.put("mensaje",
+                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (personas.isEmpty()) {
+            response.put("respuesta", "No se han encontrado registros para: "
+                    .concat(role));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+    }
+
+    /*
+    ENDPOINT que devuelve a todos los miembros de un determinado ROLE pertenecientes a una ORGANIZACION, el parametro
+    a enviar debe de ser el tipo de role y el nombre de la organizacion
+    - Si se encuentra las personas se devuelve un estado 302 - FOUND
+    - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    * */
+    @GetMapping("/buscarUsuariosPorRolYOrganizacion/{tipoRole}/{nombreOrganizacion}")
+    public ResponseEntity<?> buscarUsuariosPorRol(
+            @PathVariable(value = "tipoRole") String role,
+            @PathVariable(value = "nombreOrganizacion") String organizacion
+    ) {
+        List<Persona> personas = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            personas = this.personaService.buscarPersonaPorRoleYOrganizacion(role, organizacion);
+        } catch (DataAccessException dae) {
+            response.put("respuesta", "Error al encontrar la información.");
+            response.put("mensaje",
+                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (personas.isEmpty()) {
+            response.put("respuesta", "No se han encontrado registros para: "
+                    .concat(role).concat(" en ").concat(organizacion));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+    }
 }
