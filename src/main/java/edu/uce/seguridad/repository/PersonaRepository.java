@@ -4,7 +4,11 @@ import edu.uce.seguridad.model.Persona;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
+
 public interface PersonaRepository extends MongoRepository<Persona, String> {
     @Query("{'usuario.nombreUsuario': ?0, 'usuario.contrasena': ?1}")
     Persona findPersonaByUsuario(String nombreUsuario, String contrasena);
+
+    List<Persona> findPersonaByOrganizacion(String organizacion);
 }

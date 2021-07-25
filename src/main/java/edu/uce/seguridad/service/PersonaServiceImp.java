@@ -55,4 +55,10 @@ public class PersonaServiceImp implements PersonaService {
     public Persona buscarPersonaPorUsuario(String nombreUsuario, String contrasena) {
         return this.personaRepository.findPersonaByUsuario(nombreUsuario, contrasena);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Persona> buscarPersonaPorOrganizacion(String organizacion) {
+        return this.personaRepository.findPersonaByOrganizacion(organizacion);
+    }
 }
