@@ -1,4 +1,4 @@
-package edu.uce.seguridad.service;
+package edu.uce.seguridad.service.service;
 
 import edu.uce.seguridad.model.FormularioLiderazgo;
 

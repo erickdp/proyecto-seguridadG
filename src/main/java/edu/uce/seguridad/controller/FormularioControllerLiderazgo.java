@@ -2,7 +2,7 @@ package edu.uce.seguridad.controller;
 
 
 import edu.uce.seguridad.model.FormularioLiderazgo;
-import edu.uce.seguridad.service.FormularioLiderazgoService;
+import edu.uce.seguridad.service.service.FormularioLiderazgoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

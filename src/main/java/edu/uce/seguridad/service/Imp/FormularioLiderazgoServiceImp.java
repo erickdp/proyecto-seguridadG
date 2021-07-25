@@ -1,7 +1,8 @@
-package edu.uce.seguridad.service;
+package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.model.FormularioLiderazgo;
 import edu.uce.seguridad.repository.FormularioLiderazgoRepository;
+import edu.uce.seguridad.service.service.FormularioLiderazgoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class FormularioLiderazgoServiceImp implements  FormularioLiderazgoService {
+public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService {
 
     @Autowired
     private FormularioLiderazgoRepository formularioLiderazgoRepository;
