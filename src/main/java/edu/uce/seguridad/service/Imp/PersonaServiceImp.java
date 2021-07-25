@@ -1,7 +1,8 @@
-package edu.uce.seguridad.service;
+package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
+import edu.uce.seguridad.service.service.PersonaService;
 import edu.uce.seguridad.util.Utileria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

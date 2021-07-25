@@ -5,7 +5,7 @@ import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Respuesta;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.FormularioAlcanceRepository;
-import edu.uce.seguridad.service.PersonaService;
+import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
