@@ -16,15 +16,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "https://localhost:8080"},
+@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080"},
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 // Agregar mas handler dependiendo su necesidad
 @AllArgsConstructor
 public class ControladorPersona {
 
     private PersonaService personaService;
-
-    private FormularioAlcanceRepository formularioAlcanceRepository;
 
     /*
     ENDPOINT activo
@@ -107,9 +105,9 @@ public class ControladorPersona {
     - En el caso de no encontrar ningun registro se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
-    @PostMapping("/buscarPorIdentificador")
+    @GetMapping("/buscarPorIdentificador/{identificador}")
     public ResponseEntity<?> buscarPorIdentificador(
-            @RequestBody String identificadorUsuario) {
+            @PathVariable(value = "identificador") String identificadorUsuario) {
         Persona persona = null;
         Map<String, Object> response = new HashMap<>();
         try {
