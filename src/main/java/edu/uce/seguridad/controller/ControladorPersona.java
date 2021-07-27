@@ -1,8 +1,8 @@
 package edu.uce.seguridad.controller;
 
+import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
-import edu.uce.seguridad.repository.FormularioAlcanceRepository;
 import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -16,8 +16,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
+@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080",
+        "http://localhost:3000"},
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 // Agregar mas handler dependiendo su necesidad
 @AllArgsConstructor
 public class ControladorPersona {
@@ -44,7 +45,7 @@ public class ControladorPersona {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            persona = this.personaService.buscarPersonaPorUsuario(
+            persona = this.personaService.buscarPersonaPorUsuarioYContrasena(
                     usuario.getNombreUsuario(),
                     usuario.getContrasena());
         } catch (DataAccessException dae) {
@@ -216,5 +217,39 @@ public class ControladorPersona {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+    }
+
+    /*
+    ENDPOINT ACTIVO
+
+    Elimina al usuario mediante su nombre de usuario, esto porque es unico. Solo enviar
+    en la URI el nombre del Usuario
+
+    - Si no se elimina la persona se devuelve un estado 417 - EXPECTATION_FAILED
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    - Si se elimina la persona se devuelve un estado 200 - OK
+    * */
+    @DeleteMapping("/eliminarUsuario/{nombreUsuario}")
+    public ResponseEntity<?> eliminarUsuario(
+            @PathVariable(value = "nombreUsuario") String usuario
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        String respuesta = "";
+
+        try {
+            respuesta = this.personaService.eliminarPersonaPorNombreUsuario(usuario);
+        } catch (DataAccessException dae) {
+            response.put("respuesta", "Error al encontrar la información.");
+            response.put("mensaje",
+                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (MiClaseException mce) {
+            response.put("respuesta", "No se a podido realizar la transacción.");
+            response.put("mensaje", mce.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+
+        response.put("respuesta", respuesta);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }

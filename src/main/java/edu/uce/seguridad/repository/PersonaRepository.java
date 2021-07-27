@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PersonaRepository extends MongoRepository<Persona, String> {
     @Query("{'usuario.nombreUsuario': ?0, 'usuario.contrasena': ?1}")
-    Persona findPersonaByUsuario(String nombreUsuario, String contrasena);
+    Persona findPersonaByUsuarioYContrasena(String nombreUsuario, String contrasena);
 
     List<Persona> findPersonaByOrganizacion(String organizacion);
 
@@ -19,4 +19,7 @@ public interface PersonaRepository extends MongoRepository<Persona, String> {
     List<Persona> findPersonaByRolAndOrganization(
             String role, String organization
     );
+
+    @Query("{'usuario.nombreUsuario': ?0}")
+    Persona findPersonaByUsuario(String nombreUsuario);
 }

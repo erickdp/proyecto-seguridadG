@@ -12,7 +12,6 @@ public class Utileria {
         nuevoUsuario = new Usuario();
         nuevoUsuario.setNombreUsuario(generarNombreUsuario(nombre, apellido));
         nuevoUsuario.setContrasena(generarContrasena());
-        nuevoUsuario.setEstado((byte) 1);
         nuevoUsuario.setRole(role);
         return nuevoUsuario;
     }
