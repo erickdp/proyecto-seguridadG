@@ -23,6 +23,19 @@ public class FormularioControllerLiderazgo {
 
     private FormularioLiderazgoService formularioLiderazgoService;
 
+     /*
+        ENDPOINT activo
+        Se debe mandar el id por la URL y las nuevas respuestas en formato JSON del formulario Liderazgo que se quiere actualizar
+        Ej:
+            http://localhost:8080/sgcnegocio/formularioLiderazgo/agregarAlcance/buscarPorId/610018f6df7d521a7f6c5895
+        {
+            "user": "60fcb37db3c0630156388256",
+            "personal": " campo Liderazgo abc",
+            "negocio": "campo liderazgo 2abc"
+        }
+        */
+
+
     @PostMapping("/agregarLiderazgo")
     public ResponseEntity<?>agregarLiderazgo(@RequestBody FormularioLiderazgo liderazgo){
         FormularioLiderazgo newliderazgo;
@@ -38,13 +51,30 @@ public class FormularioControllerLiderazgo {
         response.put("contacto", newliderazgo);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+    /*
+        ENDPOINT activo
+        Se debe mandar el id por la URL y las nuevas respuestas en formato JSON del formulario Liderazgo que se quiere actualizar
+        Ej:
+            http://localhost:8080/sgcnegocio/formularioAlcance/actualizarLiderazgo/buscarPorId/6610018f6df7d521a7f6c5895
+            "user": "60fcb37db3c0630156388256",
+            "personal": "Campo1A ",
+            "negocio": "Campo2B",
+            "departamento": "Campo3C"
+        }
+        */
 
     @PutMapping("/actualizarLiderazgo/{id}")
     public ResponseEntity<?> actualizarLiderazgo(@RequestBody FormularioLiderazgo liderazgo, @PathVariable(value = "id")String id){
         Map<String, Object> response = new HashMap<>();
+
         try{
-            liderazgo.set_id(id);
-            this.formularioLiderazgoService.actualizar(liderazgo);
+            if (  this.formularioLiderazgoService.buscaPorId(id) != null){
+                liderazgo.set_id(id);
+                this.formularioLiderazgoService.actualizar(liderazgo);
+            }else{
+                response.put("mensaje", "Hubo un error al actualizar el formulario. Pongase en contacto");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
         }catch (DataAccessException dae){
             response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
             response.put("mensaje", "Hubo un error al actualizar el formulario. Pongase en contacto");
@@ -55,6 +85,13 @@ public class FormularioControllerLiderazgo {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /*
+        ENDPOINT activo
+        Se debe mandar unicamente el id en el URL para eliminar el formulario
+        Ej:
+            http://localhost:8080/sgcnegocio/formularioLiderazgo/eliminarLiderazgo/buscarPorId/6610018f6df7d521a7f6c5895
+
+        */
     @DeleteMapping("/eliminarLiderazgo/{id}")
     public ResponseEntity<?> eliminarLiderazgo(@PathVariable(value = "id") String id){
         Map<String, Object> response = new HashMap<>();
@@ -69,6 +106,19 @@ public class FormularioControllerLiderazgo {
         response.put("contacto", id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+     /*
+        ENDPOINT activo
+       ENDPOINT que busca todos las respuestas del formulario Liderazgo de un usuario, el usuario se debe enviar por la URL
+        Ej:
+            http://localhost:8080/sgcnegocio/formularioLiderazgo/buscarPorId/610018f6df7d521a7f6c5895
+        {
+            "user": "60fcb37db3c0630156388256",
+            "personal": "Campo1A ",
+            "negocio": "Campo2B",
+            "departamento": "Campo3C"
+        }
+        */
 
     @GetMapping("/buscarPorId/{id}")
     public  ResponseEntity<?> buscarPorid( @PathVariable (value = "id") String id){
@@ -88,6 +138,19 @@ public class FormularioControllerLiderazgo {
         return  new ResponseEntity<FormularioLiderazgo>(liderazgoF, HttpStatus.FOUND);
     }
 
+    /*
+        ENDPOINT activo
+       ENDPOINT que busca todos las respuestas del formulario Liderazgo de un usuario, el usuario se debe enviar por la URL
+        Ej:
+            http://localhost:8080/sgcnegocio/formularioLiderazgo/buscarPorUser/60fcb37db3c0630156388256
+        {
+            "user": "60fcb37db3c0630156388256",
+            "personal": "Campo1A ",
+            "negocio": "Campo2B",
+            "departamento": "Campo3C"
+        }
+        */
+
     @GetMapping("/buscarPorUser/{usuario}")
     public  ResponseEntity<?> buscarPorUsuario( @PathVariable (value = "usuario") String usuario){
         FormularioLiderazgo liderazgoFU =null;
@@ -100,7 +163,7 @@ public class FormularioControllerLiderazgo {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (liderazgoFU == null){
-            response.put("respuesta", "No se encontro ningun registro");
+            response.put("respuesta",  "No se han encontrado el formulario de alcance registrado para:".concat(usuario));
             return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.FOUND);
