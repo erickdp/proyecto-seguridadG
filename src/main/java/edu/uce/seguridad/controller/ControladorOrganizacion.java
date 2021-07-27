@@ -24,7 +24,7 @@ public class ControladorOrganizacion {
     private OrganizacionService organizacionService;
 
     /*
-    ENDPOINT activo
+    ENDPOINT activo.
     Devuelve todas las organizaciones
 
     - Si se encuentra el usuario se devuelve un estado 302 - FOUND
