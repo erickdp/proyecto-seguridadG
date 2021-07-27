@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,8 +99,13 @@ public class ListaContactoController {
     public ResponseEntity<?> actualizarContacto(@RequestBody ListaContacto contacto, @PathVariable(value = "id") String id) {
         Map<String, Object> response = new HashMap<>();
         try {
-            contacto.set_id(id);
-            this.listaContactoService.actualizar(contacto);
+            if (this.listaContactoService.buscaPorId(id) != null) {
+                contacto.set_id(id);
+                this.listaContactoService.actualizar(contacto);
+            } else {
+                response.put("respuesta", "No existe el registro solicitado");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
         } catch (DataAccessException dae) {
             response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
             response.put("mensaje", "Hubo un error al actualizar. Pongase en contacto");
