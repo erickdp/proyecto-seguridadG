@@ -95,8 +95,13 @@ public class ListaEvaluacionController {
     public ResponseEntity<?> actualizarEvaluacion(@RequestBody ListaEvaluacion evaluacion, @PathVariable(value = "id") String id) {
         Map<String, Object> response = new HashMap<>();
         try {
-            evaluacion.set_id(id);
-            this.listaEvaluacionService.actualizar(evaluacion);
+            if (this.listaEvaluacionService.buscaPorId(id) != null) {
+                evaluacion.set_id(id);
+                this.listaEvaluacionService.actualizar(evaluacion);
+            } else {
+                response.put("respuesta", "No existe el registro solicitado");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
         } catch (DataAccessException dae) {
             response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
             response.put("mensaje", "Hubo un error al actualizar. Pongase en contacto");
