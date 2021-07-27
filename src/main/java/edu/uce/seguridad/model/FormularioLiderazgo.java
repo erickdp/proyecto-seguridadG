@@ -17,5 +17,6 @@ public class FormularioLiderazgo {
     private String _id;
     private String user;
     private String personal;
+    //Por negocio se hace referencia a departamento
     private String negocio;
 }
