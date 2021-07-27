@@ -2,7 +2,6 @@ package edu.uce.seguridad.controller;
 
 
 import edu.uce.seguridad.model.FormularioLiderazgo;
-import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.service.service.FormularioLiderazgoService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
