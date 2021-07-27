@@ -2,5 +2,10 @@ package edu.uce.seguridad.service.service;
 
 import edu.uce.seguridad.model.ListaEvaluacion;
 
-public interface ListaEvaluacionService extends BaseService<ListaEvaluacion, String>{
+import java.util.List;
+
+public interface ListaEvaluacionService extends BaseService<ListaEvaluacion, String> {
+
+    List<ListaEvaluacion> buscarPorUserFiltrarPorTipoCalidad(String user);
+
 }

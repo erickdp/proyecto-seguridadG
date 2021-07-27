@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ListaContactoRepository extends MongoRepository<ListaContacto, String> {
 
-    List<ListaContacto> findByUser(String user);
+    List<ListaContacto> findByUserOrderByTipoContactoAsc(String user);
 
 }

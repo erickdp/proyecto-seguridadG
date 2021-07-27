@@ -13,7 +13,6 @@ public class ListaContacto {
     @Id
     private String _id;
     private String user;
-
     private String tipoContacto;
     private String nombre;
     private String telefono;
