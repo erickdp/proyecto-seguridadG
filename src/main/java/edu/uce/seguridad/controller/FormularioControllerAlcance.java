@@ -132,7 +132,7 @@ public class FormularioControllerAlcance {
             response.put("respuesta", "No se han encontrado el formulario de alcance registrado para:".concat(usuario));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(alcances, HttpStatus.FOUND);
+        return new ResponseEntity<>(alcances, HttpStatus.OK);
 
     }
 
@@ -161,7 +161,7 @@ public class FormularioControllerAlcance {
             response.put("respuesta", "No se encontro ningun registro");
             return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return  new ResponseEntity<FormularioAlcance>(liderazgoA, HttpStatus.FOUND);
+        return  new ResponseEntity<FormularioAlcance>(liderazgoA, HttpStatus.OK);
     }
 
 
