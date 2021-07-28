@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080",
+@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8081",
         "http://localhost:3000"},
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 // Agregar mas handler dependiendo su necesidad
@@ -124,7 +124,7 @@ public class ControladorPersona {
             response.put("respuesta", "No se ha encontrado ningun registro.");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Persona>(persona, HttpStatus.FOUND);
+        return new ResponseEntity<Persona>(persona, HttpStatus.OK);
     }
 
     /*
@@ -155,7 +155,7 @@ public class ControladorPersona {
                     .concat(org));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
     /*
@@ -185,7 +185,7 @@ public class ControladorPersona {
                     .concat(role));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
     /*
@@ -216,7 +216,7 @@ public class ControladorPersona {
                     .concat(role).concat(" en ").concat(organizacion));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
     /*

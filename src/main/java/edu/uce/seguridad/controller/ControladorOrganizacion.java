@@ -49,7 +49,7 @@ public class ControladorOrganizacion {
             response.put("respuesta", "No existen registros de organizaciones");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Organizacion>>(organizaciones, HttpStatus.FOUND);
+        return new ResponseEntity<List<Organizacion>>(organizaciones, HttpStatus.OK);
     }
 
     /*
@@ -120,7 +120,7 @@ public class ControladorOrganizacion {
 
         response.put("respuesta", "Se a actualizado correctamente");
         response.put("organizacion", organizacionN);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
     /*
