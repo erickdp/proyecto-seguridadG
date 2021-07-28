@@ -133,7 +133,7 @@ public class FormularioControllerLiderazgo {
             response.put("respuesta", "No se encontro ningun registro");
             return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return  new ResponseEntity<FormularioLiderazgo>(liderazgoF, HttpStatus.FOUND);
+        return  new ResponseEntity<FormularioLiderazgo>(liderazgoF, HttpStatus.OK);
     }
 
     /*
@@ -164,7 +164,7 @@ public class FormularioControllerLiderazgo {
             response.put("respuesta",  "No se han encontrado el formulario de alcance registrado para:".concat(usuario));
             return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.FOUND);
+        return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.OK);
     }
 
 }
