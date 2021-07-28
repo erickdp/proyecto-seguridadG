@@ -4,5 +4,5 @@ import edu.uce.seguridad.model.Organizacion;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface OrganizacionRepository extends MongoRepository<Organizacion, String> {
-    Organizacion findOrganizacionByNombreOrganizacion(String nombreOrganizacion);
+    Organizacion findOrganizacionByOrganizacion(String nombreOrganizacion);
 }

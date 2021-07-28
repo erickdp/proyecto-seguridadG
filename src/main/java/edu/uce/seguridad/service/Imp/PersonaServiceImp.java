@@ -91,4 +91,11 @@ public class PersonaServiceImp implements PersonaService {
         this.personaRepository.deleteById(persona.get_id());
         return "Eliminado correctamente.";
     }
+
+    @Override
+    public List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion, String departamento) {
+        return this.personaRepository.findPersonaByOrganizacionAndDepartamento(
+                organizacion, departamento
+        );
+    }
 }

@@ -58,7 +58,11 @@ public class ControladorOrganizacion {
     no es obligatorio
     Ej:
     {
-    "nombreOrganizacion": "Universidad Central Del Ecuador",
+    "organizacion": "Universidad Central Del Ecuador",
+    "departamento": [
+        "TI",
+        "RECURSOS HUMANOS"
+    ],
     "contacto": "uce@mail.com"
     }
 
@@ -93,6 +97,10 @@ public class ControladorOrganizacion {
     {
     "_id": 610088dc045a372208adc3ae,
     "nombreOrganizacion": "Universidad Central Del Ecuador",
+    "departamento": [
+        "TI",
+        "RECURSOS HUMANOS"
+    ],
     "contacto": "uce@mail.com"
     }
 

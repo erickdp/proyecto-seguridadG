@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,8 +26,16 @@ public class OrganizacionServiceImp implements OrganizacionService {
     @Override
     @Transactional
     public Organizacion agregar(Organizacion pojo) {
-        pojo.setNombreOrganizacion(pojo.getNombreOrganizacion().trim());
-        pojo.setNombreOrganizacion(pojo.getNombreOrganizacion().toUpperCase());
+        pojo.setOrganizacion(pojo.getOrganizacion().trim());
+        pojo.setOrganizacion(pojo.getOrganizacion().toUpperCase());
+
+        List<String> departamentos = pojo.getDepartamentos();
+        List<String> departamentosN = new ArrayList<>();
+        departamentos.stream().forEach(dep -> {
+            departamentosN.add(dep.trim().toUpperCase());
+        });
+
+        pojo.setDepartamentos(departamentosN);
 
         pojo.setContacto(pojo.getContacto().trim());
         return this.organizacionRepository.insert(pojo);
@@ -57,13 +66,13 @@ public class OrganizacionServiceImp implements OrganizacionService {
             throw new MiClaseException("No se ha encontrado la organización: ".concat(nombreOrganizacion));
         }
         this.organizacionRepository.deleteById(organizacion.get_id());
-        return "Se ha eliminado ha ".concat(organizacion.getNombreOrganizacion()).concat(" satisfactoriamente");
+        return "Se ha eliminado ha ".concat(organizacion.getOrganizacion()).concat(" satisfactoriamente");
     }
 
     @Override
     @Transactional(readOnly = true)
     public Organizacion buscarPorNombreOrganizacion(String nombreOrganizacion) {
-        return this.organizacionRepository.findOrganizacionByNombreOrganizacion(nombreOrganizacion);
+        return this.organizacionRepository.findOrganizacionByOrganizacion(nombreOrganizacion);
     }
 
     @Override
@@ -71,8 +80,16 @@ public class OrganizacionServiceImp implements OrganizacionService {
         if(this.buscaPorId(organizacion.get_id()) == null) {
             throw new MiClaseException("No se ha encontrado la organización. Verifique los datos");
         }
-        organizacion.setNombreOrganizacion(organizacion.getNombreOrganizacion().trim());
-        organizacion.setNombreOrganizacion(organizacion.getNombreOrganizacion().toUpperCase());
+        organizacion.setOrganizacion(organizacion.getOrganizacion().trim());
+        organizacion.setOrganizacion(organizacion.getOrganizacion().toUpperCase());
+
+        List<String> departamentos = organizacion.getDepartamentos();
+        List<String> departamentosN = new ArrayList<>();
+        departamentos.stream().forEach(dep -> {
+            departamentosN.add(dep.trim().toUpperCase());
+        });
+
+        organizacion.setDepartamentos(departamentosN);
 
         organizacion.setContacto(organizacion.getContacto().trim());
         return this.organizacionRepository.save(organizacion);

@@ -20,4 +20,8 @@ public interface PersonaService extends BaseService<Persona, String> {
     Persona buscarPersonaPorUsuario(String nombreUsuario);
 
     String eliminarPersonaPorNombreUsuario(String nombreUsuario) throws MiClaseException;
+
+//    Metodo provisional en caso de que hayan varias personas encargadas de un mismo depar
+    List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion,
+                                                             String departamento);
 }

@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class Organizacion {
     @Id
     private String _id;
     @Indexed(unique = true)
-    private String nombreOrganizacion;
+    private String organizacion;
+    private List<String> departamentos;
     private String contacto;
 }
