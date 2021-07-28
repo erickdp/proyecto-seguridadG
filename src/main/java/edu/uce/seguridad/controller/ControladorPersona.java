@@ -252,4 +252,38 @@ public class ControladorPersona {
         response.put("respuesta", respuesta);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
+    /*
+    ENDPOINT que devuelve a todos los miembros de un determinado DEPARTAMENTO
+    pertenecientes a una ORGANIZACION, el parametro
+    a enviar debe de ser el departamento y el nombre de la organizacion
+
+    - Si se encuentra las personas se devuelve un estado 200 - Ok
+    - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    * */
+    @GetMapping("/buscarUsuariosPorOrgYDep/{organizacion}/{departamento}")
+    public ResponseEntity<?> buscarUsuariosPorOrgYDep(
+            @PathVariable(value = "organizacion") String org,
+            @PathVariable(value = "departamento") String depar
+    ) {
+        List<Persona> personas = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            personas = this.personaService.buscarPersonasPorOrganizacionYDepartamento(
+                    org, depar);
+        } catch (DataAccessException dae) {
+            response.put("respuesta", "Error al encontrar la información.");
+            response.put("mensaje",
+                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (personas.isEmpty()) {
+            response.put("respuesta", "No se han encontrado registros para: "
+                    .concat(depar).concat(" en ").concat(org));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
+    }
 }
