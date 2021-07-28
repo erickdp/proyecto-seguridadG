@@ -48,7 +48,7 @@ public class ListaContactoController {
             response.put("respuesta", "No se han encontrado registros para: ".concat(user));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(contactos, HttpStatus.FOUND);
+        return new ResponseEntity<>(contactos, HttpStatus.OK);
     }
 
     /*
