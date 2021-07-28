@@ -27,7 +27,7 @@ public class ControladorOrganizacion {
     ENDPOINT activo.
     Devuelve todas las organizaciones
 
-    - Si se encuentra el usuario se devuelve un estado 302 - FOUND
+    - Si se encuentra el usuario se devuelve un estado 200 - Ok
     - En el caso de no encontrar ningun registro se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -49,7 +49,7 @@ public class ControladorOrganizacion {
             response.put("respuesta", "No existen registros de organizaciones");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Organizacion>>(organizaciones, HttpStatus.FOUND);
+        return new ResponseEntity<List<Organizacion>>(organizaciones, HttpStatus.OK);
     }
 
     /*
@@ -120,7 +120,7 @@ public class ControladorOrganizacion {
 
         response.put("respuesta", "Se a actualizado correctamente");
         response.put("organizacion", organizacionN);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
     /*
