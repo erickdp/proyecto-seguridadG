@@ -15,8 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/organizacion")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080",
-        "http://localhost:3000"},
+@CrossOrigin(origins = {"http://localhost:80**", "http://localhost:3***"},
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @AllArgsConstructor
 public class ControladorOrganizacion {
