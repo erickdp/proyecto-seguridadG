@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio")
-@CrossOrigin(origins = {"http://localhost:3***", "http://localhost:80**"},
+@CrossOrigin(origins = {"http://localhost:8081"},
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @AllArgsConstructor
 public class ControladorPersona {
