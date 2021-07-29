@@ -20,6 +20,7 @@ public class ProyectoSeguridadGApplication {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/sgcnegocio/**")
                         .allowedOrigins("http://localhost:3000", "http://localhost:8080")
+                        .allowedHeaders("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .maxAge(3600);
             }
