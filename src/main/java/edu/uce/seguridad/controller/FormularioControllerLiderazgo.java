@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/formularioLiderazgo" )
-@CrossOrigin(origins = "{\"https://seguridad-sgcn.herokuapp.com\", \"http://localhost:8080\"}", methods = {RequestMethod.GET, RequestMethod.POST,  RequestMethod.DELETE, RequestMethod.PUT})
 @AllArgsConstructor
 
 public class FormularioControllerLiderazgo {
@@ -57,7 +56,7 @@ public class FormularioControllerLiderazgo {
             "user": "60fcb37db3c0630156388256",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
-            "departamento": "Campo3C"
+
         }
         */
 
@@ -114,7 +113,7 @@ public class FormularioControllerLiderazgo {
             "user": "60fcb37db3c0630156388256",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
-            "departamento": "Campo3C"
+
         }
         */
 
@@ -145,13 +144,13 @@ public class FormularioControllerLiderazgo {
             "user": "60fcb37db3c0630156388256",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
-            "departamento": "Campo3C"
+
         }
         */
 
     @GetMapping("/buscarPorUser/{usuario}")
     public  ResponseEntity<?> buscarPorUsuario( @PathVariable (value = "usuario") String usuario){
-        FormularioLiderazgo liderazgoFU =null;
+        FormularioLiderazgo liderazgoFU ;
         Map<String, Object> response = new HashMap<>();
         try{
             liderazgoFU = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);
@@ -161,7 +160,7 @@ public class FormularioControllerLiderazgo {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (liderazgoFU == null){
-            response.put("respuesta",  "No se han encontrado el formulario de alcance registrado para:".concat(usuario));
+            response.put("respuesta",  "No se han encontrado el formulario de Liderazgo registrado para:".concat(usuario));
             return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.OK);

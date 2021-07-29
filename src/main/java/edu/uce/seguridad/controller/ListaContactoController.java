@@ -14,8 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/listaContacto")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @AllArgsConstructor
 public class ListaContactoController {
 
