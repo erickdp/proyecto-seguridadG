@@ -8,15 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/listaContacto")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+//@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080"},
+//        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @AllArgsConstructor
 public class ListaContactoController {
 
