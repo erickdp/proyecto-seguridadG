@@ -1,8 +1,8 @@
 package edu.uce.seguridad.controller;
 
+import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
-import edu.uce.seguridad.repository.FormularioAlcanceRepository;
 import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -16,9 +16,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio")
-@CrossOrigin(origins = {"https://seguridad-sgcn.herokuapp.com", "http://localhost:8080"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
-// Agregar mas handler dependiendo su necesidad
+@CrossOrigin(origins = {"http://localhost:3***", "http://localhost:80**"},
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @AllArgsConstructor
 public class ControladorPersona {
 
@@ -33,7 +32,7 @@ public class ControladorPersona {
     "contrasena": "13EPL"
     }
 
-    - Si se encuentra el usuario se devuelve un estado 302 - FOUND
+    - Si se encuentra el usuario se devuelve un estado 200 - Ok
     - En el caso de no encontrar ningun registro se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -44,7 +43,7 @@ public class ControladorPersona {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            persona = this.personaService.buscarPersonaPorUsuario(
+            persona = this.personaService.buscarPersonaPorUsuarioYContrasena(
                     usuario.getNombreUsuario(),
                     usuario.getContrasena());
         } catch (DataAccessException dae) {
@@ -101,7 +100,7 @@ public class ControladorPersona {
     /*
     ENDPOINT que busca por identificador a una persona en concreto, el id se debe de enviar
     por la URL.
-    - Si se encuentra la persona se devuelve un estado 302 - FOUND
+    - Si se encuentra la persona se devuelve un estado 200 - Ok
     - En el caso de no encontrar ningun registro se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -123,13 +122,13 @@ public class ControladorPersona {
             response.put("respuesta", "No se ha encontrado ningun registro.");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Persona>(persona, HttpStatus.FOUND);
+        return new ResponseEntity<Persona>(persona, HttpStatus.OK);
     }
 
     /*
     ENDPOINT que devuelve a todos los miembros de una determinada organizacion, el parametro
     a enviar debe de ser la organizacion
-    - Si se encuentra las personas se devuelve un estado 302 - FOUND
+    - Si se encuentra las personas se devuelve un estado 200 - Ok
     - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -154,13 +153,13 @@ public class ControladorPersona {
                     .concat(org));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
     /*
     ENDPOINT que devuelve a todos los miembros de un determinado ROLE, el parametro
     a enviar debe de ser el tipo de role
-    - Si se encuentra las personas se devuelve un estado 302 - FOUND
+    - Si se encuentra las personas se devuelve un estado 200 - Ok
     - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -184,13 +183,13 @@ public class ControladorPersona {
                     .concat(role));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
     /*
     ENDPOINT que devuelve a todos los miembros de un determinado ROLE pertenecientes a una ORGANIZACION, el parametro
     a enviar debe de ser el tipo de role y el nombre de la organizacion
-    - Si se encuentra las personas se devuelve un estado 302 - FOUND
+    - Si se encuentra las personas se devuelve un estado 200 - Ok
     - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -215,6 +214,74 @@ public class ControladorPersona {
                     .concat(role).concat(" en ").concat(organizacion));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Persona>>(personas, HttpStatus.FOUND);
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
+    }
+
+    /*
+    ENDPOINT ACTIVO
+
+    Elimina al usuario mediante su nombre de usuario, esto porque es unico. Solo enviar
+    en la URI el nombre del Usuario
+
+    - Si no se elimina la persona se devuelve un estado 417 - EXPECTATION_FAILED
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    - Si se elimina la persona se devuelve un estado 200 - OK
+    * */
+    @DeleteMapping("/eliminarUsuario/{nombreUsuario}")
+    public ResponseEntity<?> eliminarUsuario(
+            @PathVariable(value = "nombreUsuario") String usuario
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        String respuesta = "";
+
+        try {
+            respuesta = this.personaService.eliminarPersonaPorNombreUsuario(usuario);
+        } catch (DataAccessException dae) {
+            response.put("respuesta", "Error al encontrar la información.");
+            response.put("mensaje",
+                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (MiClaseException mce) {
+            response.put("respuesta", "No se a podido realizar la transacción.");
+            response.put("mensaje", mce.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+
+        response.put("respuesta", respuesta);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    /*
+    ENDPOINT que devuelve a todos los miembros de un determinado DEPARTAMENTO
+    pertenecientes a una ORGANIZACION, el parametro
+    a enviar debe de ser el departamento y el nombre de la organizacion
+
+    - Si se encuentra las personas se devuelve un estado 200 - Ok
+    - En el caso de no encontrar a las personas se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    * */
+    @GetMapping("/buscarUsuariosPorOrgYDep/{organizacion}/{departamento}")
+    public ResponseEntity<?> buscarUsuariosPorOrgYDep(
+            @PathVariable(value = "organizacion") String org,
+            @PathVariable(value = "departamento") String depar
+    ) {
+        List<Persona> personas = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            personas = this.personaService.buscarPersonasPorOrganizacionYDepartamento(
+                    org, depar);
+        } catch (DataAccessException dae) {
+            response.put("respuesta", "Error al encontrar la información.");
+            response.put("mensaje",
+                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (personas.isEmpty()) {
+            response.put("respuesta", "No se han encontrado registros para: "
+                    .concat(depar).concat(" en ").concat(org));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 }

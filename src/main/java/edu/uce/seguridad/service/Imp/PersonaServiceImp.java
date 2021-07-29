@@ -1,5 +1,6 @@
 package edu.uce.seguridad.service.Imp;
 
+import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.PersonaService;
@@ -18,7 +19,7 @@ public class PersonaServiceImp implements PersonaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> buscarTodos()   {
+    public List<Persona> buscarTodos() {
         return this.personaRepository.findAll();
     }
 
@@ -43,18 +44,17 @@ public class PersonaServiceImp implements PersonaService {
     }
 
     @Override
-    public void eliminarDocumento(String identificador) {
-        Persona persona = this.buscaPorId(identificador);
-        if(persona != null) {
-            persona.getUsuario().setEstado((byte) 0);
-            this.actualizar(persona);
+    public void eliminarDocumento(String nombreUsuario) {
+        Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
+        if (persona != null) {
+            this.personaRepository.deleteById(persona.get_id());
         }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Persona buscarPersonaPorUsuario(String nombreUsuario, String contrasena) {
-        return this.personaRepository.findPersonaByUsuario(nombreUsuario, contrasena);
+    public Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) {
+        return this.personaRepository.findPersonaByUsuarioYContrasena(nombreUsuario, contrasena);
     }
 
     @Override
@@ -73,5 +73,29 @@ public class PersonaServiceImp implements PersonaService {
     @Transactional(readOnly = true)
     public List<Persona> buscarPersonaPorRoleYOrganizacion(String role, String organizacion) {
         return this.personaRepository.findPersonaByRolAndOrganization(role, organizacion);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Persona buscarPersonaPorUsuario(String nombreUsuario) {
+        return this.personaRepository.findPersonaByUsuario(nombreUsuario);
+    }
+
+    @Override
+    @Transactional
+    public String eliminarPersonaPorNombreUsuario(String nombreUsuario) throws MiClaseException {
+        Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
+        if (persona == null) {
+            throw new MiClaseException("No se encontró al Usuario: ".concat(nombreUsuario));
+        }
+        this.personaRepository.deleteById(persona.get_id());
+        return "Eliminado correctamente.";
+    }
+
+    @Override
+    public List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion, String departamento) {
+        return this.personaRepository.findPersonaByOrganizacionAndDepartamento(
+                organizacion, departamento
+        );
     }
 }

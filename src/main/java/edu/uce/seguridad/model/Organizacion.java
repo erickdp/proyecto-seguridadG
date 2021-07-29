@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
 
@@ -12,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class FormularioLiderazgo {
+public class Organizacion {
     @Id
     private String _id;
-    private String user;
-    private String personal;
-    //Por negocio se hace referencia a departamento
-    private String negocio;
+    @Indexed(unique = true)
+    private String organizacion;
+    private List<String> departamentos;
+    private String contacto;
 }
