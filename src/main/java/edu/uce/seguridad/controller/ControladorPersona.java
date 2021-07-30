@@ -1,6 +1,5 @@
 package edu.uce.seguridad.controller;
 
-import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.service.service.PersonaService;
@@ -37,24 +36,9 @@ public class ControladorPersona {
     @PostMapping("/iniciarSesion")
     public ResponseEntity<?> iniciarSesion(
             @RequestBody Usuario usuario) {
-        Persona persona = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            persona = this.personaService.buscarPersonaPorUsuarioYContrasena(
-                    usuario.getNombreUsuario(),
-                    usuario.getContrasena());
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error producido en la base de datos, ponganse en cotacto.");
-            response.put("causa", dae.getMessage().
-                    concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (persona == null) {
-            response.put("respuesta", "Error en las credenciales ingresadas, pruebe de nuevo.");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        Persona persona = this.personaService.buscarPersonaPorUsuarioYContrasena(
+                usuario.getNombreUsuario(),
+                usuario.getContrasena());
         return new ResponseEntity<Persona>(persona, HttpStatus.OK);
     }
 
@@ -134,23 +118,7 @@ public class ControladorPersona {
     public ResponseEntity<?> buscarMiembrosOrganizacion(
             @PathVariable(value = "nombreOrganizacion") String org
     ) {
-        List<Persona> personas = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            personas = this.personaService.buscarPersonaPorOrganizacion(org);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (personas.isEmpty()) {
-            response.put("respuesta", "No se han encontrado registros para: "
-                    .concat(org));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        List<Persona> personas = this.personaService.buscarPersonaPorOrganizacion(org);
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
@@ -165,22 +133,7 @@ public class ControladorPersona {
     public ResponseEntity<?> buscarUsuariosPorRol(
             @PathVariable(value = "tipoRole") String role
     ) {
-        List<Persona> personas = null;
-        Map<String, Object> response = new HashMap<>();
-        try {
-            personas = this.personaService.buscarPersonaPorRol(role);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (personas.isEmpty()) {
-            response.put("respuesta", "No se han encontrado registros para: "
-                    .concat(role));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        List<Persona> personas = this.personaService.buscarPersonaPorRol(role);
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
@@ -196,22 +149,7 @@ public class ControladorPersona {
             @PathVariable(value = "tipoRole") String role,
             @PathVariable(value = "nombreOrganizacion") String organizacion
     ) {
-        List<Persona> personas = null;
-        Map<String, Object> response = new HashMap<>();
-        try {
-            personas = this.personaService.buscarPersonaPorRoleYOrganizacion(role, organizacion);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (personas.isEmpty()) {
-            response.put("respuesta", "No se han encontrado registros para: "
-                    .concat(role).concat(" en ").concat(organizacion));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        List<Persona> personas = this.personaService.buscarPersonaPorRoleYOrganizacion(role, organizacion);
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 
@@ -226,27 +164,11 @@ public class ControladorPersona {
     - Si se elimina la persona se devuelve un estado 200 - OK
     * */
     @DeleteMapping("/eliminarUsuario/{nombreUsuario}")
-    public ResponseEntity<?> eliminarUsuario(
+    public ResponseEntity<Void> eliminarUsuario(
             @PathVariable(value = "nombreUsuario") String usuario
     ) {
-        Map<String, Object> response = new HashMap<>();
-        String respuesta = "";
-
-        try {
-            respuesta = this.personaService.eliminarPersonaPorNombreUsuario(usuario);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (MiClaseException mce) {
-            response.put("respuesta", "No se a podido realizar la transacción.");
-            response.put("mensaje", mce.getMessage());
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.EXPECTATION_FAILED);
-        }
-
-        response.put("respuesta", respuesta);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        this.personaService.eliminarPersonaPorNombreUsuario(usuario);
+        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 
     /*
@@ -263,23 +185,8 @@ public class ControladorPersona {
             @PathVariable(value = "organizacion") String org,
             @PathVariable(value = "departamento") String depar
     ) {
-        List<Persona> personas = null;
-        Map<String, Object> response = new HashMap<>();
-        try {
-            personas = this.personaService.buscarPersonasPorOrganizacionYDepartamento(
-                    org, depar);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (personas.isEmpty()) {
-            response.put("respuesta", "No se han encontrado registros para: "
-                    .concat(depar).concat(" en ").concat(org));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        List<Persona> personas = this.personaService.buscarPersonasPorOrganizacionYDepartamento(
+                org, depar);
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
     }
 }

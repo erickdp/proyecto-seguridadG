@@ -1,6 +1,7 @@
 package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.MiClaseException;
+import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.PersonaService;
@@ -53,49 +54,73 @@ public class PersonaServiceImp implements PersonaService {
 
     @Override
     @Transactional(readOnly = true)
-    public Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) {
-        return this.personaRepository.findPersonaByUsuarioYContrasena(nombreUsuario, contrasena);
+    public Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws MiClaseException {
+        Persona persona = this.personaRepository.findPersonaByUsuarioYContrasena(nombreUsuario, contrasena);
+        if (persona == null) {
+            throw new MiClaseException("respuesta", "Error en las credenciales ingresadas, pruebe de nuevo.");
+        }
+        return persona;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> buscarPersonaPorOrganizacion(String organizacion) {
-        return this.personaRepository.findPersonaByOrganizacion(organizacion);
+    public List<Persona> buscarPersonaPorOrganizacion(String organizacion) throws NoEncontradoExcepcion {
+        List<Persona> personas = this.personaRepository.findPersonaByOrganizacion(organizacion);
+        if (personas.isEmpty()) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros para: ".concat(organizacion));
+        }
+        return personas;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> buscarPersonaPorRol(String role) {
-        return this.personaRepository.findPersonaByRole(role);
+    public List<Persona> buscarPersonaPorRol(String role) throws NoEncontradoExcepcion {
+        List<Persona> personas = this.personaRepository.findPersonaByRole(role);
+        if (personas.isEmpty()) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros para: ".concat(role));
+        }
+        return personas;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> buscarPersonaPorRoleYOrganizacion(String role, String organizacion) {
-        return this.personaRepository.findPersonaByRolAndOrganization(role, organizacion);
+    public List<Persona> buscarPersonaPorRoleYOrganizacion(String role, String organizacion) throws NoEncontradoExcepcion {
+        List<Persona> personas = this.personaRepository.findPersonaByRolAndOrganization(role, organizacion);
+        if (personas.isEmpty()) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros para: ".concat(role).concat(" en ").concat(organizacion));
+        }
+        return personas;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Persona buscarPersonaPorUsuario(String nombreUsuario) {
-        return this.personaRepository.findPersonaByUsuario(nombreUsuario);
+    public Persona buscarPersonaPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
+        Persona persona = this.personaRepository.findPersonaByUsuario(nombreUsuario);
+        if (persona == null) {
+            throw new MiClaseException("respuesta", "Error en las credenciales ingresadas, no se han encontrado registros.");
+        }
+        return persona;
     }
 
     @Override
     @Transactional
-    public String eliminarPersonaPorNombreUsuario(String nombreUsuario) throws MiClaseException {
+    public void eliminarPersonaPorNombreUsuario(String nombreUsuario) throws MiClaseException {
         Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
-        if (persona == null) {
-            throw new MiClaseException("No se encontró al Usuario: ".concat(nombreUsuario));
-        }
         this.personaRepository.deleteById(persona.get_id());
-        return "Eliminado correctamente.";
     }
 
     @Override
-    public List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion, String departamento) {
-        return this.personaRepository.findPersonaByOrganizacionAndDepartamento(
+    public List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion, String departamento) throws NoEncontradoExcepcion {
+        List<Persona> personas = this.personaRepository.findPersonaByOrganizacionAndDepartamento(
                 organizacion, departamento
         );
+        if(personas.isEmpty()){
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros para: ".concat(departamento).concat(" en ").concat(organizacion));
+        }
+        return personas;
     }
 }
