@@ -4,14 +4,11 @@ import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio")
@@ -62,21 +59,8 @@ public class ControladorPersona {
     @PostMapping("/agregarUsuario")
     public ResponseEntity<?> agregarUsuario(
             @RequestBody Persona persona) {
-        Persona personaN = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            personaN = this.personaService.agregar(persona);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", dae.getMessage()
-                    .concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al ingresar nuevos datos. Pongase en contacto");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        response.put("respuesta", "Se a agregado correctamente");
-        response.put("persona", personaN);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+        Persona personaN = this.personaService.agregar(persona);
+        return new ResponseEntity<Persona>(personaN, HttpStatus.CREATED);
     }
 
     /*
@@ -89,21 +73,7 @@ public class ControladorPersona {
     @GetMapping("/buscarPorIdentificador/{identificador}")
     public ResponseEntity<?> buscarPorIdentificador(
             @PathVariable(value = "identificador") String identificadorUsuario) {
-        Persona persona = null;
-        Map<String, Object> response = new HashMap<>();
-        try {
-            persona = this.personaService.buscaPorId(identificadorUsuario);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (persona == null) {
-            response.put("respuesta", "No se ha encontrado ningun registro.");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        Persona persona = this.personaService.buscaPorId(identificadorUsuario);
         return new ResponseEntity<Persona>(persona, HttpStatus.OK);
     }
 

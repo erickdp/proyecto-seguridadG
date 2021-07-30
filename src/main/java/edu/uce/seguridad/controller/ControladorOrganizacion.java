@@ -1,17 +1,13 @@
 package edu.uce.seguridad.controller;
 
-import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.model.Organizacion;
 import edu.uce.seguridad.service.service.OrganizacionService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/organizacion")
@@ -30,22 +26,7 @@ public class ControladorOrganizacion {
     * */
     @GetMapping("/listarOrganizaciones")
     public ResponseEntity<?> listarOrganizaciones() {
-        List<Organizacion> organizaciones = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            organizaciones = this.organizacionService.buscarTodos();
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error producido en la base de datos, ponganse en cotacto.");
-            response.put("causa", dae.getMessage().
-                    concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (organizaciones.isEmpty()) {
-            response.put("respuesta", "No existen registros de organizaciones");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        List<Organizacion> organizaciones = this.organizacionService.buscarTodos();
         return new ResponseEntity<List<Organizacion>>(organizaciones, HttpStatus.OK);
     }
 
@@ -69,21 +50,8 @@ public class ControladorOrganizacion {
     @PostMapping("/agregarOrganizacion")
     public ResponseEntity<?> agregarOrganizacion(
             @RequestBody Organizacion organizacion) {
-        Organizacion organizacionN = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            organizacionN = this.organizacionService.agregar(organizacion);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", dae.getMessage()
-                    .concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al ingresar nuevos datos. Pongase en contacto");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        response.put("respuesta", "Se a agregado correctamente");
-        response.put("organizacion", organizacionN);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+        Organizacion organizacionN = this.organizacionService.agregar(organizacion);
+        return new ResponseEntity<Organizacion>(organizacionN, HttpStatus.CREATED);
     }
 
     /*
@@ -107,25 +75,8 @@ public class ControladorOrganizacion {
     @PutMapping("/actualizarOrganizacion")
     public ResponseEntity<?> actualizarOrganizacion(
             @RequestBody Organizacion organizacion) {
-        Organizacion organizacionN = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            organizacionN = this.organizacionService.actualizarOrganizacion(organizacion);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", dae.getMessage()
-                    .concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al actualizar datos. Pongase en contacto");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (MiClaseException mce) {
-            response.put("respuesta", mce.getMessage());
-            response.put("mensaje", "Error a actualizar la información");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
-
-        response.put("respuesta", "Se a actualizado correctamente");
-        response.put("organizacion", organizacionN);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+        Organizacion organizacionN = this.organizacionService.actualizar(organizacion);
+        return new ResponseEntity<Organizacion>(organizacion, HttpStatus.OK);
     }
 
     /*
@@ -142,23 +93,7 @@ public class ControladorOrganizacion {
     public ResponseEntity<?> eliminarUsuario(
             @PathVariable(value = "nombreOrganizacion") String organizacion
     ) {
-        Map<String, Object> response = new HashMap<>();
-        String respuesta = "";
-
-        try {
-            respuesta = this.organizacionService.eliminarPorNombreOrganizacion(organizacion);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información.");
-            response.put("mensaje",
-                    dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (MiClaseException mce) {
-            response.put("respuesta", "No se a podido realizar la transacción.");
-            response.put("mensaje", mce.getMessage());
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.EXPECTATION_FAILED);
-        }
-
-        response.put("respuesta", respuesta);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        this.organizacionService.eliminarPorNombreOrganizacion(organizacion);
+        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 }

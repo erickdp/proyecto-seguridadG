@@ -1,10 +1,12 @@
 package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.MiClaseException;
+import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Organizacion;
 import edu.uce.seguridad.repository.OrganizacionRepository;
 import edu.uce.seguridad.service.service.OrganizacionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class OrganizacionServiceImp implements OrganizacionService {
 
-    @Autowired
     private OrganizacionRepository organizacionRepository;
 
     @Override
@@ -25,73 +27,77 @@ public class OrganizacionServiceImp implements OrganizacionService {
 
     @Override
     @Transactional
-    public Organizacion agregar(Organizacion pojo) {
-        pojo.setOrganizacion(pojo.getOrganizacion().trim());
-        pojo.setOrganizacion(pojo.getOrganizacion().toUpperCase());
+    public Organizacion agregar(Organizacion pojo) throws DataAccessException {
+        pojo.setOrganizacion(pojo.getOrganizacion().trim().toUpperCase());
 
         List<String> departamentos = pojo.getDepartamentos();
         List<String> departamentosN = new ArrayList<>();
-        departamentos.stream().forEach(dep -> {
-            departamentosN.add(dep.trim().toUpperCase());
+
+        departamentos.forEach(dep -> {
+            departamentosN.add(dep.trim().toUpperCase()); //Itero para eliminar espacios y pasarlos a mayusculas
         });
 
         pojo.setDepartamentos(departamentosN);
 
-        pojo.setContacto(pojo.getContacto().trim());
+        pojo.setContacto(pojo.getContacto().trim()); // Elminar espacios en el caso de haberlo
+
         return this.organizacionRepository.insert(pojo);
     }
 
+    // El actualizar se reemplaza por actualizarOrganizacion
     @Override
     @Transactional
-    public Organizacion actualizar(Organizacion pojo) {
+    public Organizacion actualizar(Organizacion pojo) throws DataAccessException {
+        if (this.buscaPorId(pojo.get_id()) == null) {
+            throw new MiClaseException("No se ha encontrado la organización. Verifique los datos");
+        }
+        pojo.setOrganizacion(pojo.getOrganizacion().trim().toUpperCase());
+
+        List<String> departamentosN = new ArrayList<>();
+
+        pojo.getDepartamentos().forEach(dep -> departamentosN.add(dep.trim().toUpperCase()));
+
+        pojo.setDepartamentos(departamentosN);
+
+        pojo.setContacto(pojo.getContacto().trim());
         return this.organizacionRepository.save(pojo);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Organizacion buscaPorId(String identificador) {
-        return this.organizacionRepository.findById(identificador).orElse(null);
+    public Organizacion buscaPorId(String identificador) throws NoEncontradoExcepcion {
+        Organizacion organizacion = this.organizacionRepository.findById(identificador).orElse(null);
+        if (organizacion == null) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros de: ".concat(identificador));
+        }
+        return organizacion;
     }
 
     @Override
+    @Deprecated
     public void eliminarDocumento(String identificador) {
         //
     }
 
     @Override
     @Transactional
-    public String eliminarPorNombreOrganizacion(String nombreOrganizacion) throws MiClaseException {
+    public void eliminarPorNombreOrganizacion(String nombreOrganizacion) throws NoEncontradoExcepcion {
         Organizacion organizacion = this.buscarPorNombreOrganizacion(nombreOrganizacion);
-        if(organizacion == null) {
-            throw new MiClaseException("No se ha encontrado la organización: ".concat(nombreOrganizacion));
+        if (organizacion == null) {
+            throw new NoEncontradoExcepcion("No se ha encontrado la organización: ".concat(nombreOrganizacion));
         }
         this.organizacionRepository.deleteById(organizacion.get_id());
-        return "Se ha eliminado ha ".concat(organizacion.getOrganizacion()).concat(" satisfactoriamente");
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Organizacion buscarPorNombreOrganizacion(String nombreOrganizacion) {
-        return this.organizacionRepository.findOrganizacionByOrganizacion(nombreOrganizacion);
-    }
-
-    @Override
-    public Organizacion actualizarOrganizacion(Organizacion organizacion) throws MiClaseException {
-        if(this.buscaPorId(organizacion.get_id()) == null) {
-            throw new MiClaseException("No se ha encontrado la organización. Verifique los datos");
+    public Organizacion buscarPorNombreOrganizacion(String nombreOrganizacion) throws NoEncontradoExcepcion {
+        Organizacion organizacion = this.organizacionRepository.findOrganizacionByOrganizacion(nombreOrganizacion);
+        if(organizacion == null) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros de: ".concat(nombreOrganizacion));
         }
-        organizacion.setOrganizacion(organizacion.getOrganizacion().trim());
-        organizacion.setOrganizacion(organizacion.getOrganizacion().toUpperCase());
-
-        List<String> departamentos = organizacion.getDepartamentos();
-        List<String> departamentosN = new ArrayList<>();
-        departamentos.stream().forEach(dep -> {
-            departamentosN.add(dep.trim().toUpperCase());
-        });
-
-        organizacion.setDepartamentos(departamentosN);
-
-        organizacion.setContacto(organizacion.getContacto().trim());
-        return this.organizacionRepository.save(organizacion);
+        return organizacion;
     }
 }

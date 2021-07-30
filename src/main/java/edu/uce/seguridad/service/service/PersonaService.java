@@ -1,13 +1,12 @@
 package edu.uce.seguridad.service.service;
 
-import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
 
 import java.util.List;
 
 public interface PersonaService extends BaseService<Persona, String> {
-    Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws MiClaseException;
+    Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws NoEncontradoExcepcion;
 
     List<Persona> buscarPersonaPorOrganizacion(String organizacion) throws NoEncontradoExcepcion;
 

@@ -1,32 +1,38 @@
 package edu.uce.seguridad.service.Imp;
 
-import edu.uce.seguridad.exception.MiClaseException;
+import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.PersonaService;
 import edu.uce.seguridad.util.Utileria;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PersonaServiceImp implements PersonaService {
 
-    @Autowired
     private PersonaRepository personaRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> buscarTodos() {
-        return this.personaRepository.findAll();
+    public List<Persona> buscarTodos() throws NoEncontradoExcepcion {
+        List<Persona> personas = this.personaRepository.findAll();
+        if (personas.isEmpty()) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros.");
+        }
+        return personas;
     }
 
     @Override
     @Transactional
-    public Persona agregar(Persona pojo) {
+    public Persona agregar(Persona pojo) throws DataAccessException {
         pojo.setUsuario(Utileria.generarUsuario
                 (pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole()));
         return this.personaRepository.insert(pojo);
@@ -34,30 +40,36 @@ public class PersonaServiceImp implements PersonaService {
 
     @Override
     @Transactional
-    public Persona actualizar(Persona pojo) {
+    public Persona actualizar(Persona pojo) throws DataAccessException {
+        pojo.setUsuario(Utileria.generarUsuario
+                (pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole()));
         return this.personaRepository.save(pojo);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Persona buscaPorId(String identificador) {
-        return this.personaRepository.findById(identificador).orElse(null);
+    public Persona buscaPorId(String identificador) throws NoEncontradoExcepcion {
+        Persona persona = this.personaRepository.findById(identificador).orElse(null);
+        if (persona == null) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros de: ".concat(identificador));
+        }
+        return persona;
     }
 
+    //    Se lo reemplaza por eliminarPersonaPorNombreUsuario
     @Override
-    public void eliminarDocumento(String nombreUsuario) {
-        Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
-        if (persona != null) {
-            this.personaRepository.deleteById(persona.get_id());
-        }
+    @Deprecated
+    public void eliminarDocumento(String nombreUsuario) throws EliminacionException {
+
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws MiClaseException {
+    public Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws NoEncontradoExcepcion {
         Persona persona = this.personaRepository.findPersonaByUsuarioYContrasena(nombreUsuario, contrasena);
         if (persona == null) {
-            throw new MiClaseException("respuesta", "Error en las credenciales ingresadas, pruebe de nuevo.");
+            throw new NoEncontradoExcepcion("respuesta", "Error en las credenciales ingresadas, pruebe de nuevo.");
         }
         return persona;
     }
@@ -100,15 +112,19 @@ public class PersonaServiceImp implements PersonaService {
     public Persona buscarPersonaPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         Persona persona = this.personaRepository.findPersonaByUsuario(nombreUsuario);
         if (persona == null) {
-            throw new MiClaseException("respuesta", "Error en las credenciales ingresadas, no se han encontrado registros.");
+            throw new NoEncontradoExcepcion("respuesta", "Error en las credenciales ingresadas, no se han encontrado registros.");
         }
         return persona;
     }
 
     @Override
     @Transactional
-    public void eliminarPersonaPorNombreUsuario(String nombreUsuario) throws MiClaseException {
+    public void eliminarPersonaPorNombreUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
+        if (persona == null) {
+            throw new NoEncontradoExcepcion(
+                    "respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
+        }
         this.personaRepository.deleteById(persona.get_id());
     }
 
@@ -117,7 +133,7 @@ public class PersonaServiceImp implements PersonaService {
         List<Persona> personas = this.personaRepository.findPersonaByOrganizacionAndDepartamento(
                 organizacion, departamento
         );
-        if(personas.isEmpty()){
+        if (personas.isEmpty()) {
             throw new NoEncontradoExcepcion(
                     "respuesta", "No se han encontrado registros para: ".concat(departamento).concat(" en ").concat(organizacion));
         }
