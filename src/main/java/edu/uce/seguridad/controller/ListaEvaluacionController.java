@@ -32,20 +32,7 @@ public class ListaEvaluacionController {
     * */
     @GetMapping("/buscarEvaluacionPorUser/{user}")
     public ResponseEntity<?> buscarEvaluacionporUser(@PathVariable(value = "user") String user) {
-        List<ListaEvaluacion> evaluacion;
-        Map<String, Object> response = new HashMap<>();
-        try {
-            evaluacion = this.listaEvaluacionService.buscarPorUserFiltrarPorTipoCalidad(user);
-
-        } catch (DataAccessException dae) {
-            response.put("respuesta", "Error al encontrar la información");
-            response.put("mensaje", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if (evaluacion.isEmpty()) {
-            response.put("respuesta", "No se han encontrado registros para: ".concat(user));
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        List<ListaEvaluacion> evaluacion = this.listaEvaluacionService.buscarPorUserFiltrarPorTipoCalidad(user);
         return new ResponseEntity<>(evaluacion, HttpStatus.OK);
     }
 
@@ -63,18 +50,8 @@ public class ListaEvaluacionController {
     */
     @PostMapping("/agregarEvaluacion")
     public ResponseEntity<?> agregarEvaluacion(@RequestBody ListaEvaluacion evaluacion) {
-        ListaEvaluacion evaluacionNew;
-        Map<String, Object> response = new HashMap<>();
-        try {
-            evaluacionNew = this.listaEvaluacionService.agregar(evaluacion);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al ingresar nuevos datos. Pongase en contacto");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        response.put("respuesta", "Se a agregado correctamente");
-        response.put("contacto", evaluacionNew);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        ListaEvaluacion evaluacionNew = this.listaEvaluacionService.agregar(evaluacion);
+        return new ResponseEntity<>(evaluacionNew, HttpStatus.CREATED);
     }
 
     /*
@@ -91,23 +68,9 @@ public class ListaEvaluacionController {
     */
     @PutMapping("/actualizarEvaluacion/{id}")
     public ResponseEntity<?> actualizarEvaluacion(@RequestBody ListaEvaluacion evaluacion, @PathVariable(value = "id") String id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            if (this.listaEvaluacionService.buscaPorId(id) != null) {
-                evaluacion.set_id(id);
-                this.listaEvaluacionService.actualizar(evaluacion);
-            } else {
-                response.put("respuesta", "No existe el registro solicitado");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-        } catch (DataAccessException dae) {
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al actualizar. Pongase en contacto");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        response.put("respuesta", "Se actualizo correctamente");
-        response.put("contacto", evaluacion);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        evaluacion.set_id(id);
+        ListaEvaluacion evalucionUpdated = this.listaEvaluacionService.actualizar(evaluacion);
+        return new ResponseEntity<>(evalucionUpdated, HttpStatus.OK);
     }
 
     /*
@@ -118,17 +81,8 @@ public class ListaEvaluacionController {
     */
     @DeleteMapping("/eliminarEvaluacion/{id}")
     public ResponseEntity<?> eliminarEvaluacion(@PathVariable(value = "id") String id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            this.listaEvaluacionService.eliminarDocumento(id);
-        } catch (DataAccessException dae) {
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al eliminar. Pongase en contacto");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        response.put("respuesta", "Se elimino correctamente");
-        response.put("contacto", id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        this.listaEvaluacionService.eliminarDocumento(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
