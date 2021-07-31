@@ -96,4 +96,12 @@ public class ControladorOrganizacion {
         this.organizacionService.eliminarPorNombreOrganizacion(organizacion);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("/buscarOrganizacion/{nombreOrganizacion}")
+    public ResponseEntity<?> buscarOrganizacion(@PathVariable String nombreOrganizacion) {
+        Organizacion organizacion = this.organizacionService.buscarPorNombreOrganizacion(
+                nombreOrganizacion
+        );
+        return new ResponseEntity<Organizacion>(organizacion, HttpStatus.OK);
+    }
 }
