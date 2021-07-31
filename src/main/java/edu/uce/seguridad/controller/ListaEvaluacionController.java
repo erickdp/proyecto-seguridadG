@@ -3,14 +3,11 @@ package edu.uce.seguridad.controller;
 import edu.uce.seguridad.model.ListaEvaluacion;
 import edu.uce.seguridad.service.service.ListaEvaluacionService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/listaEvaluacion")
