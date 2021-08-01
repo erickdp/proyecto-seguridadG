@@ -35,18 +35,8 @@ public class FormularioControllerLiderazgo {
 
     @PostMapping("/agregarLiderazgo")
     public ResponseEntity<?>agregarLiderazgo(@RequestBody FormularioLiderazgo liderazgo){
-        FormularioLiderazgo newliderazgo;
-        Map<String, Object> response = new HashMap<>();
-        try{
-           newliderazgo= this.formularioLiderazgoService.agregar(liderazgo);
-        }catch ( DataAccessException dae){
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al ingresar nuevos datos. Pongase en contacto");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        response.put("respuesta", "Se agrego correctamente");
-        response.put("contacto", newliderazgo);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        FormularioLiderazgo lideraNew = this.formularioLiderazgoService.agregar(liderazgo);
+        return new ResponseEntity<>(lideraNew, HttpStatus.CREATED);
     }
     /*
         ENDPOINT activo
@@ -62,24 +52,9 @@ public class FormularioControllerLiderazgo {
 
     @PutMapping("/actualizarLiderazgo/{id}")
     public ResponseEntity<?> actualizarLiderazgo(@RequestBody FormularioLiderazgo liderazgo, @PathVariable(value = "id")String id){
-        Map<String, Object> response = new HashMap<>();
-
-        try{
-            if (  this.formularioLiderazgoService.buscaPorId(id) != null){
-                liderazgo.set_id(id);
-                this.formularioLiderazgoService.actualizar(liderazgo);
-            }else{
-                response.put("mensaje", "Hubo un error al actualizar el formulario. Pongase en contacto");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-        }catch (DataAccessException dae){
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al actualizar el formulario. Pongase en contacto");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        response.put("respuesta", "Se actualizo correctamente");
-        response.put("contacto", liderazgo);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+       liderazgo.set_id(id);
+       FormularioLiderazgo liderazgoActualizado = this.formularioLiderazgoService.actualizar(liderazgo);
+        return new ResponseEntity<>(liderazgoActualizado, HttpStatus.OK);
     }
 
     /*
@@ -91,17 +66,8 @@ public class FormularioControllerLiderazgo {
         */
     @DeleteMapping("/eliminarLiderazgo/{id}")
     public ResponseEntity<?> eliminarLiderazgo(@PathVariable(value = "id") String id){
-        Map<String, Object> response = new HashMap<>();
-        try{
-            this.formularioLiderazgoService.eliminarDocumento(id);
-        }catch (DataAccessException dae){
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al borrar el formulario. Pongase en contacto");
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        response.put("respuesta", "Se elimino correctamente");
-        response.put("contacto", id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        this.formularioLiderazgoService.eliminarDocumento(id);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
      /*
@@ -119,19 +85,7 @@ public class FormularioControllerLiderazgo {
 
     @GetMapping("/buscarPorId/{id}")
     public  ResponseEntity<?> buscarPorid( @PathVariable (value = "id") String id){
-        FormularioLiderazgo liderazgoF=null;
-        Map<String, Object> response = new HashMap<>();
-        try{
-            liderazgoF = this.formularioLiderazgoService.buscaPorId(id);
-        }catch(DataAccessException dae){
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al buscar la información. Pongase en contacto");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if (liderazgoF == null){
-            response.put("respuesta", "No se encontro ningun registro");
-            return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        FormularioLiderazgo liderazgoF=this.formularioLiderazgoService.buscaPorId(id);
         return  new ResponseEntity<FormularioLiderazgo>(liderazgoF, HttpStatus.OK);
     }
 
@@ -150,19 +104,7 @@ public class FormularioControllerLiderazgo {
 
     @GetMapping("/buscarPorUser/{usuario}")
     public  ResponseEntity<?> buscarPorUsuario( @PathVariable (value = "usuario") String usuario){
-        FormularioLiderazgo liderazgoFU ;
-        Map<String, Object> response = new HashMap<>();
-        try{
-            liderazgoFU = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);
-        }catch(DataAccessException dae){
-            response.put("respuesta", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-            response.put("mensaje", "Hubo un error al buscar la información. Pongase en contacto");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if (liderazgoFU == null){
-            response.put("respuesta",  "No se han encontrado el formulario de Liderazgo registrado para:".concat(usuario));
-            return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
+        FormularioLiderazgo liderazgoFU  = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);;
         return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.OK);
     }
 
