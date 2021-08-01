@@ -12,10 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
+import static edu.uce.seguridad.data.DatosOrganizacion.getOrganizacion001;
+import static edu.uce.seguridad.data.DatosOrganizacion.getOrganizacion002;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,7 +48,7 @@ class ControladorOrganizacionTest {
 
     @Test
     @DisplayName("Endpoint para agregar organización")
-    void agregarOrganizacion() throws Exception {
+    void testAgregarOrganizacion() throws Exception {
         // Given
         Organizacion organizacion = new Organizacion();
         organizacion.setOrganizacion("UNIVERSIDAD CENTRAL DEL ECUADOR");
@@ -59,7 +62,7 @@ class ControladorOrganizacionTest {
 
         // When
         this.mvc.perform(post("/sgcnegocio/organizacion/agregarOrganizacion").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(organizacion)))
+                        .content(this.objectMapper.writeValueAsString(organizacion)))
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -72,6 +75,26 @@ class ControladorOrganizacionTest {
                 .andExpect(jsonPath("$.contacto").value("uce@mail.com"));
 
         verify(this.organizacionService).agregar(any(Organizacion.class));
+    }
+
+    @Test
+    @DisplayName("Endpoint para listar organización")
+    void testListarOrganizacion() throws Exception {
+        // Given
+        when(this.organizacionService.buscarTodos()).thenReturn(Arrays.asList(
+                getOrganizacion001().orElse(null),
+                getOrganizacion002().orElse(null)));
+
+        // When
+        this.mvc.perform(get("/sgcnegocio/organizacion/listarOrganizaciones").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].organizacion").value("UNIVERSIDAD CENTRAL DEL ECUADOR"))
+                .andExpect(jsonPath("$[1].organizacion").value("Autoridad de Tránsito Municipal"))
+                .andExpect(jsonPath("$[0].departamentos", hasSize(3)))
+                .andExpect(jsonPath("$[1].departamentos", hasSize(2)));
+
+        verify(this.organizacionService).buscarTodos();
     }
 
 }
