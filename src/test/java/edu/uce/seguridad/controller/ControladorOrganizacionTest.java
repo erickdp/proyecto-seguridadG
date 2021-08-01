@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uce.seguridad.model.Organizacion;
 import edu.uce.seguridad.service.service.OrganizacionService;
 import org.junit.jupiter.api.*;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,8 +18,7 @@ import static edu.uce.seguridad.data.DatosOrganizacion.getOrganizacion001;
 import static edu.uce.seguridad.data.DatosOrganizacion.getOrganizacion002;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -97,4 +98,19 @@ class ControladorOrganizacionTest {
         verify(this.organizacionService).buscarTodos();
     }
 
+    @Test
+    @DisplayName("Endpoint para buscar organización por nombre")
+    void testBuscarOrganizacion() throws Exception {
+        // Given
+        when(this.organizacionService.buscarPorNombreOrganizacion("UNIVERSIDAD CENTRAL DEL ECUADOR")).thenReturn(getOrganizacion001().orElse(null));
+
+        // When
+        this.mvc.perform(get("/sgcnegocio/organizacion/buscarOrganizacion/UNIVERSIDAD CENTRAL DEL ECUADOR").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._id").value("1"))
+                .andExpect(jsonPath("$.departamentos", hasSize(3)));
+
+        // Then
+        verify(this.organizacionService).buscarPorNombreOrganizacion(any());
+    }
 }
