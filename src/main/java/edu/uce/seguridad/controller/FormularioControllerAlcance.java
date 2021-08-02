@@ -3,14 +3,9 @@ package edu.uce.seguridad.controller;
 import edu.uce.seguridad.model.FormularioAlcance;
 import edu.uce.seguridad.service.service.FormularioAlcanceService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/sgcnegocio/formularioAlcance" )
@@ -27,7 +22,7 @@ public class FormularioControllerAlcance {
         Ej:
             http://localhost:8080/sgcnegocio/formularioAlcance/agregarAlcance/buscarPorId/60fcb37db3c0630156388256
         {
-            "user": "60fcb37db3c0630156388256",
+            "user": "kevin22",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
             "departamento": "Campo3C"
@@ -45,7 +40,7 @@ public class FormularioControllerAlcance {
         Ej:
             http://localhost:8080/sgcnegocio/formularioAlcance/actualizarAlcance/buscarPorId/60fcb37db3c0630156388256
         {
-            "user": "60fcb37db3c0630156388256",
+            "user": "kevin22",
             "personal": "Campo1 ",
             "negocio": "Campo2",
             "departamento": "Campo3",
@@ -73,7 +68,7 @@ public class FormularioControllerAlcance {
     /*
    ENDPOINT que busca todos las respuestas del formulario Alcance de un usuario, el usuario se debe enviar por la URL
    Ej:
-   http://localhost:8080/sgcnegocio/formularioAlcance/buscarPorId/60fcb37db3c0630156388256
+   http://localhost:8080/sgcnegocio/formularioAlcance/buscarPorId/kevin22
 
 
    - Si se encuentra al menos un contacto guardado devuelve un estado 302 - FOUND

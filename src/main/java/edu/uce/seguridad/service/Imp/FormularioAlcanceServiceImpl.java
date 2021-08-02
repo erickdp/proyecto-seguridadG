@@ -21,7 +21,7 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
     @Transactional(readOnly = true)
     public List<FormularioAlcance> buscarTodos() throws NoEncontradoExcepcion {
         List<FormularioAlcance> alcance = this.formularioAlcanceRepository.findAll();
-        if (alcance.isEmpty()){
+        if (alcance.isEmpty()) {
             throw new NoEncontradoExcepcion("respuesta", "No se encontro registro");
         }
         return alcance;
@@ -35,26 +35,26 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
 
     @Override
     @Transactional
-    public FormularioAlcance actualizar(FormularioAlcance pojo)  throws  DataAccessException{
+    public FormularioAlcance actualizar(FormularioAlcance pojo) throws DataAccessException {
         this.buscaPorId(pojo.get_id());
         return this.formularioAlcanceRepository.save(pojo);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public FormularioAlcance buscaPorId(String identificador) throws  NoEncontradoExcepcion{
+    public FormularioAlcance buscaPorId(String identificador) throws NoEncontradoExcepcion {
         FormularioAlcance alcances = this.formularioAlcanceRepository.findById(identificador).orElse(null);
-        if (alcances == null){
+        if (alcances == null) {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros");
         }
-    return alcances;
+        return alcances;
     }
 
     @Override
     @Transactional
-    public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion{
+    public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion {
         FormularioAlcance formu = this.buscaPorId(identificador);
-        if (identificador == null){
+        if (identificador == null) {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
         }
         this.formularioAlcanceRepository.delete(formu);
@@ -62,18 +62,21 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
 
     @Override
     @Transactional(readOnly = true)
-    public FormularioAlcance buscarFormularioAlPorUsua(String usuario)  throws  NoEncontradoExcepcion{
-     FormularioAlcance formu1 = this.formularioAlcanceRepository.findFormularioAlcanceByUser(usuario);
-     if (formu1 == null){
-         throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el contacto :" .concat(usuario));
-     }
+    public FormularioAlcance buscarFormularioAlPorUsua(String usuario) throws NoEncontradoExcepcion {
+        FormularioAlcance formu1 = this.formularioAlcanceRepository.findFormularioAlcanceByUser(usuario);
+        if (formu1 == null) {
+            throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el contacto :".concat(usuario));
+        }
         return formu1;
     }
 
+    // By Erick
     @Override
     @Transactional
     public void eliminarRespuestaFormularioAlcance(String nombreUsuario) {
-        FormularioAlcance formularioAlcance = this.buscarFormularioAlPorUsua(nombreUsuario);
-        this.formularioAlcanceRepository.delete(formularioAlcance);
+        FormularioAlcance formularioAlcance = this.formularioAlcanceRepository.findFormularioAlcanceByUser(nombreUsuario);
+        if (formularioAlcance != null) {
+            this.formularioAlcanceRepository.delete(formularioAlcance);
+        }
     }
 }

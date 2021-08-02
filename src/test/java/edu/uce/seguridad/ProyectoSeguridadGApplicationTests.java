@@ -17,8 +17,7 @@ import static edu.uce.seguridad.data.DatosFormularioLiderazgo.getFormularioLider
 import static edu.uce.seguridad.data.DatosPersona.getPersona001;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ProyectoSeguridadGApplicationTests {
@@ -69,15 +68,12 @@ class ProyectoSeguridadGApplicationTests {
             // When
             this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo("erickdp");
 
+            doThrow(NoEncontradoExcepcion.class).when(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("vsaavedrae12");
             NoEncontradoExcepcion noEncontradoExcepcion = assertThrows(NoEncontradoExcepcion.class, () -> {
                 this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo("vsaavedrae12");
             });
 
             // Then
-            assertEquals(
-                    "No se han encontrado registros para el usuario: vsaavedrae12",
-                    noEncontradoExcepcion.getCausa()
-                    );
 
             InOrder inOrder = inOrder(this.formularioLiderazgoRepository);
 

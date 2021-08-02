@@ -143,9 +143,9 @@ public class ControladorPersona {
     public ResponseEntity<Void> eliminarUsuario(
             @PathVariable(value = "nombreUsuario") String usuario
     ) {
+        this.personaService.eliminarPersonaPorNombreUsuario(usuario);
         this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(usuario);
         this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(usuario);
-        this.personaService.eliminarPersonaPorNombreUsuario(usuario);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 

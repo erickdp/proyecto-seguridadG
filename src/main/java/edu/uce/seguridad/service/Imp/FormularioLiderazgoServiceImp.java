@@ -22,8 +22,8 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
     @Override
     @Transactional(readOnly = true)
     public List<FormularioLiderazgo> buscarTodos() throws NoEncontradoExcepcion {
-        List<FormularioLiderazgo> formularioLi= this.formularioLiderazgoRepository.findAll();
-        if (formularioLi.isEmpty()){
+        List<FormularioLiderazgo> formularioLi = this.formularioLiderazgoRepository.findAll();
+        if (formularioLi.isEmpty()) {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
 
         }
@@ -32,7 +32,7 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
 
     @Override
     @Transactional
-    public FormularioLiderazgo agregar(FormularioLiderazgo pojo)  throws  DataAccessException{
+    public FormularioLiderazgo agregar(FormularioLiderazgo pojo) throws DataAccessException {
         return this.formularioLiderazgoRepository.insert(pojo);
     }
 
@@ -44,10 +44,10 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
     }
 
     @Override
-    @Transactional (readOnly = true)
-    public FormularioLiderazgo buscaPorId(String identificador) throws  NoEncontradoExcepcion{
-        FormularioLiderazgo formu2= this.formularioLiderazgoRepository.findById(identificador).orElse(null);
-        if (formu2 == null){
+    @Transactional(readOnly = true)
+    public FormularioLiderazgo buscaPorId(String identificador) throws NoEncontradoExcepcion {
+        FormularioLiderazgo formu2 = this.formularioLiderazgoRepository.findById(identificador).orElse(null);
+        if (formu2 == null) {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
         }
         return formu2;
@@ -56,28 +56,31 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
     @Override
     @Transactional
     public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion {
-     FormularioLiderazgo formLide = this.buscaPorId(identificador);
-     if (formLide == null){
-         throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
-     }
+        FormularioLiderazgo formLide = this.buscaPorId(identificador);
+        if (formLide == null) {
+            throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
+        }
         this.formularioLiderazgoRepository.delete(formLide);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public FormularioLiderazgo buscarFormularioPorUsuario(String usuario) throws  NoEncontradoExcepcion{
+    public FormularioLiderazgo buscarFormularioPorUsuario(String usuario) throws NoEncontradoExcepcion {
         FormularioLiderazgo formu3 = this.formularioLiderazgoRepository.findFormularioLiderazgoByUser(usuario);
-        if (formu3 == null){
+        if (formu3 == null) {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el usuario: ".concat(usuario));
         }
         return formu3;
     }
 
+    // By Erick
     @Override
     @Transactional
     public void eliminarRespuestaFormularioLiderazgo(String nombreUsuario) {
-        FormularioLiderazgo formularioLiderazgo = this.buscarFormularioPorUsuario(nombreUsuario);
-        this.formularioLiderazgoRepository.delete(formularioLiderazgo);
+        FormularioLiderazgo formularioLiderazgo = this.formularioLiderazgoRepository.findFormularioLiderazgoByUser(nombreUsuario);
+        if (formularioLiderazgo != null) {
+            this.formularioLiderazgoRepository.delete(formularioLiderazgo);
+        }
     }
 
 

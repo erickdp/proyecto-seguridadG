@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/sgcnegocio/formularioLiderazgo" )
+@RequestMapping("/sgcnegocio/formularioLiderazgo")
 @AllArgsConstructor
 
 public class FormularioControllerLiderazgo {
@@ -26,15 +26,13 @@ public class FormularioControllerLiderazgo {
         Ej:
             http://localhost:8080/sgcnegocio/formularioLiderazgo/agregarAlcance/buscarPorId/610018f6df7d521a7f6c5895
         {
-            "user": "60fcb37db3c0630156388256",
+            "user": "kevin22",
             "personal": " campo Liderazgo abc",
             "negocio": "campo liderazgo 2abc"
         }
         */
-
-
     @PostMapping("/agregarLiderazgo")
-    public ResponseEntity<?>agregarLiderazgo(@RequestBody FormularioLiderazgo liderazgo){
+    public ResponseEntity<?> agregarLiderazgo(@RequestBody FormularioLiderazgo liderazgo) {
         FormularioLiderazgo lideraNew = this.formularioLiderazgoService.agregar(liderazgo);
         return new ResponseEntity<>(lideraNew, HttpStatus.CREATED);
     }
@@ -43,7 +41,7 @@ public class FormularioControllerLiderazgo {
         Se debe mandar el id por la URL y las nuevas respuestas en formato JSON del formulario Liderazgo que se quiere actualizar
         Ej:
             http://localhost:8080/sgcnegocio/formularioAlcance/actualizarLiderazgo/buscarPorId/6610018f6df7d521a7f6c5895
-            "user": "60fcb37db3c0630156388256",
+            "user": "kevin22",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
 
@@ -51,9 +49,9 @@ public class FormularioControllerLiderazgo {
         */
 
     @PutMapping("/actualizarLiderazgo/{id}")
-    public ResponseEntity<?> actualizarLiderazgo(@RequestBody FormularioLiderazgo liderazgo, @PathVariable(value = "id")String id){
-       liderazgo.set_id(id);
-       FormularioLiderazgo liderazgoActualizado = this.formularioLiderazgoService.actualizar(liderazgo);
+    public ResponseEntity<?> actualizarLiderazgo(@RequestBody FormularioLiderazgo liderazgo, @PathVariable(value = "id") String id) {
+        liderazgo.set_id(id);
+        FormularioLiderazgo liderazgoActualizado = this.formularioLiderazgoService.actualizar(liderazgo);
         return new ResponseEntity<>(liderazgoActualizado, HttpStatus.OK);
     }
 
@@ -65,9 +63,9 @@ public class FormularioControllerLiderazgo {
 
         */
     @DeleteMapping("/eliminarLiderazgo/{id}")
-    public ResponseEntity<?> eliminarLiderazgo(@PathVariable(value = "id") String id){
+    public ResponseEntity<?> eliminarLiderazgo(@PathVariable(value = "id") String id) {
         this.formularioLiderazgoService.eliminarDocumento(id);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
      /*
@@ -76,7 +74,7 @@ public class FormularioControllerLiderazgo {
         Ej:
             http://localhost:8080/sgcnegocio/formularioLiderazgo/buscarPorId/610018f6df7d521a7f6c5895
         {
-            "user": "60fcb37db3c0630156388256",
+            "user": "kevin22",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
 
@@ -84,28 +82,26 @@ public class FormularioControllerLiderazgo {
         */
 
     @GetMapping("/buscarPorId/{id}")
-    public  ResponseEntity<?> buscarPorid( @PathVariable (value = "id") String id){
-        FormularioLiderazgo liderazgoF=this.formularioLiderazgoService.buscaPorId(id);
-        return  new ResponseEntity<FormularioLiderazgo>(liderazgoF, HttpStatus.OK);
+    public ResponseEntity<?> buscarPorid(@PathVariable(value = "id") String id) {
+        FormularioLiderazgo liderazgoF = this.formularioLiderazgoService.buscaPorId(id);
+        return new ResponseEntity<FormularioLiderazgo>(liderazgoF, HttpStatus.OK);
     }
 
     /*
         ENDPOINT activo
        ENDPOINT que busca todos las respuestas del formulario Liderazgo de un usuario, el usuario se debe enviar por la URL
         Ej:
-            http://localhost:8080/sgcnegocio/formularioLiderazgo/buscarPorUser/60fcb37db3c0630156388256
+            http://localhost:8080/sgcnegocio/formularioLiderazgo/buscarPorUser/kevin22
         {
-            "user": "60fcb37db3c0630156388256",
+            "user": "kevin22",
             "personal": "Campo1A ",
             "negocio": "Campo2B",
-
         }
         */
-
     @GetMapping("/buscarPorUser/{usuario}")
-    public  ResponseEntity<?> buscarPorUsuario( @PathVariable (value = "usuario") String usuario){
-        FormularioLiderazgo liderazgoFU  = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);
-        return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.OK);
+    public ResponseEntity<?> buscarPorUsuario(@PathVariable(value = "usuario") String usuario) {
+        FormularioLiderazgo liderazgoFU = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);
+        return new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.OK);
     }
 
 }
