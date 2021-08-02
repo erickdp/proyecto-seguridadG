@@ -63,7 +63,7 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
     @Override
     @Transactional(readOnly = true)
     public FormularioAlcance buscarFormularioAlPorUsua(String usuario)  throws  NoEncontradoExcepcion{
-     FormularioAlcance formu1 = this.formularioAlcanceRepository.findByUser(usuario);
+     FormularioAlcance formu1 = this.formularioAlcanceRepository.findFormularioAlcanceByUser(usuario);
      if (formu1 == null){
          throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el contacto :" .concat(usuario));
      }
@@ -71,6 +71,7 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
     }
 
     @Override
+    @Transactional
     public void eliminarRespuestaFormularioAlcance(String nombreUsuario) {
         FormularioAlcance formularioAlcance = this.buscarFormularioAlPorUsua(nombreUsuario);
         this.formularioAlcanceRepository.delete(formularioAlcance);

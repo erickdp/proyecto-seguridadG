@@ -127,14 +127,8 @@ public class PersonaServiceImp implements PersonaService {
             throw new NoEncontradoExcepcion(
                     "respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
         }
+
         this.personaRepository.deleteById(persona.get_id());
-
-        FormularioLiderazgoService formularioLiderazgoService = new FormularioLiderazgoServiceImp(); // Pasarlo como D.I si se necesitan en otros metodos
-        formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(persona.getNombre());
-
-        FormularioAlcanceService formularioAlcanceService = new FormularioAlcanceServiceImpl();
-        formularioAlcanceService.eliminarRespuestaFormularioAlcance(persona.getNombre());
-
     }
 
     @Override

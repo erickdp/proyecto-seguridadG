@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FormularioAlcanceRepository extends MongoRepository<FormularioAlcance, String> {
     //FormularioAlcance findBy_id(ObjectId id);
-    FormularioAlcance findByUser (String identificador);
+    FormularioAlcance findFormularioAlcanceByUser(String user);
 
     //FormularioAlcance findByPregunta(String pregunta);
 }

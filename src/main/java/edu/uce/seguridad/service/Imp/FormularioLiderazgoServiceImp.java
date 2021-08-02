@@ -4,6 +4,7 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioLiderazgo;
 import edu.uce.seguridad.repository.FormularioLiderazgoRepository;
 import edu.uce.seguridad.service.service.FormularioLiderazgoService;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@NoArgsConstructor
 public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService {
 
     @Autowired
@@ -64,7 +66,7 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
     @Override
     @Transactional(readOnly = true)
     public FormularioLiderazgo buscarFormularioPorUsuario(String usuario) throws  NoEncontradoExcepcion{
-        FormularioLiderazgo formu3 = this.formularioLiderazgoRepository.findByUser(usuario);
+        FormularioLiderazgo formu3 = this.formularioLiderazgoRepository.findFormularioLiderazgoByUser(usuario);
         if (formu3 == null){
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el usuario: ".concat(usuario));
         }

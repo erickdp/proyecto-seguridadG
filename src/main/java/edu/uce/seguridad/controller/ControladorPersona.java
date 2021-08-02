@@ -2,6 +2,8 @@ package edu.uce.seguridad.controller;
 
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
+import edu.uce.seguridad.service.service.FormularioAlcanceService;
+import edu.uce.seguridad.service.service.FormularioLiderazgoService;
 import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,10 @@ import java.util.List;
 public class ControladorPersona {
 
     private PersonaService personaService;
+
+    private FormularioAlcanceService formularioAlcanceService;
+
+    private FormularioLiderazgoService formularioLiderazgoService;
 
     /*
     ENDPOINT activo
@@ -137,6 +143,8 @@ public class ControladorPersona {
     public ResponseEntity<Void> eliminarUsuario(
             @PathVariable(value = "nombreUsuario") String usuario
     ) {
+        this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(usuario);
+        this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(usuario);
         this.personaService.eliminarPersonaPorNombreUsuario(usuario);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }

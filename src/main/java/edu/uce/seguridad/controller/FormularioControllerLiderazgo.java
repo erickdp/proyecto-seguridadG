@@ -104,7 +104,7 @@ public class FormularioControllerLiderazgo {
 
     @GetMapping("/buscarPorUser/{usuario}")
     public  ResponseEntity<?> buscarPorUsuario( @PathVariable (value = "usuario") String usuario){
-        FormularioLiderazgo liderazgoFU  = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);;
+        FormularioLiderazgo liderazgoFU  = this.formularioLiderazgoService.buscarFormularioPorUsuario(usuario);
         return  new ResponseEntity<FormularioLiderazgo>(liderazgoFU, HttpStatus.OK);
     }
 
