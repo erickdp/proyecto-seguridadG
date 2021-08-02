@@ -71,5 +71,12 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
         return formu3;
     }
 
+    @Override
+    @Transactional
+    public void eliminarRespuestaFormularioLiderazgo(String nombreUsuario) {
+        FormularioLiderazgo formularioLiderazgo = this.buscarFormularioPorUsuario(nombreUsuario);
+        this.formularioLiderazgoRepository.delete(formularioLiderazgo);
+    }
+
 
 }

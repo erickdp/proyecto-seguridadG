@@ -69,4 +69,10 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
      }
         return formu1;
     }
+
+    @Override
+    public void eliminarRespuestaFormularioAlcance(String nombreUsuario) {
+        FormularioAlcance formularioAlcance = this.buscarFormularioAlPorUsua(nombreUsuario);
+        this.formularioAlcanceRepository.delete(formularioAlcance);
+    }
 }

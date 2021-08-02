@@ -4,6 +4,8 @@ import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
+import edu.uce.seguridad.service.service.FormularioAlcanceService;
+import edu.uce.seguridad.service.service.FormularioLiderazgoService;
 import edu.uce.seguridad.service.service.PersonaService;
 import edu.uce.seguridad.util.Utileria;
 import lombok.AllArgsConstructor;
@@ -126,6 +128,13 @@ public class PersonaServiceImp implements PersonaService {
                     "respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
         }
         this.personaRepository.deleteById(persona.get_id());
+
+        FormularioLiderazgoService formularioLiderazgoService = new FormularioLiderazgoServiceImp(); // Pasarlo como D.I si se necesitan en otros metodos
+        formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(persona.getNombre());
+
+        FormularioAlcanceService formularioAlcanceService = new FormularioAlcanceServiceImpl();
+        formularioAlcanceService.eliminarRespuestaFormularioAlcance(persona.getNombre());
+
     }
 
     @Override
