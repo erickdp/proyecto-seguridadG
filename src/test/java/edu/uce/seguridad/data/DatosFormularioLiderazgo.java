@@ -5,7 +5,7 @@ import edu.uce.seguridad.model.FormularioLiderazgo;
 import java.util.Optional;
 
 public class DatosFormularioLiderazgo {
-    public static Optional<FormularioLiderazgo> getFormularioLiderazgo() {
+    public static Optional<FormularioLiderazgo> getFormularioLiderazgo001() {
         FormularioLiderazgo formularioLiderazgo = new FormularioLiderazgo();
         formularioLiderazgo.set_id("1");
         formularioLiderazgo.setUser("erickdp");

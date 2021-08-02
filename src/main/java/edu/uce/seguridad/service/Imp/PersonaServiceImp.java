@@ -114,7 +114,7 @@ public class PersonaServiceImp implements PersonaService {
     public Persona buscarPersonaPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         Persona persona = this.personaRepository.findPersonaByUsuario(nombreUsuario);
         if (persona == null) {
-            throw new NoEncontradoExcepcion("respuesta", "Error en las credenciales ingresadas, no se han encontrado registros.");
+            throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
         }
         return persona;
     }
@@ -123,11 +123,6 @@ public class PersonaServiceImp implements PersonaService {
     @Transactional
     public void eliminarPersonaPorNombreUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
-        if (persona == null) {
-            throw new NoEncontradoExcepcion(
-                    "respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
-        }
-
         this.personaRepository.deleteById(persona.get_id());
     }
 
