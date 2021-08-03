@@ -1,11 +1,10 @@
 package edu.uce.seguridad.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Organizacion;
 import edu.uce.seguridad.service.service.OrganizacionService;
 import org.junit.jupiter.api.*;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +16,7 @@ import java.util.Arrays;
 import static edu.uce.seguridad.data.DatosOrganizacion.getOrganizacion001;
 import static edu.uce.seguridad.data.DatosOrganizacion.getOrganizacion002;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -112,5 +112,19 @@ class ControladorOrganizacionTest {
 
         // Then
         verify(this.organizacionService).buscarPorNombreOrganizacion(any());
+    }
+
+    @Test
+    void testBuscarPorOrganizacionNoEncontrado() throws Exception {
+        // Given
+        when(this.organizacionService.buscarPorNombreOrganizacion(anyString())).thenThrow(
+                new NoEncontradoExcepcion("mensaje", "No se ha encontrado")
+        );
+
+        // When
+        this.mvc.perform(get("/sgcnegocio/organizacion/buscarOrganizacion/UNIVERSIDAD CENTRAL DEL ECUADOR").contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensaje", is("No se ha encontrado")));
     }
 }

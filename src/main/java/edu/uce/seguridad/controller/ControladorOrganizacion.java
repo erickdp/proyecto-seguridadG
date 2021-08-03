@@ -20,7 +20,7 @@ public class ControladorOrganizacion {
     ENDPOINT activo.
     Devuelve todas las organizaciones
 
-    - Si se encuentra el usuario se devuelve un estado 200 - Ok
+    - Si se encuentra la organizacion se devuelve un estado 200 - Ok
     - En el caso de no encontrar ningun registro se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
@@ -87,7 +87,7 @@ public class ControladorOrganizacion {
 
     - Si no se elimina la organizacon se devuelve un estado 417 - EXPECTATION_FAILED
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
-    - Si se elimina la persona se devuelve un estado 200 - OK
+    - Si se elimina la organizacion se devuelve un estado 200 - OK
     * */
     @DeleteMapping("/eliminarOrganizacion/{nombreOrganizacion}")
     public ResponseEntity<?> eliminarUsuario(
@@ -97,6 +97,18 @@ public class ControladorOrganizacion {
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 
+    /*
+    ENDPOINT ACTIVO
+
+    Busca la organizacion mediante su nombre esto porque es unico. Solo enviar
+    en la URI el nombre de la organizacion
+
+    @param nombreOrganizacion
+
+    - Si no se encuentra la organizacon se devuelve un estado 404 - NOT_FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    - Si se encuentra la organizacion se devuelve un estado 200 - OK
+    * */
     @GetMapping("/buscarOrganizacion/{nombreOrganizacion}")
     public ResponseEntity<?> buscarOrganizacion(@PathVariable String nombreOrganizacion) {
         Organizacion organizacion = this.organizacionService.buscarPorNombreOrganizacion(

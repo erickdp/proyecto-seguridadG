@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,10 +31,9 @@ public class OrganizacionServiceImp implements OrganizacionService {
     public Organizacion agregar(Organizacion pojo) throws DataAccessException {
         pojo.setOrganizacion(pojo.getOrganizacion().trim().toUpperCase());
 
-        List<String> departamentos = pojo.getDepartamentos();
         List<String> departamentosN = new ArrayList<>();
 
-        departamentos.forEach(dep -> {
+        pojo.getDepartamentos().forEach(dep -> {
             departamentosN.add(dep.trim().toUpperCase()); //Itero para eliminar espacios y pasarlos a mayusculas
         });
 
@@ -66,12 +66,12 @@ public class OrganizacionServiceImp implements OrganizacionService {
     @Override
     @Transactional(readOnly = true)
     public Organizacion buscaPorId(String identificador) throws NoEncontradoExcepcion {
-        Organizacion organizacion = this.organizacionRepository.findById(identificador).orElse(null);
-        if (organizacion == null) {
-            throw new NoEncontradoExcepcion(
-                    "respuesta", "No se han encontrado registros de: ".concat(identificador));
+        Optional<Organizacion> organizacion = this.organizacionRepository.findById(identificador);
+        if (organizacion.isPresent()) {
+            return organizacion.get();
         }
-        return organizacion;
+        throw new NoEncontradoExcepcion(
+                "respuesta", "No se han encontrado registros de: ".concat(identificador));
     }
 
     @Override
@@ -93,11 +93,11 @@ public class OrganizacionServiceImp implements OrganizacionService {
     @Override
     @Transactional(readOnly = true)
     public Organizacion buscarPorNombreOrganizacion(String nombreOrganizacion) throws NoEncontradoExcepcion {
-        Organizacion organizacion = this.organizacionRepository.findOrganizacionByOrganizacion(nombreOrganizacion);
-        if(organizacion == null) {
-            throw new NoEncontradoExcepcion(
-                    "respuesta", "No se han encontrado registros de: ".concat(nombreOrganizacion));
+        Optional<Organizacion> organizacion = this.organizacionRepository.findOrganizacionByOrganizacion(nombreOrganizacion);
+        if (organizacion.isPresent()) {
+            return organizacion.get();
         }
-        return organizacion;
+        throw new NoEncontradoExcepcion(
+                "respuesta", "No se han encontrado registros de: ".concat(nombreOrganizacion));
     }
 }

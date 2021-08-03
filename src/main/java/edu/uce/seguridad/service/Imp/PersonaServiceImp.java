@@ -4,8 +4,6 @@ import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
-import edu.uce.seguridad.service.service.FormularioAlcanceService;
-import edu.uce.seguridad.service.service.FormularioLiderazgoService;
 import edu.uce.seguridad.service.service.PersonaService;
 import edu.uce.seguridad.util.Utileria;
 import lombok.AllArgsConstructor;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -69,11 +68,11 @@ public class PersonaServiceImp implements PersonaService {
     @Override
     @Transactional(readOnly = true)
     public Persona buscarPersonaPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws NoEncontradoExcepcion {
-        Persona persona = this.personaRepository.findPersonaByUsuarioYContrasena(nombreUsuario, contrasena);
-        if (persona == null) {
-            throw new NoEncontradoExcepcion("respuesta", "Error en las credenciales ingresadas, pruebe de nuevo.");
+        Optional<Persona> persona = this.personaRepository.findPersonaByUsuarioYContrasena(nombreUsuario, contrasena);
+        if (persona.isPresent()) {
+            return persona.get();
         }
-        return persona;
+        throw new NoEncontradoExcepcion("respuesta", "Error en las credenciales ingresadas, pruebe de nuevo.");
     }
 
     @Override
@@ -112,11 +111,11 @@ public class PersonaServiceImp implements PersonaService {
     @Override
     @Transactional(readOnly = true)
     public Persona buscarPersonaPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
-        Persona persona = this.personaRepository.findPersonaByUsuario(nombreUsuario);
-        if (persona == null) {
-            throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
+        Optional<Persona> persona = this.personaRepository.findPersonaByUsuario(nombreUsuario);
+        if (persona.isPresent()) {
+            return persona.get();
         }
-        return persona;
+        throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(nombreUsuario));
     }
 
     @Override

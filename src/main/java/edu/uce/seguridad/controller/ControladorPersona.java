@@ -135,17 +135,22 @@ public class ControladorPersona {
     Elimina al usuario mediante su nombre de usuario, esto porque es unico. Solo enviar
     en la URI el nombre del Usuario
 
+    En el caso de que este usuario tenga formularios, estos serian eliminados en cadena
+
+
+    IRA INCREMENTANDO CON EL TIEMPO LA ELIMINACION EN CADENA
+
     - Si no se elimina la persona se devuelve un estado 417 - EXPECTATION_FAILED
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
-    - Si se elimina la persona se devuelve un estado 200 - OK
+    - Si se elimina la persona se devuelve un estado 202 - ACCEPTED
     * */
     @DeleteMapping("/eliminarUsuario/{nombreUsuario}")
     public ResponseEntity<Void> eliminarUsuario(
             @PathVariable(value = "nombreUsuario") String usuario
     ) {
         this.personaService.eliminarPersonaPorNombreUsuario(usuario);
-        this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(usuario);
-        this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(usuario);
+        this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(usuario); // SE ELIMINA EL FORM DE ALCANCE
+        this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(usuario); // SE ELIMINA EL FORM DE LIDERAZGO
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 

@@ -34,7 +34,7 @@ class ProyectoSeguridadGApplicationTests {
 
         @Test
         void eliminarPersonaTest() {
-            when(personaRepository.findPersonaByUsuario("erickdp")).thenReturn(getPersona001().orElse(null));
+            when(personaRepository.findPersonaByUsuario("erickdp")).thenReturn(getPersona001());
 
             NoEncontradoExcepcion noExiste = assertThrows(NoEncontradoExcepcion.class, () -> {
                 this.personaService.eliminarPersonaPorNombreUsuario("vsaavedrae12");

@@ -5,10 +5,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonaRepository extends MongoRepository<Persona, String> {
     @Query("{'usuario.nombreUsuario': ?0, 'usuario.contrasena': ?1}")
-    Persona findPersonaByUsuarioYContrasena(String nombreUsuario, String contrasena);
+    Optional<Persona> findPersonaByUsuarioYContrasena(String nombreUsuario, String contrasena);
 
     List<Persona> findPersonaByOrganizacion(String organizacion);
 
@@ -21,7 +22,7 @@ public interface PersonaRepository extends MongoRepository<Persona, String> {
     );
 
     @Query("{'usuario.nombreUsuario': ?0}")
-    Persona findPersonaByUsuario(String nombreUsuario);
+    Optional<Persona> findPersonaByUsuario(String nombreUsuario);
 
     List<Persona> findPersonaByOrganizacionAndDepartamento(
             String organizacion, String departamento
