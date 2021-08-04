@@ -17,9 +17,9 @@ public class ListaContactoController {
     private ListaContactoService listaContactoService;
 
     /*
-    ENDPOINT que busca todos los contactos de un usuario, el id se debe enviar por la URL
+    ENDPOINT que busca todos los contactos de un usuario, el id del user se debe enviar por la URL
     Ej:
-    http://localhost:8080/sgcnegocio/listaContacto/buscarContactosPorUser/60fcb37db3c0630156388256
+    http://localhost:8080/sgcnegocio/listaContacto/buscarContactosPorUser/vsaavedrai30
 
     * La lista ya se encuentra ordenada por el campo tipoContacto
 
@@ -39,7 +39,7 @@ public class ListaContactoController {
     * tipoContacto: se debe definir en el front valores unicos para este campo (comboBox)
     Ej:
      {
-        "user": "60fcb37db3c0630156388256",
+        "user": "vsaavedrai30",
         "tipoContacto": "proveedor de servicios",
         "nombre": "Netlife",
         "telefono": "3920000",
@@ -55,11 +55,11 @@ public class ListaContactoController {
 
     /*
     ENDPOINT activo
-    Se debe mandar el id por la URL y los nuevos datos en formato JSON del contacto que se quiere actualizar
+    Se debe mandar el id del contacto por la URL y los nuevos datos en formato JSON del contacto que se quiere actualizar
     Ej:
     http://localhost:8080/sgcnegocio/listaContacto/actualizarContacto/60fd8fedf46fcb59784d3cdd
     {
-        "user": "60fcb37db3c0630156388256",
+        "user": "vsaavedrai30",
         "tipoContacto": "proveedor de servicios",
         "nombre": "Netlife Update",
         "telefono": "3920000 Update",
@@ -76,7 +76,7 @@ public class ListaContactoController {
 
     /*
     ENDPOINT activo
-    Se debe mandar unicamente el id en el URL para eliminar un contacto
+    Se debe mandar unicamente el id del contacto en el URL para eliminar un contacto
     Ej:
     http://localhost:8080/sgcnegocio/listaContacto/eliminarContacto/60fd8fedf46fcb59784d3cdd
     */
