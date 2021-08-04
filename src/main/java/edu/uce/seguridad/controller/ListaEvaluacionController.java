@@ -17,9 +17,9 @@ public class ListaEvaluacionController {
     private ListaEvaluacionService listaEvaluacionService;
 
     /*
-    ENDPOINT que busca todas las evaluaciones de un usuario, el id se debe enviar por la URL
+    ENDPOINT que busca todas las evaluaciones de un usuario, el id del user se debe enviar por la URL
     Ej:
-    http://localhost:8080/sgcnegocio/listaEvaluacion/buscarEvaluacionPorUser/60fcb37db3c0630156388256
+    http://localhost:8080/sgcnegocio/listaEvaluacion/buscarEvaluacionPorUser/vsaavedrai30
 
     * La lista ya se encuentra ordenada por el campo tipoCalidad
 
@@ -39,7 +39,7 @@ public class ListaEvaluacionController {
     * tipoCalidad: se debe definir en el front valores unicos para este campo (comboBox)
     Ej:
     {
-    "user": "60fcb37db3c0630156388256",
+    "user": "vsaavedrai30",
     "tipoCalidad": "bienes afectados",
     "tipo": "iMac",
     "caracteristica": "7 unidades"
@@ -53,11 +53,11 @@ public class ListaEvaluacionController {
 
     /*
     ENDPOINT activo
-    Se debe mandar el id por la URL y los nuevos datos en formato JSON de la evaluacion que se quiere actualizar
+    Se debe mandar el id de la evaluacion por la URL y los nuevos datos en formato JSON de la evaluacion que se quiere actualizar
     Ej:
     http://localhost:8080/sgcnegocio/listaEvaluacion/actualizarEvaluacion/60fdc3969845fe5c999df4d3
     {
-        "user": "60fcb37db3c0630156388256",
+        "user": "vsaavedrai30",
         "tipoCalidad": "bienes afectados updated",
         "tipo": "Monitor Samsung updated",
         "caracteristica": "20 unidades updated"
@@ -72,7 +72,7 @@ public class ListaEvaluacionController {
 
     /*
     ENDPOINT activo
-    Se debe mandar unicamente el id en el URL para eliminar una evaluacion
+    Se debe mandar unicamente el id de la evaluacion en el URL para eliminar una evaluacion
     Ej:
     http://localhost:8080/sgcnegocio/listaEvaluacion/eliminarEvaluacion/60fdc3969845fe5c999df4d3
     */
