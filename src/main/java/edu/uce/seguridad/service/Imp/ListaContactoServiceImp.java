@@ -51,6 +51,7 @@ public class ListaContactoServiceImp implements ListaContactoService {
     }
 
     // Opcional poner un estado para no eliminarlo (no relacional)
+    // Que se elimine con todo o le temes al exito?? XDD
     @Override
     @Transactional
     public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion {
@@ -69,5 +70,15 @@ public class ListaContactoServiceImp implements ListaContactoService {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(user));
         }
         return contactos;
+    }
+
+    // By Erick es para que cuando elimine el usuario todos sus registros igual se eliminen
+    // reuso tu codigo para generar lo mas posible acoplamiento
+    @Override
+    public void eliminarConcatosPorUser(String user) {
+        List<ListaContacto> contactos = this.repository.findByUserOrderByTipoContactoAsc(user);
+        if (!contactos.isEmpty()) {
+            contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
+        }
     }
 }

@@ -69,4 +69,13 @@ public class ListaEvaluacionServiceImp implements ListaEvaluacionService {
         }
         return evaluaciones;
     }
+
+    // by Erick, lo mismo que en contactos
+    @Override
+    public void eliminarEvaluacionesPorUser(String user) {
+        List<ListaEvaluacion> evaluaciones = this.repository.findByUserOrderByTipoCalidadAsc(user);
+        if (!evaluaciones.isEmpty()) {
+            evaluaciones.forEach(evaluacion -> this.eliminarDocumento(evaluacion.get_id()));
+        }
+    }
 }

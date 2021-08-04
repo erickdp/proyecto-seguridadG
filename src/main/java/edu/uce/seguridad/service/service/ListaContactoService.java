@@ -9,4 +9,5 @@ public interface ListaContactoService extends BaseService<ListaContacto, String>
 
     List<ListaContacto> buscarPorUserFiltrarPorTipoContacto (String user) throws NoEncontradoExcepcion;
 
+    void eliminarConcatosPorUser(String user);
 }

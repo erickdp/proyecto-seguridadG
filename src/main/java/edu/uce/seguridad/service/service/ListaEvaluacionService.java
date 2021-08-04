@@ -9,4 +9,5 @@ public interface ListaEvaluacionService extends BaseService<ListaEvaluacion, Str
 
     List<ListaEvaluacion> buscarPorUserFiltrarPorTipoCalidad(String user) throws NoEncontradoExcepcion;
 
+    void eliminarEvaluacionesPorUser(String user);
 }
