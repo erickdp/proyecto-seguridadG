@@ -20,4 +20,6 @@ public class FormularioAlcance {
     private String personal;
     private String negocio;
     private String departamento;
+    private String actividades;
+    private String recuperacion;
 }
