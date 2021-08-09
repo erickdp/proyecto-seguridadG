@@ -17,14 +17,6 @@ public class ControladorPersona {
 
     private PersonaService personaService;
 
-    private FormularioAlcanceService formularioAlcanceService;
-
-    private FormularioLiderazgoService formularioLiderazgoService;
-
-    private ListaContactoService listaContactoService;
-
-    private ListaEvaluacionService listaEvaluacionService;
-
     /*
     ENDPOINT activo
     Se debe de enviar un JSON con el nombre de usuario y contrasena
@@ -151,10 +143,6 @@ public class ControladorPersona {
             @PathVariable(value = "nombreUsuario") String usuario
     ) {
         this.personaService.eliminarPersonaPorNombreUsuario(usuario);
-        this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(usuario); // SE ELIMINA EL FORM DE ALCANCE
-        this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(usuario); // SE ELIMINA EL FORM DE LIDERAZGO
-        this.listaContactoService.eliminarConcatosPorUser(usuario);
-        this.listaEvaluacionService.eliminarEvaluacionesPorUser(usuario);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 

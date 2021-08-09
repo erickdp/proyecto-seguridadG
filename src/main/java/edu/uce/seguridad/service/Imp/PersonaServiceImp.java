@@ -4,7 +4,7 @@ import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
-import edu.uce.seguridad.service.service.PersonaService;
+import edu.uce.seguridad.service.service.*;
 import edu.uce.seguridad.util.Utileria;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -19,6 +19,14 @@ import java.util.Optional;
 public class PersonaServiceImp implements PersonaService {
 
     private PersonaRepository personaRepository;
+
+    private FormularioAlcanceService formularioAlcanceService;
+
+    private FormularioLiderazgoService formularioLiderazgoService;
+
+    private ListaContactoService listaContactoService;
+
+    private ListaEvaluacionService listaEvaluacionService;
 
     @Override
     @Transactional(readOnly = true)
@@ -123,6 +131,10 @@ public class PersonaServiceImp implements PersonaService {
     public void eliminarPersonaPorNombreUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         Persona persona = this.buscarPersonaPorUsuario(nombreUsuario);
         this.personaRepository.deleteById(persona.get_id());
+        this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(nombreUsuario); // SE ELIMINA EL FORM DE ALCANCE
+        this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(nombreUsuario); // SE ELIMINA EL FORM DE LIDERAZGO
+        this.listaContactoService.eliminarConcatosPorUser(nombreUsuario);
+        this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario);
     }
 
     @Override
