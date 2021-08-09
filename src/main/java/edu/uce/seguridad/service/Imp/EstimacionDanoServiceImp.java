@@ -3,7 +3,6 @@ package edu.uce.seguridad.service.Imp;
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.EstimacionDano;
-import edu.uce.seguridad.model.FormularioRIP;
 import edu.uce.seguridad.repository.EstimacionDanoRepository;
 import edu.uce.seguridad.service.service.EstimacionDanoService;
 import edu.uce.seguridad.service.service.FormularioRIPService;
@@ -27,7 +26,7 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
     @Transactional(readOnly = true)
     public List<EstimacionDano> buscarTodos() throws NoEncontradoExcepcion {
         List<EstimacionDano> list = this.estimacionDanoRepository.findAll();
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             throw new NoEncontradoExcepcion("mensaje", "No existen registros");
         }
         return list;
@@ -49,7 +48,7 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
     @Transactional(readOnly = true)
     public EstimacionDano buscaPorId(String identificador) throws NoEncontradoExcepcion {
         Optional<EstimacionDano> estimacionesDano = this.estimacionDanoRepository.findById(identificador);
-        if(estimacionesDano.isPresent()) {
+        if (estimacionesDano.isPresent()) {
             return estimacionesDano.get();
         }
         throw new NoEncontradoExcepcion("mensaje", "No se han encontrado registros para: ".concat(identificador));
@@ -58,28 +57,39 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
     @Override
     @Transactional
     public void eliminarDocumento(String identificador) throws EliminacionException {
-        this.estimacionDanoRepository.deleteById(identificador);
+        List<EstimacionDano> formularioEstimacion = this.estimacionDanoRepository.findByUsuario(identificador); // Como se eliminan varios forms devuelve una lista
+        formularioEstimacion.forEach(form -> this.estimacionDanoRepository.deleteById(form.get_id()));
     }
 
 
     @Override
     @Transactional(readOnly = true)
-    public EstimacionDano buscarFormularioEstimacionPorUsuario(String usuario) {
-        Optional<EstimacionDano> formularioEstimacion = this.estimacionDanoRepository.findByUsuario(usuario);
-        if(formularioEstimacion.isPresent()) {
-            return formularioEstimacion.get();
-        } else {
-            EstimacionDano estimacionDano = new EstimacionDano();
-            estimacionDano.setUsuario(usuario);
+    public EstimacionDano buscarFormularioEstimacionPorUsuario(String usuario) { // Ya no sirve este metodo se cambia por buscarFormularioPorUsuarioYRiesgo
+//        Optional<EstimacionDano> formularioEstimacion = this.estimacionDanoRepository.findByUsuario(usuario);
+//        if (formularioEstimacion.isPresent()) {
+//            return formularioEstimacion.get();
+//        } else {
+        EstimacionDano estimacionDano = new EstimacionDano();
+        estimacionDano.setUsuario(usuario);
 
-            FormularioRIP mayorPrioridad = this.formularioRIPService.getMayorPrioridad(usuario);// Obtengo el form RIP ya llenado con mayor prioridad
-            estimacionDano.setImpacto(mayorPrioridad.getImpacto()); // Los seteo para este nuevo formulario
-            estimacionDano.setRiesgo(mayorPrioridad.getNombreRiesgo());
-            estimacionDano.setProbabilidad(mayorPrioridad.getProbabilidad());
+//            FormularioRIP mayorPrioridad = this.formularioRIPService.getMayorPrioridad(usuario);// Obtengo el form RIP ya llenado con mayor prioridad
+//            estimacionDano.setImpacto(mayorPrioridad.getImpacto().trim().toUpperCase()); // Los seteo para este nuevo formulario
+//            estimacionDano.setRiesgo(mayorPrioridad.getNombreRiesgo().trim().toUpperCase());
+//            estimacionDano.setProbabilidad(mayorPrioridad.getProbabilidad().trim().toUpperCase());
 
-            // Falta la definicion de las actividades prioritarias que es el 3.1, solo setear los tipos en la lista, el resto solo deberia ir en 0
+        // Falta la definicion de las actividades prioritarias que es el 3.1, solo setear los tipos en la lista, el resto solo deberia ir en 0
 
-            return estimacionDano;
+        return estimacionDano;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public EstimacionDano buscarFormularioPorUsuarioYRiesgo(String usuario, String riesgo) throws NoEncontradoExcepcion {
+        Optional<EstimacionDano> formulario = this.estimacionDanoRepository.findByUsuarioAndRiesgo(usuario, riesgo);
+        if (formulario.isPresent()) {
+            return formulario.get();
         }
+        throw new NoEncontradoExcepcion("mensaje", "No se ha encontrado el formulario de: "
+                .concat(riesgo).concat(" para: ").concat(usuario));
     }
 }

@@ -31,6 +31,8 @@ public class PersonaServiceImp implements PersonaService {
 
     private FormularioRIPService formularioRIPService;
 
+    private EstimacionDanoService estimacionDanoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<Persona> buscarTodos() throws NoEncontradoExcepcion {
@@ -138,7 +140,8 @@ public class PersonaServiceImp implements PersonaService {
         this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(nombreUsuario); // SE ELIMINA EL FORM DE LIDERAZGO
         this.listaContactoService.eliminarConcatosPorUser(nombreUsuario);
         this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario);
-        this.formularioRIPService.eliminarPorUsusario(nombreUsuario);
+        this.formularioRIPService.eliminarPorUsusario(nombreUsuario); // 4.1 listo
+        this.estimacionDanoService.eliminarDocumento(nombreUsuario); // Eliminacion por usuario del form 4.2
     }
 
     @Override

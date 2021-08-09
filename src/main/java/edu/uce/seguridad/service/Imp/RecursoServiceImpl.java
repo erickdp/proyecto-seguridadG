@@ -1,6 +1,5 @@
 package edu.uce.seguridad.service.Imp;
 
-import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Recurso;
 import edu.uce.seguridad.repository.RecursoRepository;

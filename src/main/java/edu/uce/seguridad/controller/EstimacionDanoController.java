@@ -31,15 +31,16 @@ public class EstimacionDanoController {
     }
 
     /*
-    ENDPOINT que busca por nombre de usuario, el nombre de usuario se debe de enviar
-    por la URL.
-    - Si se encuentra el formulario del usuariio se devuelve un estado 200 - Ok
+    ENDPOINT que busca el formulario por nombre de usuario y el riesgo a evaluar (debe empezar por el prioritario), el nombre de usuario se debe de enviar
+    por la URL y el resigo tambien.
+    - Si se encuentra el formulario del usuario con ese riesgo se devuelve un estado 200 - Ok
     - En el caso de no encontrar ningun registro se devuelve un estado 404 - NOT FOUND
     - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
-    @GetMapping("/{usuario}")
-    public ResponseEntity<?> getEstimacionDanoByUser(@PathVariable("usuario") String usuario) {
-        EstimacionDano estimacionDano = this.estimacionDanoService.buscarFormularioEstimacionPorUsuario(usuario);
+    @GetMapping("/{usuario}/{riesgo}")
+    public ResponseEntity<?> getEstimacionDanoByUser(@PathVariable("usuario") String usuario,
+                                                     @PathVariable("riesgo") String riesgo) {
+        EstimacionDano estimacionDano = this.estimacionDanoService.buscarFormularioPorUsuarioYRiesgo(usuario, riesgo);
         return new ResponseEntity<EstimacionDano>(estimacionDano, HttpStatus.OK);
     }
 
@@ -94,7 +95,7 @@ public class EstimacionDanoController {
             }
         ]
     }
-    SI LA TRANSACCION TIENE EXITO DEVUELVE ESTADO 202 - ACCEPTED
+    SI LA TRANSACCION TIENE EXITO DEVUELVE ESTADO 200 - OK
     SI LA TRANSACCION FALLA DEVUELVE INTERNAL SERVER ERROR - 500
     * */
     @PutMapping("/actualizarDanos")
@@ -102,6 +103,20 @@ public class EstimacionDanoController {
             @RequestBody EstimacionDano estimacionDano
     ) {
         this.estimacionDanoService.actualizar(estimacionDano);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    /*
+    ENDPOINT INACTIVO
+    Solo se lo agrega debio a que no seria tan necesario eliminar el documento ya que implica
+    otros documentos, en el caso de eliminar a la persona se elimina todos sus documentos
+    asociados
+    * */
+    @DeleteMapping("/{usuario}")
+    public ResponseEntity<Void> eliminarDocumento(
+            @PathVariable("usuario") String usuario
+    ) {
+        this.estimacionDanoService.eliminarDocumento(usuario);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 }
