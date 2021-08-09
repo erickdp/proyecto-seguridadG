@@ -22,33 +22,33 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class ProyectoSeguridadGApplicationTests {
 
-    @Nested
-    @DisplayName("Pruebas de los servicios en Persona")
-    class personaTest {
-
-        @Mock
-        private PersonaRepository personaRepository; // Solo los mocks pueden ser verificados
-
-        @InjectMocks
-        private PersonaServiceImp personaService; // esta es una instancia sin simular
-
-        @Test
-        void eliminarPersonaTest() {
-            when(personaRepository.findPersonaByUsuario("erickdp")).thenReturn(getPersona001());
-
-            NoEncontradoExcepcion noExiste = assertThrows(NoEncontradoExcepcion.class, () -> {
-                this.personaService.eliminarPersonaPorNombreUsuario("vsaavedrae12");
-            });
-            this.personaService.eliminarPersonaPorNombreUsuario("erickdp");
-            assertEquals("No se han encontrado registros para: vsaavedrae12",
-                    noExiste.getCausa());
-
-            InOrder inOrder = inOrder(personaRepository);
-
-            inOrder.verify(this.personaRepository).findPersonaByUsuario("vsaavedrae12");
-            inOrder.verify(this.personaRepository).findPersonaByUsuario("erickdp");
-        }
-    }
+//    @Nested
+//    @DisplayName("Pruebas de los servicios en Persona")
+//    class personaTest {
+//
+//        @Mock
+//        private PersonaRepository personaRepository; // Solo los mocks pueden ser verificados
+//
+//        @InjectMocks
+//        private PersonaServiceImp personaService; // esta es una instancia sin simular
+//
+//        @Test
+//        void eliminarPersonaTest() {
+//            when(personaRepository.findPersonaByUsuario("erickdp")).thenReturn(getPersona001());
+//
+//            NoEncontradoExcepcion noExiste = assertThrows(NoEncontradoExcepcion.class, () -> {
+//                this.personaService.eliminarPersonaPorNombreUsuario("vsaavedrae12");
+//            });
+//            this.personaService.eliminarPersonaPorNombreUsuario("erickdp");
+//            assertEquals("No se han encontrado registros para: vsaavedrae12",
+//                    noExiste.getCausa());
+//
+//            InOrder inOrder = inOrder(personaRepository);
+//
+//            inOrder.verify(this.personaRepository).findPersonaByUsuario("vsaavedrae12");
+//            inOrder.verify(this.personaRepository).findPersonaByUsuario("erickdp");
+//        }
+//    }
 
     @Nested
     @DisplayName("Pruebas para los servicios de FormularioLiderazgo")
