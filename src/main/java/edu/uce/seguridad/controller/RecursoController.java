@@ -25,7 +25,7 @@ public class RecursoController {
         return new ResponseEntity<List<Recurso>>(recursos, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarRecursoPorId/{id}")
     public ResponseEntity<Recurso> listarPorId(@PathVariable("id") String idRecurso) {
         Recurso recurso = service.buscaPorId(idRecurso);
         if (recurso == null) {
@@ -34,13 +34,10 @@ public class RecursoController {
         return new ResponseEntity<Recurso>(recurso, HttpStatus.OK);
     }
 
-    @GetMapping("/{usuario}")
-    public ResponseEntity<Recurso> buscarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
-        Recurso recurso = service.buscarRecursoPorUsuario(nombreUsuario);
-        if (recurso == null) {
-            throw new NoEncontradoExcepcion("respuesta", "Usuario no encontrado " + nombreUsuario);
-        }
-        return new ResponseEntity<Recurso>(recurso, HttpStatus.OK);
+    @GetMapping("/buscarRecursosPorUsuario/{usuario}")
+    public ResponseEntity<List<Recurso>> buscarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
+        List<Recurso> recursos = service.buscarRecursosPorUsuario(nombreUsuario);
+        return new ResponseEntity<List<Recurso>>(recursos, HttpStatus.OK);
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json")
