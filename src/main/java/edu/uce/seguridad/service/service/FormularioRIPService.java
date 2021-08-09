@@ -12,4 +12,6 @@ public interface FormularioRIPService extends BaseService<FormularioRIP, String>
     List<FormularioRIP> buscarPorUser(String user) throws NoEncontradoExcepcion;
 
     void eliminarPorUsusario(String user);
+
+    FormularioRIP getMayorPrioridad(String user);
 }

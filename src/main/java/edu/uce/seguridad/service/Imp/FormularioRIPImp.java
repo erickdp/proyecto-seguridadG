@@ -65,7 +65,7 @@ public class FormularioRIPImp implements FormularioRIPService {
     @Override
     @Transactional(readOnly = true)
     public List<FormularioRIP> buscarPorUserFiltradoPorPrioridad(String user) throws NoEncontradoExcepcion {
-        List<FormularioRIP> rips = this.formularioRIPRepository.findByUserOrderByPrioridadDesc(user);
+        List<FormularioRIP> rips = this.formularioRIPRepository.findByUserOrderByPrioridadAsc(user);
         if (rips.isEmpty()) {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(user));
         }
@@ -86,5 +86,11 @@ public class FormularioRIPImp implements FormularioRIPService {
     @Transactional
     public void eliminarPorUsusario(String user) {
         this.formularioRIPRepository.deleteByUser(user);
+    }
+
+    @Override // No trans porque delego ese proceso a otro metodo
+    public FormularioRIP getMayorPrioridad(String user) {
+        FormularioRIP formularioRIP = this.buscarPorUserFiltradoPorPrioridad(user).get(0);
+        return formularioRIP;
     }
 }
