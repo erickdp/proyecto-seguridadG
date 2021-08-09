@@ -2,6 +2,7 @@ package edu.uce.seguridad.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,14 +29,5 @@ public class EstimacionDano {
             boolean medidasNecesarias
     ) {
         return new Estimacion(tipo, dano, dias, medidasNecesarias);
-    }
-
-    @Data
-    @AllArgsConstructor
-    public class Estimacion {
-        private String tipo;
-        private int dano;
-        private int dias;
-        private boolean medidasNecesarias;
     }
 }
