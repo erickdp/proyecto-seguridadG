@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/sgcnegocio/formularioImpactoComparativo" )
 @AllArgsConstructor
@@ -92,7 +94,7 @@ public class FormularioControllerImpactoComparativo {
 
     @GetMapping({"/buscarFormularioImpactoPorUser/{usuario}"})
     public ResponseEntity<?>buscaImpactoUsuario(@PathVariable(value = "usuario")String usuario){
-        FormularioComparativoImpacto impactoUsuario = this.formularioImpactoService.buscarFormularioImpPorUsua(usuario);
+        List<FormularioComparativoImpacto> impactoUsuario = this.formularioImpactoService.buscarFormularioImpPorUsua(usuario);
         return  new ResponseEntity<>(impactoUsuario, HttpStatus.OK);
     }
 

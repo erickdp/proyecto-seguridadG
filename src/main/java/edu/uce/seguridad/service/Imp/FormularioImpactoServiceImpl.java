@@ -64,8 +64,8 @@ public class FormularioImpactoServiceImpl  implements FormularioImpactoService {
 
     @Override
     @Transactional(readOnly = true)
-    public FormularioComparativoImpacto buscarFormularioImpPorUsua(String usuario) throws NoEncontradoExcepcion{
-        FormularioComparativoImpacto impa = this.formularioImpactoRepository.findFormularioComparativoImpactoByUser(usuario);
+    public List<FormularioComparativoImpacto> buscarFormularioImpPorUsua(String usuario) throws NoEncontradoExcepcion{
+        List<FormularioComparativoImpacto> impa = this.formularioImpactoRepository.findFormularioComparativoImpactoByUser(usuario);
         if (impa == null){
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el contacto :".concat(usuario));
         }
