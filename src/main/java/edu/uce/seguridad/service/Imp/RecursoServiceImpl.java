@@ -44,13 +44,13 @@ public class RecursoServiceImpl implements RecursoService {
         }
     }
 
-    @Override
-    public List<Recurso> buscarRecursosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
-        return this.repository.findRecursosByUsuario(nombreUsuario);
-    }
+//    @Override
+//    public List<Recurso> buscarRecursosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
+//        return this.repository.findRecursosByUsuario(nombreUsuario);
+//    }
 
     @Override
     public Recurso buscarRecursoPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
-        return this.repository.findRecursoByUsuario(nombreUsuario);
+        return this.repository.findByUsuario(nombreUsuario);
     }
 }

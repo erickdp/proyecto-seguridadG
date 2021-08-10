@@ -6,7 +6,8 @@ import edu.uce.seguridad.model.Recurso;
 import java.util.List;
 
 public interface RecursoService extends BaseService<Recurso, String>{
-    List<Recurso> buscarRecursosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
+
+//    List<Recurso> buscarRecursosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
 
     Recurso buscarRecursoPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
 }

@@ -35,9 +35,9 @@ public class RecursoController {
     }
 
     @GetMapping("/buscarRecursosPorUsuario/{usuario}")
-    public ResponseEntity<List<Recurso>> buscarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
-        List<Recurso> recursos = service.buscarRecursosPorUsuario(nombreUsuario);
-        return new ResponseEntity<List<Recurso>>(recursos, HttpStatus.OK);
+    public ResponseEntity<?> buscarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
+        Recurso recurso = service.buscarRecursoPorUsuario(nombreUsuario);
+        return new ResponseEntity<>(recurso, HttpStatus.OK);
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json")
