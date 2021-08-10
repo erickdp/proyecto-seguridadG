@@ -1,6 +1,5 @@
 package edu.uce.seguridad.service.Imp;
 
-import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Recurso;
 import edu.uce.seguridad.repository.RecursoRepository;
@@ -45,13 +44,13 @@ public class RecursoServiceImpl implements RecursoService {
         }
     }
 
-    @Override
-    public List<Recurso> buscarRecursosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
-        return this.repository.findRecursosByUsuario(nombreUsuario);
-    }
+//    @Override
+//    public List<Recurso> buscarRecursosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
+//        return this.repository.findRecursosByUsuario(nombreUsuario);
+//    }
 
     @Override
     public Recurso buscarRecursoPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
-        return this.repository.findRecursoByUsuario(nombreUsuario);
+        return this.repository.findByUsuario(nombreUsuario);
     }
 }

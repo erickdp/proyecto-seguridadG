@@ -3,18 +3,20 @@ package edu.uce.seguridad.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
 public class Recurso {
+
     @Id
     private String _id;
-    private String tipoRecurso;
-    private String nombre;
-    private String contenido;
-    private Usuario usuario;
+
+    private String usuario;
+    private HashMap<String, List<RecursoData>> recursos;
+
 }

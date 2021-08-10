@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FormularioRIPRepository extends MongoRepository<FormularioRIP, String> {
 
-    List<FormularioRIP> findByUserOrderByPrioridadDesc(String user);
+    List<FormularioRIP> findByUserOrderByPrioridadAsc(String user);
 
     List<FormularioRIP> findByUser(String user);
 
