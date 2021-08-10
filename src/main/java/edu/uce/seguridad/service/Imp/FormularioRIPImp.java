@@ -55,36 +55,37 @@ public class FormularioRIPImp implements FormularioRIPService {
 
         // se supone que ya deben estar ingresados los datos para poder recuperarlos
         Recurso recurso1 = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
-//        List<Recurso> recursosUser = this.recursoService.buscarTodos();
 
-        HashMap<String, List<Estimacion>> estimaciones = new HashMap<>(); // "Recursos Internos", Inmuebles, 0, 0, true
+        HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
 
         List<Estimacion> estimacionDanosList1 = new ArrayList<>();
         List<Estimacion> estimacionDanosList2 = new ArrayList<>();
         List<Estimacion> estimacionDanosList3 = new ArrayList<>();
 
-        //estimacionDano.definirEstimacion("Inmuebles", 0, 0, true); // una itereacion (dentro del for)
-
-//        estimacionDanosList1.add(estimacionDano.definirEstimacion("Inmuebles", 0, 0, true)); // dentro del for
-//        estimacionDanosList2.add(estimacionDano.definirEstimacion("Agua", 0, 0, true)); // dentro del for
-//        estimacionDanosList3.add(estimacionDano.definirEstimacion("Socios", 0, 0, true)); // dentro del for
-
         // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
 
-        int tam1 = recurso1.getRecursos().get("Recursos Internos").size();
-        int tam2 = recurso1.getRecursos().get("Servicios Escenciales").size();
-        int tam3 = recurso1.getRecursos().get("Socios de Negocios").size();
-
-        for (int i = 0; i < tam1; i++) {
-            estimacionDanosList1.add(estimacionDano.definirEstimacion(recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(), 0, 0, true));
+        for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
+            estimacionDanosList1.add(estimacionDano.definirEstimacion(
+                    recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
+                    0,
+                    0,
+                    true));
         }
 
-        for (int i = 0; i < tam2; i++) {
-            estimacionDanosList2.add(estimacionDano.definirEstimacion(recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(), 0, 0, true));
+        for (int i = 0; i < recurso1.getRecursos().get("Servicios Escenciales").size(); i++) {
+            estimacionDanosList2.add(estimacionDano.definirEstimacion(
+                    recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
+                    0,
+                    0,
+                    true));
         }
 
-        for (int i = 0; i < tam3; i++) {
-            estimacionDanosList3.add(estimacionDano.definirEstimacion(recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(), 0, 0, true));
+        for (int i = 0; i < recurso1.getRecursos().get("Socios de Negocios").size(); i++) {
+            estimacionDanosList3.add(estimacionDano.definirEstimacion(
+                    recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
+                    0,
+                    0,
+                    true));
         }
 
         estimaciones.put("Recursos Internos", estimacionDanosList1); // HashMap formado para enviar
