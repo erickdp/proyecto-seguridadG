@@ -15,5 +15,5 @@ public class ActividadesPrioritarias {
     private String _id;
     private String actividades;
     private String tiemposRecuperacion;
-    private Usuario usuario;
+    private String usuario;
 }

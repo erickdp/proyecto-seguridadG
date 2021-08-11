@@ -88,10 +88,11 @@ public class ActividadesPrioritariasController {
     }
     */
 
-    @PutMapping
-    public ResponseEntity<Object> modificar(@RequestBody ActividadesPrioritarias actividad) {
-        service.actualizar(actividad);
-        return new ResponseEntity<Object>(HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> modificar(@RequestBody ActividadesPrioritarias actividad, @PathVariable(value = "id") String id) {
+        actividad.set_id(id);
+        ActividadesPrioritarias actividadesPrioritariasUpdated = service.actualizar(actividad);
+        return new ResponseEntity<Object>(actividadesPrioritariasUpdated, HttpStatus.OK);
     }
 
     /*

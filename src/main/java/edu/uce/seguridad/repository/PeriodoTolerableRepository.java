@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface PeriodoTolerableRepository extends MongoRepository<PeriodoTolerable, String> {
-    @Query("{'usuario.nombreUsuario': ?0}")
+    @Query("{'usuario': ?0}")
     List<PeriodoTolerable> findPeriodosByUsuario(String nombreUsuario);
 }

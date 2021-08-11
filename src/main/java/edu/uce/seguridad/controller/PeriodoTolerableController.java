@@ -47,8 +47,10 @@ public class PeriodoTolerableController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Object> modificar(@RequestBody PeriodoTolerable periodo) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> modificar(@RequestBody PeriodoTolerable periodo,
+                                            @PathVariable(value = "id") String id) {
+        periodo.set_id(id);
         service.actualizar(periodo);
         return new ResponseEntity<Object>(HttpStatus.OK);
     }

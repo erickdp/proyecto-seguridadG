@@ -16,5 +16,5 @@ public class PeriodoTolerable {
     private String producto;
     private String pmti;
     private String tiempoIdealRecuperacion;
-    private Usuario usuario;
+    private String usuario;
 }

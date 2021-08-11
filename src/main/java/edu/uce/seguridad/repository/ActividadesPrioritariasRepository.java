@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface ActividadesPrioritariasRepository extends MongoRepository<ActividadesPrioritarias, String> {
-    @Query("{'usuario.nombreUsuario': ?0}")
+    @Query("{'usuario': ?0}")
     List<ActividadesPrioritarias> findActividadesByUsuario(String nombreUsuario);
 }
