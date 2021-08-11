@@ -60,49 +60,42 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
 
         // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
 
-        if (recurso1.getRecursos().containsKey("Recursos Internos")) {
-            List<Estimacion> estimacionDanosList1 = new ArrayList<>();
-            for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
-                estimacionDanosList1.add(estimacionDano.definirEstimacion(
-                        recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-            estimaciones.put("RecursosInternos", estimacionDanosList1); // HashMap formado para enviar
-        }
+        List<Estimacion> estimacionDanosList1 = new ArrayList<>();
+        List<Estimacion> estimacionDanosList2 = new ArrayList<>();
+        List<Estimacion> estimacionDanosList3 = new ArrayList<>();
 
-        if (recurso1.getRecursos().containsKey("Servicios Escenciales")) {
-            List<Estimacion> estimacionDanosList2 = new ArrayList<>();
-            for (int i = 0; i < recurso1.getRecursos().get("Servicios Escenciales").size(); i++) {
-                estimacionDanosList2.add(estimacionDano.definirEstimacion(
-                        recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-            estimaciones.put("ServiciosEscenciales", estimacionDanosList2); // HashMap formado para enviar
-        }
+        // obtener un array de las llaves para ubicarlo con index
+        String categoria = "RecursosInternos";
+        String categoria1 = "ServiciosEscenciales";
+        String categoria2 = "SociosNegocios";
 
-        if (recurso1.getRecursos().containsKey("Servicios Escenciales")) {
-            List<Estimacion> estimacionDanosList3 = new ArrayList<>();
-            for (int i = 0; i < recurso1.getRecursos().get("Socios de Negocios").size(); i++) {
-                estimacionDanosList3.add(estimacionDano.definirEstimacion(
-                        recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-            estimaciones.put("SociosdeNegocios", estimacionDanosList3); // HashMap formado para enviar
-        }
+        estimaciones.put(categoria, llenarListaRecurso(categoria, recurso1, estimacionDano, estimacionDanosList1));
+        estimaciones.put(categoria1, llenarListaRecurso(categoria1, recurso1, estimacionDano, estimacionDanosList2));
+        estimaciones.put(categoria2, llenarListaRecurso(categoria2, recurso1, estimacionDano, estimacionDanosList3));
 
         estimacionDano.setRecursosNecesarios(estimaciones);
         this.estimacionDanoService.agregar(estimacionDano);
 
         return this.formularioRIPRepository.insert(pojo);
+    }
+
+    public List<Estimacion> llenarListaRecurso(String categoria,
+                                               Recurso recurso,
+                                               EstimacionDano estimacionDano,
+                                               List<Estimacion> lista) {
+        try {
+            for (int i = 0; i < recurso.getRecursos().get(categoria).size(); i++) {
+                lista.add(estimacionDano.definirEstimacion(
+                        recurso.getRecursos().get(categoria).get(i).getNombre(),
+                        0,
+                        0,
+                        0,
+                        true));
+            }
+        } catch (NullPointerException e) {
+            // manejar la excepcion
+        }
+        return lista;
     }
 
     @Override
