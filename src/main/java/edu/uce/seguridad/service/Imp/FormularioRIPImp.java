@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.util.Arrays.stream;
+
 @Service
 public class FormularioRIPImp implements FormularioRIPService {
 
@@ -64,9 +66,11 @@ public class FormularioRIPImp implements FormularioRIPService {
 
         // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
 
+
         for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
             estimacionDanosList1.add(estimacionDano.definirEstimacion(
                     recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
+                    0,
                     0,
                     0,
                     true));
@@ -77,6 +81,7 @@ public class FormularioRIPImp implements FormularioRIPService {
                     recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
                     0,
                     0,
+                    0,
                     true));
         }
 
@@ -85,12 +90,13 @@ public class FormularioRIPImp implements FormularioRIPService {
                     recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
                     0,
                     0,
+                    0,
                     true));
         }
 
-        estimaciones.put("Recursos Internos", estimacionDanosList1); // HashMap formado para enviar
-        estimaciones.put("Servicios Escenciales", estimacionDanosList2); // HashMap formado para enviar
-        estimaciones.put("Socios de Negocios", estimacionDanosList3); // HashMap formado para enviar
+        estimaciones.put("RecursosInternos", estimacionDanosList1); // HashMap formado para enviar
+        estimaciones.put("ServiciosEscenciales", estimacionDanosList2); // HashMap formado para enviar
+        estimaciones.put("SociosdeNegocios", estimacionDanosList3); // HashMap formado para enviar
 
         estimacionDano.setRecursosNecesarios(estimaciones);
         this.estimacionDanoService.agregar(estimacionDano);

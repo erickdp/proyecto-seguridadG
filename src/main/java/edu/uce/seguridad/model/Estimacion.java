@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Estimacion {
-    private String tipo;
+    private String recurso;
     private int dano;
     private int dias;
-    private boolean medidasNecesarias;
+    private int grafico;
+    private boolean medidas;
 }

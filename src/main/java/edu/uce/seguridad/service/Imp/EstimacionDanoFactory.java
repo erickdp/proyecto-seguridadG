@@ -23,20 +23,20 @@ public class EstimacionDanoFactory {
 
         HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
 
-        estimaciones.put("Recursos Internos", Arrays.asList(
-                estimacionDano.definirEstimacion("Inmuebles", 3, 7, true),
-                estimacionDano.definirEstimacion("Equipos", 3, 7, true)
-        ));
+//        estimaciones.put("Recursos Internos", Arrays.asList(
+//                estimacionDano.definirEstimacion("Inmuebles", 3, 7, true),
+//                estimacionDano.definirEstimacion("Equipos", 3, 7, true)
+//        ));
 
-        estimaciones.put("Servicios Sociales Escenciales", Arrays.asList(
-                estimacionDano.definirEstimacion("Electricidad", 2, 30, true),
-                estimacionDano.definirEstimacion("Transito", 2, 9, false)
-        ));
-
-        estimaciones.put("Socios de Negocios", Arrays.asList(
-                estimacionDano.definirEstimacion("Socios", 1, 8, true),
-                estimacionDano.definirEstimacion("Proveedores", 2, 5, false)
-        ));
+//        estimaciones.put("Servicios Sociales Escenciales", Arrays.asList(
+//                estimacionDano.definirEstimacion("Electricidad", 2, 30, true),
+//                estimacionDano.definirEstimacion("Transito", 2, 9, false)
+//        ));
+//
+//        estimaciones.put("Socios de Negocios", Arrays.asList(
+//                estimacionDano.definirEstimacion("Socios", 1, 8, true),
+//                estimacionDano.definirEstimacion("Proveedores", 2, 5, false)
+//        ));
 
         estimacionDano.setRecursosNecesarios(estimaciones);
 
@@ -48,9 +48,9 @@ public class EstimacionDanoFactory {
         EstimacionDano estimacionDano = new EstimacionDano();
         HashMap<String, List<Estimacion>> mapa = new HashMap<>();
         mapa.put("ABC", Arrays.asList(
-                estimacionDano.definirEstimacion("Inmuebles", 3, 7, true),
-                estimacionDano.definirEstimacion("Electricidad", 3, 7, true))
-        );
+//                estimacionDano.definirEstimacion("Inmuebles", 3, 7, true),
+//                estimacionDano.definirEstimacion("Electricidad", 3, 7, true))
+        ));
         return mapa;
     }
 }

@@ -26,8 +26,9 @@ public class EstimacionDano {
             String tipo,
             int dano,
             int dias,
-            boolean medidasNecesarias
+            int grafico,
+            boolean medidas
     ) {
-        return new Estimacion(tipo, dano, dias, medidasNecesarias);
+        return new Estimacion(tipo, dano, dias, grafico, medidas);
     }
 }
