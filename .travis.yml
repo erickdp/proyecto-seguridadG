@@ -6,6 +6,7 @@ notifications:
   email:
     recipients:
       - erickdp@hotmail.com
+      - alpalasaul@gmail.com
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
