@@ -15,7 +15,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class FormularioRIPServiceImp implements FormularioRIPService {
@@ -55,70 +57,50 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
 
         HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
 
-        List<Estimacion> estimacionDanosList1 = new ArrayList<>();
-        List<Estimacion> estimacionDanosList2 = new ArrayList<>();
-        List<Estimacion> estimacionDanosList3 = new ArrayList<>();
 
         // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
 
-        try {
+        if (recurso1.getRecursos().containsKey("Recursos Internos")) {
+            List<Estimacion> estimacionDanosList1 = new ArrayList<>();
             for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
                 estimacionDanosList1.add(estimacionDano.definirEstimacion(
                         recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
                         0,
                         0,
+                        0,
                         true));
             }
-        } catch (NullPointerException e) {
-            // NullPointerException porque no se encuentra
+            estimaciones.put("RecursosInternos", estimacionDanosList1); // HashMap formado para enviar
         }
 
-        try {
+        if (recurso1.getRecursos().containsKey("Servicios Escenciales")) {
+            List<Estimacion> estimacionDanosList2 = new ArrayList<>();
             for (int i = 0; i < recurso1.getRecursos().get("Servicios Escenciales").size(); i++) {
                 estimacionDanosList2.add(estimacionDano.definirEstimacion(
                         recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
                         0,
                         0,
+                        0,
                         true));
             }
-        } catch (NullPointerException e) {
-            //
+            estimaciones.put("ServiciosEscenciales", estimacionDanosList2); // HashMap formado para enviar
         }
 
-        try {
+        if (recurso1.getRecursos().containsKey("Servicios Escenciales")) {
+            List<Estimacion> estimacionDanosList3 = new ArrayList<>();
             for (int i = 0; i < recurso1.getRecursos().get("Socios de Negocios").size(); i++) {
                 estimacionDanosList3.add(estimacionDano.definirEstimacion(
                         recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
                         0,
                         0,
+                        0,
                         true));
             }
-
-        } catch (NullPointerException e) {
-            //
+            estimaciones.put("SociosdeNegocios", estimacionDanosList3); // HashMap formado para enviar
         }
-
-        estimaciones.put("Recursos Internos", estimacionDanosList1); // HashMap formado para enviar
-        estimaciones.put("Servicios Escenciales", estimacionDanosList2); // HashMap formado para enviar
-        estimaciones.put("Socios de Negocios", estimacionDanosList3); // HashMap formado para enviar
 
         estimacionDano.setRecursosNecesarios(estimaciones);
         this.estimacionDanoService.agregar(estimacionDano);
-
-
-        // Falta la definicion de las actividades prioritarias que es el 3.1, solo setear los tipos en la lista, el resto solo deberia ir en 0
-        // Ej:
-//        HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
-
-//        estimaciones.put("Recursos Internos", Arrays.asList(
-//                estimacionDano.definirEstimacion("Inmuebles", 0, 0, true),
-//                estimacionDano.definirEstimacion("Equipos", 0, 0, true)
-//        ));
-
-//        Cada vez que se cree un riesgo tuyo crear un form de eestimacion de resigo
-
-//        estimacionDano.setRecursosNecesarios(estimaciones);
-//        this.estimacionDanoService.agregar(estimacionDano);
 
         return this.formularioRIPRepository.insert(pojo);
     }
