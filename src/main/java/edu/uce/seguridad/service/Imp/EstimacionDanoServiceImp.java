@@ -20,7 +20,7 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
 
     private EstimacionDanoRepository estimacionDanoRepository;
 
-    private FormularioRIPService formularioRIPService;
+    //private FormularioRIPService formularioRIPService;
 
     @Override
     @Transactional(readOnly = true)
