@@ -50,36 +50,36 @@ class ProyectoSeguridadGApplicationTests {
 //        }
 //    }
 
-    @Nested
-    @DisplayName("Pruebas para los servicios de FormularioLiderazgo")
-    class fLTest {
-
-        @Mock
-        private FormularioLiderazgoRepository formularioLiderazgoRepository;
-
-        @InjectMocks
-        private FormularioLiderazgoServiceImp formularioLiderazgoService;
-
-        @Test
-        void eliminarRespuestaFLTest() {
-            // Given
-            when(this.formularioLiderazgoRepository.findFormularioLiderazgoByUser("erickdp")).thenReturn(getFormularioLiderazgo001().orElse(null));
-
-            // When
-            this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo("erickdp");
-
-            doThrow(NoEncontradoExcepcion.class).when(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("vsaavedrae12");
-            NoEncontradoExcepcion noEncontradoExcepcion = assertThrows(NoEncontradoExcepcion.class, () -> {
-                this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo("vsaavedrae12");
-            });
-
-            // Then
-
-            InOrder inOrder = inOrder(this.formularioLiderazgoRepository);
-
-            inOrder.verify(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("erickdp");
-            inOrder.verify(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("vsaavedrae12");
-        }
-    }
+//    @Nested
+//    @DisplayName("Pruebas para los servicios de FormularioLiderazgo")
+//    class fLTest {
+//
+//        @Mock
+//        private FormularioLiderazgoRepository formularioLiderazgoRepository;
+//
+//        @InjectMocks
+//        private FormularioLiderazgoServiceImp formularioLiderazgoService;
+//
+//        @Test
+//        void eliminarRespuestaFLTest() {
+//            // Given
+//            when(this.formularioLiderazgoRepository.findFormularioLiderazgoByUser("erickdp")).thenReturn(getFormularioLiderazgo001().orElse(null));
+//
+//            // When
+//            this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo("erickdp");
+//
+//            doThrow(NoEncontradoExcepcion.class).when(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("vsaavedrae12");
+//            NoEncontradoExcepcion noEncontradoExcepcion = assertThrows(NoEncontradoExcepcion.class, () -> {
+//                this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo("vsaavedrae12");
+//            });
+//
+//            // Then
+//
+//            InOrder inOrder = inOrder(this.formularioLiderazgoRepository);
+//
+//            inOrder.verify(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("erickdp");
+//            inOrder.verify(this.formularioLiderazgoRepository).findFormularioLiderazgoByUser("vsaavedrae12");
+//        }
+//    }
 
 }
