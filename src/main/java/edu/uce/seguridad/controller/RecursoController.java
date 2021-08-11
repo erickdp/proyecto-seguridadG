@@ -48,8 +48,9 @@ public class RecursoController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Object> modificar(@RequestBody Recurso recurso) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> modificar(@RequestBody Recurso recurso, @PathVariable("id") String id) {
+        recurso.set_id(id);
         service.actualizar(recurso);
         return new ResponseEntity<Object>(HttpStatus.OK);
     }

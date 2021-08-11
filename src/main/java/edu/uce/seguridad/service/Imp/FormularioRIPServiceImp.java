@@ -50,7 +50,7 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         estimacionDano.setRiesgo(pojo.getNombreRiesgo());
         estimacionDano.setProbabilidad(pojo.getProbabilidad());
 
-        // se supone que ya deben estar ingresados los datos para poder recuperarlos
+        // puede tener no creado Recursos (se le crearán solo las categorías con "data": [empty])
         Recurso recurso1 = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
 
         HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();

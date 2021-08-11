@@ -1,6 +1,7 @@
 package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
+import edu.uce.seguridad.model.EstimacionDano;
 import edu.uce.seguridad.model.Recurso;
 import edu.uce.seguridad.repository.RecursoRepository;
 import edu.uce.seguridad.service.service.RecursoService;
@@ -23,6 +24,13 @@ public class RecursoServiceImpl implements RecursoService {
 
     @Override
     public Recurso agregar(Recurso pojo) throws DataAccessException {
+
+
+        // guardar / actualizar para el formulario 4.1
+
+        // EstimacionDano debe actualizarse no crarse 
+
+
         return repository.insert(pojo);
     }
 
@@ -51,6 +59,10 @@ public class RecursoServiceImpl implements RecursoService {
 
     @Override
     public Recurso buscarRecursoPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
+        /* si lanzamos una exception del tipo NoEcontradoException no permitirá crear un formulario RIP
+          debido a que no se termina de ejecutar el método agregar(), las excepciones están controladas
+          en ese método. PERO para otros método se puede necesitar que lance la excepcion
+       */
         return this.repository.findByUsuario(nombreUsuario);
     }
 }
