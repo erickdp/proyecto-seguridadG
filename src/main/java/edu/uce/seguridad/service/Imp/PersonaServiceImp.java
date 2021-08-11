@@ -2,6 +2,7 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
+import edu.uce.seguridad.model.FormularioRIP;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.*;
@@ -27,6 +28,10 @@ public class PersonaServiceImp implements PersonaService {
     private ListaContactoService listaContactoService;
 
     private ListaEvaluacionService listaEvaluacionService;
+
+    private FormularioRIPService formularioRIPService;
+
+    private EstimacionDanoService estimacionDanoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -135,9 +140,12 @@ public class PersonaServiceImp implements PersonaService {
         this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(nombreUsuario); // SE ELIMINA EL FORM DE LIDERAZGO
         this.listaContactoService.eliminarConcatosPorUser(nombreUsuario);
         this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario);
+        this.formularioRIPService.eliminarPorUsusario(nombreUsuario); // 4.1 listo
+        this.estimacionDanoService.eliminarDocumento(nombreUsuario); // Eliminacion por usuario del form 4.2
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion, String departamento) throws NoEncontradoExcepcion {
         List<Persona> personas = this.personaRepository.findPersonaByOrganizacionAndDepartamento(
                 organizacion, departamento
