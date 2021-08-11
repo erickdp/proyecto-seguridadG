@@ -16,5 +16,5 @@ public class Recurso {
     private String tipoRecurso;
     private String nombre;
     private String contenido;
-    private Usuario usuario;
+    private String usuario;
 }
