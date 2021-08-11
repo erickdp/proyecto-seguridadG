@@ -15,9 +15,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FormularioRIPServiceImp implements FormularioRIPService {
@@ -53,51 +52,21 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         estimacionDano.setProbabilidad(pojo.getProbabilidad());
 
         // se supone que ya deben estar ingresados los datos para poder recuperarlos
-        Recurso recurso1 = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
+        Recurso recurso = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
 
         HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
 
+        // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD - Ya esta mejorado mi llave @ByErick
 
-        // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
+        recurso.getRecursos().forEach((llave, valor) -> { // Recorro el mapa que me llega del form 3.1
 
-        if (recurso1.getRecursos().containsKey("Recursos Internos")) {
-            List<Estimacion> estimacionDanosList1 = new ArrayList<>();
-            for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
-                estimacionDanosList1.add(estimacionDano.definirEstimacion(
-                        recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-            estimaciones.put("RecursosInternos", estimacionDanosList1); // HashMap formado para enviar
-        }
+            List<Estimacion> estimacionLista = valor.stream().map(getRecurso -> { // mediante map puedo obtener cada valor de la lista, define el predicado
+                return estimacionDano.definirEstimacion(getRecurso.getNombre(), 0, 0, 0, false); // isntancio un objeto de tipo Estimacion
+            }).collect(Collectors.toList()); // Lo convierto en lista
 
-        if (recurso1.getRecursos().containsKey("Servicios Escenciales")) {
-            List<Estimacion> estimacionDanosList2 = new ArrayList<>();
-            for (int i = 0; i < recurso1.getRecursos().get("Servicios Escenciales").size(); i++) {
-                estimacionDanosList2.add(estimacionDano.definirEstimacion(
-                        recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-            estimaciones.put("ServiciosEscenciales", estimacionDanosList2); // HashMap formado para enviar
-        }
+            estimaciones.put(llave, estimacionLista); // agrego la llave y la estimacion
 
-        if (recurso1.getRecursos().containsKey("Servicios Escenciales")) {
-            List<Estimacion> estimacionDanosList3 = new ArrayList<>();
-            for (int i = 0; i < recurso1.getRecursos().get("Socios de Negocios").size(); i++) {
-                estimacionDanosList3.add(estimacionDano.definirEstimacion(
-                        recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-            estimaciones.put("SociosdeNegocios", estimacionDanosList3); // HashMap formado para enviar
-        }
+        });
 
         estimacionDano.setRecursosNecesarios(estimaciones);
         this.estimacionDanoService.agregar(estimacionDano);
