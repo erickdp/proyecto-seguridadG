@@ -15,13 +15,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
-public class FormularioRIPImp implements FormularioRIPService {
+public class FormularioRIPServiceImp implements FormularioRIPService {
 
     @Autowired
     private FormularioRIPRepository formularioRIPRepository;
@@ -64,28 +61,41 @@ public class FormularioRIPImp implements FormularioRIPService {
 
         // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
 
-        for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
-            estimacionDanosList1.add(estimacionDano.definirEstimacion(
-                    recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
-                    0,
-                    0,
-                    true));
+        try {
+            for (int i = 0; i < recurso1.getRecursos().get("Recursos Internos").size(); i++) {
+                estimacionDanosList1.add(estimacionDano.definirEstimacion(
+                        recurso1.getRecursos().get("Recursos Internos").get(i).getNombre(),
+                        0,
+                        0,
+                        true));
+            }
+        } catch (NullPointerException e) {
+            // NullPointerException porque no se encuentra
         }
 
-        for (int i = 0; i < recurso1.getRecursos().get("Servicios Escenciales").size(); i++) {
-            estimacionDanosList2.add(estimacionDano.definirEstimacion(
-                    recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
-                    0,
-                    0,
-                    true));
+        try {
+            for (int i = 0; i < recurso1.getRecursos().get("Servicios Escenciales").size(); i++) {
+                estimacionDanosList2.add(estimacionDano.definirEstimacion(
+                        recurso1.getRecursos().get("Servicios Escenciales").get(i).getNombre(),
+                        0,
+                        0,
+                        true));
+            }
+        } catch (NullPointerException e) {
+            //
         }
 
-        for (int i = 0; i < recurso1.getRecursos().get("Socios de Negocios").size(); i++) {
-            estimacionDanosList3.add(estimacionDano.definirEstimacion(
-                    recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
-                    0,
-                    0,
-                    true));
+        try {
+            for (int i = 0; i < recurso1.getRecursos().get("Socios de Negocios").size(); i++) {
+                estimacionDanosList3.add(estimacionDano.definirEstimacion(
+                        recurso1.getRecursos().get("Socios de Negocios").get(i).getNombre(),
+                        0,
+                        0,
+                        true));
+            }
+
+        } catch (NullPointerException e) {
+            //
         }
 
         estimaciones.put("Recursos Internos", estimacionDanosList1); // HashMap formado para enviar
