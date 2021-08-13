@@ -15,9 +15,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FormularioRIPServiceImp implements FormularioRIPService {
@@ -52,50 +51,27 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         estimacionDano.setRiesgo(pojo.getNombreRiesgo());
         estimacionDano.setProbabilidad(pojo.getProbabilidad());
 
-        // puede tener no creado Recursos (se le crearán solo las categorías con "data": [empty])
-        Recurso recurso1 = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
+        // se supone que ya deben estar ingresados los datos para poder recuperarlos
+        Recurso recurso = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
 
         HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
 
+        // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD - Ya esta mejorado mi llave @ByErick
 
-        // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD
+        recurso.getRecursos().forEach((llave, valor) -> { // Recorro el mapa que me llega del form 3.1
 
-        List<Estimacion> estimacionDanosList1 = new ArrayList<>();
-        List<Estimacion> estimacionDanosList2 = new ArrayList<>();
-        List<Estimacion> estimacionDanosList3 = new ArrayList<>();
+            List<Estimacion> estimacionLista = valor.stream().map(getRecurso -> { // mediante map puedo obtener cada valor de la lista, define el predicado
+                return estimacionDano.definirEstimacion(getRecurso.getNombre(), 0, 0, 0, false); // isntancio un objeto de tipo Estimacion
+            }).collect(Collectors.toList()); // Lo convierto en lista
 
-        // obtener un array de las llaves para ubicarlo con index
-        String categoria = "RecursosInternos";
-        String categoria1 = "ServiciosEscenciales";
-        String categoria2 = "SociosNegocios";
+            estimaciones.put(llave, estimacionLista); // agrego la llave y la estimacion
 
-        estimaciones.put(categoria, llenarListaRecurso(categoria, recurso1, estimacionDano, estimacionDanosList1));
-        estimaciones.put(categoria1, llenarListaRecurso(categoria1, recurso1, estimacionDano, estimacionDanosList2));
-        estimaciones.put(categoria2, llenarListaRecurso(categoria2, recurso1, estimacionDano, estimacionDanosList3));
+        });
 
         estimacionDano.setRecursosNecesarios(estimaciones);
         this.estimacionDanoService.agregar(estimacionDano);
 
         return this.formularioRIPRepository.insert(pojo);
-    }
-
-    public List<Estimacion> llenarListaRecurso(String categoria,
-                                               Recurso recurso,
-                                               EstimacionDano estimacionDano,
-                                               List<Estimacion> lista) {
-        try {
-            for (int i = 0; i < recurso.getRecursos().get(categoria).size(); i++) {
-                lista.add(estimacionDano.definirEstimacion(
-                        recurso.getRecursos().get(categoria).get(i).getNombre(),
-                        0,
-                        0,
-                        0,
-                        true));
-            }
-        } catch (NullPointerException e) {
-            // manejar la excepcion
-        }
-        return lista;
     }
 
     @Override
