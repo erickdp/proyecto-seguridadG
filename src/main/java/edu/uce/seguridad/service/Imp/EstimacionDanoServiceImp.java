@@ -5,7 +5,6 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.EstimacionDano;
 import edu.uce.seguridad.repository.EstimacionDanoRepository;
 import edu.uce.seguridad.service.service.EstimacionDanoService;
-import edu.uce.seguridad.service.service.FormularioRIPService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,6 @@ import java.util.Optional;
 public class EstimacionDanoServiceImp implements EstimacionDanoService {
 
     private EstimacionDanoRepository estimacionDanoRepository;
-
-    //private FormularioRIPService formularioRIPService;
 
     @Override
     @Transactional(readOnly = true)
@@ -58,6 +55,9 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
     @Transactional
     public void eliminarDocumento(String identificador) throws EliminacionException {
         List<EstimacionDano> formularioEstimacion = this.estimacionDanoRepository.findByUsuario(identificador); // Como se eliminan varios forms devuelve una lista
+        if(formularioEstimacion.isEmpty()) {
+            throw new EliminacionException("mensaje", "No se han encontrado registros de :".concat(identificador));
+        }
         formularioEstimacion.forEach(form -> this.estimacionDanoRepository.deleteById(form.get_id()));
     }
 
