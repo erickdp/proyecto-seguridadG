@@ -69,7 +69,7 @@ public class FormularioListadeAcopioController {
  }
 
         */
-    @GetMapping("/modificarAcopioPreventivo/{id}")
+    @PutMapping("/modificarAcopioPreventivo/{id}")
     public ResponseEntity<?> modificarListadeAcopio(@RequestBody FormularioListadeAcopio listas, @PathVariable("id") String id){
         listas.setId(id);
         this.formularioListadeAcopioService.actualizar(listas);
