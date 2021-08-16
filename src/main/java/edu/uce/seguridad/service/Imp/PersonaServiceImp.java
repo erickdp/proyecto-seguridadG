@@ -35,6 +35,10 @@ public class PersonaServiceImp implements PersonaService {
 
     private RecursoService recursoService;
 
+    private ProteccionYMitigacionService proteccionYMitigacionService;
+
+    private EvacuacionYRescateService evacuacionYRescateService;
+
     @Override
     @Transactional(readOnly = true)
     public List<Persona> buscarTodos() throws NoEncontradoExcepcion {
@@ -145,6 +149,8 @@ public class PersonaServiceImp implements PersonaService {
         this.recursoService.eliminarDocumento(nombreUsuario); // 3.2 LISTO
         this.formularioRIPService.eliminarPorUsusario(nombreUsuario); // 4.1 listo
         this.estimacionDanoService.eliminarDocumento(nombreUsuario); // Eliminacion por usuario del form 4.2
+        this.proteccionYMitigacionService.eliminarDocumento(nombreUsuario); // Eliminacion de form 5.1
+        this.evacuacionYRescateService.eliminarDocumento(nombreUsuario); // Eliminacion de fomr 6.1
     }
 
     @Override

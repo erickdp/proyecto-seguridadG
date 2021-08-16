@@ -8,6 +8,7 @@ import edu.uce.seguridad.model.FormularioRIP;
 import edu.uce.seguridad.model.Recurso;
 import edu.uce.seguridad.repository.FormularioRIPRepository;
 import edu.uce.seguridad.service.service.EstimacionDanoService;
+import edu.uce.seguridad.service.service.EvacuacionYRescateService;
 import edu.uce.seguridad.service.service.FormularioRIPService;
 import edu.uce.seguridad.service.service.RecursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,9 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
 
     @Autowired
     private RecursoService recursoService;
+
+    @Autowired
+    private EvacuacionYRescateService evacuacionYRescateService;
 
 
     @Override
@@ -50,6 +55,8 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         estimacionDano.setImpacto(pojo.getImpacto()); // Los seteo para este nuevo formulario
         estimacionDano.setRiesgo(pojo.getNombreRiesgo());
         estimacionDano.setProbabilidad(pojo.getProbabilidad());
+
+        // En este paso NO se debe de crear el formulario 6.1 EvacuacionYRescate
 
         // se supone que ya deben estar ingresados los datos para poder recuperarlos
         Recurso recurso = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
@@ -77,7 +84,6 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
     @Override
     @Transactional
     public FormularioRIP actualizar(FormularioRIP pojo) throws DataAccessException {
-        this.buscaPorId(pojo.get_id());
         return this.formularioRIPRepository.save(pojo);
     }
 
