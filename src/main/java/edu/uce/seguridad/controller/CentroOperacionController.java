@@ -128,9 +128,9 @@ public class CentroOperacionController {
     Ej:
     http://localhost:8080/sgcnegocio/centros/61133f919761987103770a49
     */
-    @DeleteMapping("/{usuario}")
-    public ResponseEntity<Object> eliminarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
-        service.eliminarDocumento(nombreUsuario);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> eliminarPorUsuario(@PathVariable("id") String id) {
+        service.eliminarDocumento(id);
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
 }
