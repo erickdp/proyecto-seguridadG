@@ -2,7 +2,10 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
-import edu.uce.seguridad.model.*;
+import edu.uce.seguridad.model.Estimacion;
+import edu.uce.seguridad.model.EstimacionDano;
+import edu.uce.seguridad.model.ProteccionYMitigacion;
+import edu.uce.seguridad.model.RecursosMitigar;
 import edu.uce.seguridad.repository.EstimacionDanoRepository;
 import edu.uce.seguridad.repository.ProteccionYMitigacionRepository;
 import edu.uce.seguridad.service.service.EstimacionDanoService;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,7 +68,7 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
                 recursosMitigar.setAccion("");
                 recursosMitigar.setPlan("");
                 recursosMitigar.setObjetivo("");
-                recursosMitigar.setPlazoEstablecidoMax(Arrays.asList("xx","",""));
+                recursosMitigar.setPlazoEstablecidoMax("default");
                 recursosMitigar.setDepartamentoEncargado("");
                 return recursosMitigar;
             }).collect(Collectors.toList()));

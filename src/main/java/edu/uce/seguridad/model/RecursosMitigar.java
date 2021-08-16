@@ -11,6 +11,6 @@ public class RecursosMitigar {
     private String objetivo;
     private String accion;
     private String plan;
-    private List<String> plazoEstablecidoMax;
+    private String plazoEstablecidoMax;
     private String departamentoEncargado;
 }
