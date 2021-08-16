@@ -32,11 +32,11 @@ public class EvacuacionYRescateController {
         return new ResponseEntity<Collection<EvacuacionYRescate>>(evacuacionYRescates, OK);
     }
 
-    @GetMapping("/{nombreUsuario}/{riesgo}")
-    public ResponseEntity<?> getFormulariosByUserAndRiesgo(
+    @GetMapping("/{nombreUsuario}/{departamento}")
+    public ResponseEntity<?> getFormulariosByUserAndDepartamento(
             @PathVariable String nombreUsuario,
-            @PathVariable String riesgo) {
-        EvacuacionYRescate evacuacionYRescates = this.evacuacionYRescateService.buscarPorUsuarioYRiesgo(nombreUsuario, riesgo);
+            @PathVariable String departamento) {
+        EvacuacionYRescate evacuacionYRescates = this.evacuacionYRescateService.buscarPorUsuarioYDepartamento(nombreUsuario, departamento);
         return new ResponseEntity<EvacuacionYRescate>(evacuacionYRescates, OK);
     }
 
@@ -44,6 +44,12 @@ public class EvacuacionYRescateController {
     @PutMapping
     public ResponseEntity<?> updateFormulario(@RequestBody EvacuacionYRescate evacuacionYRescate) {
         EvacuacionYRescate evacuacionYRescates = this.evacuacionYRescateService.actualizar(evacuacionYRescate);
+        return new ResponseEntity<EvacuacionYRescate>(evacuacionYRescates, OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> saveFormulario(@RequestBody EvacuacionYRescate evacuacionYRescate) {
+        EvacuacionYRescate evacuacionYRescates = this.evacuacionYRescateService.agregar(evacuacionYRescate);
         return new ResponseEntity<EvacuacionYRescate>(evacuacionYRescates, OK);
     }
 }

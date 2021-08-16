@@ -7,9 +7,7 @@ import java.util.Collection;
 
 public interface EvacuacionYRescateService extends BaseService<EvacuacionYRescate, String> {
 
-    EvacuacionYRescate buscarPorUsuarioYRiesgo(String usuario, String riesgo) throws NoEncontradoExcepcion;
+    EvacuacionYRescate buscarPorUsuarioYDepartamento(String usuario, String riesgo) throws NoEncontradoExcepcion;
 
     Collection<EvacuacionYRescate> buscarPorUsuario(String usuario) throws NoEncontradoExcepcion;
-
-    void iniciarEvacuacionYRescate(String riesgoIngresado, String usuario);
 }

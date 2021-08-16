@@ -56,8 +56,7 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         estimacionDano.setRiesgo(pojo.getNombreRiesgo());
         estimacionDano.setProbabilidad(pojo.getProbabilidad());
 
-        // En este paso tambien se debe de crear el formulario 6.1 EvacuacionYRescate
-        this.evacuacionYRescateService.iniciarEvacuacionYRescate(pojo.getNombreRiesgo(), pojo.getUser());
+        // En este paso NO se debe de crear el formulario 6.1 EvacuacionYRescate
 
         // se supone que ya deben estar ingresados los datos para poder recuperarlos
         Recurso recurso = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
@@ -85,8 +84,6 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
     @Override
     @Transactional
     public FormularioRIP actualizar(FormularioRIP pojo) throws DataAccessException {
-//         En este paso tambien se debe de crear el formulario 6.1 EvacuacionYRescate
-        this.evacuacionYRescateService.iniciarEvacuacionYRescate(pojo.getNombreRiesgo(), pojo.getUser());
         return this.formularioRIPRepository.save(pojo);
     }
 

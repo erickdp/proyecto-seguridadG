@@ -14,6 +14,6 @@ public class EvacuacionYRescate {
     private String _id;
     private String usuario;
     @Indexed(unique = true)
-    private String riesgo;
+    private String departamento;
     private Map<String, String> recursos;
 }

@@ -66,8 +66,8 @@ public class EvacuacionYRescateServiceImp implements EvacuacionYRescateService {
 
     @Override
     @Transactional(readOnly = true)
-    public EvacuacionYRescate buscarPorUsuarioYRiesgo(String usuario, String riesgo) {
-        Optional<EvacuacionYRescate> usuarioAndRiesgo = this.evacuacionYRescateRepository.findByUsuarioAndRiesgo(usuario, riesgo);
+    public EvacuacionYRescate buscarPorUsuarioYDepartamento(String usuario, String riesgo) {
+        Optional<EvacuacionYRescate> usuarioAndRiesgo = this.evacuacionYRescateRepository.findByUsuarioAndDepartamento(usuario, riesgo);
         if (usuarioAndRiesgo.isPresent()) {
             return usuarioAndRiesgo.get();
         }
@@ -82,17 +82,5 @@ public class EvacuacionYRescateServiceImp implements EvacuacionYRescateService {
             throw new NoEncontradoExcepcion("mensaje", "No se han encontrado registros para :".concat(usuario));
         }
         return lista;
-    }
-
-    @Override
-    @Transactional
-    public void iniciarEvacuacionYRescate(String riesgoIngresado, String usuario) {
-        Optional<EvacuacionYRescate> evacuacionYRescateOptional = this.evacuacionYRescateRepository.findByUsuarioAndRiesgo(usuario, riesgoIngresado);
-        evacuacionYRescateOptional.ifPresent(this.evacuacionYRescateRepository::delete); //Como actualiza o agrega un form RIP el anterior de este para evitar problemas se elimina y se forma uno nuevo
-        EvacuacionYRescate evacuacionYRescate = new EvacuacionYRescate();
-        evacuacionYRescate.setRiesgo(riesgoIngresado);
-        evacuacionYRescate.setUsuario(usuario);
-        evacuacionYRescate.setRecursos(RECURSOS_DEFAULT());
-        this.evacuacionYRescateRepository.save(evacuacionYRescate);
     }
 }

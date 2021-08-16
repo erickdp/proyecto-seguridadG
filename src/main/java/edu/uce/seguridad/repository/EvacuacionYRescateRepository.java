@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface EvacuacionYRescateRepository extends MongoRepository<EvacuacionYRescate, String> {
     List<EvacuacionYRescate> findByUsuario(String usuario);
-    Optional<EvacuacionYRescate> findByUsuarioAndRiesgo(String usuario, String riesgo);
+    Optional<EvacuacionYRescate> findByUsuarioAndDepartamento(String usuario, String riesgo);
 }
