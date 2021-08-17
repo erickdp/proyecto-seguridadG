@@ -64,6 +64,21 @@ public class ContactoEmergenciaController {
     }
 
     /*
+    ENDPOINT que busca todos los contactos de emergencia por usuario, el nombre de usuario se debe enviar por la URL
+    Ej:
+    http://localhost:8080/sgcnegocio/contactos/buscarContactosPorUsuario/nombreUsuario
+    - Si existen contactos se devuelve un estado 200 - Ok
+    - En el caso de no encontrar ningún registro se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
+    * */
+
+    @GetMapping("/buscarContactosPorUsuario/{usuario}")
+    public ResponseEntity<List<ContactoEmergencia>> buscarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
+        List<ContactoEmergencia> contactos = service.buscarContactosPorUsuario(nombreUsuario);
+        return new ResponseEntity<List<ContactoEmergencia>>(contactos, HttpStatus.OK);
+    }
+
+    /*
     ENDPOINT para guardar un contacto de emergencia
     Se debe enviar un JSON con el nombre del departamento, nombre del personal, teléfono, correo y el status
     Ej:
