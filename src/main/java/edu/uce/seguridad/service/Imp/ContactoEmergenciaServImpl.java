@@ -48,4 +48,9 @@ public class ContactoEmergenciaServImpl implements ContactoEmergenciaService {
     public ContactoEmergencia buscarContactoPorDepartamento(String nombreDepartamento) throws NoEncontradoExcepcion {
         return this.repository.findContactoByDepartamento(nombreDepartamento);
     }
+
+    @Override
+    public List<ContactoEmergencia> buscarContactosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
+        return this.repository.findContactosByUsuario(nombreUsuario);
+    }
 }

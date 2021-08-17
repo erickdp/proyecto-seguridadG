@@ -18,4 +18,5 @@ public class ContactoEmergencia {
     private String telefono;
     private String correo;
     private String status;
+    private String usuario;
 }
