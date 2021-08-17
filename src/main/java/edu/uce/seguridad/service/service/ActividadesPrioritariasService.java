@@ -2,7 +2,6 @@ package edu.uce.seguridad.service.service;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.ActividadesPrioritarias;
-import edu.uce.seguridad.model.PeriodoTolerable;
 
 import java.util.List;
 
