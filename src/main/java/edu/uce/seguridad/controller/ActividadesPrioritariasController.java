@@ -19,9 +19,12 @@ public class ActividadesPrioritariasController {
     private ActividadesPrioritariasService service;
 
     /*
-    ENDPOINT que busca todas todas las actividades prioritarias
+    ENDPOINT que busca todas las actividades prioritarias
     Ej:
-    http://localhost:8080/sgcnegocio/actividades/60fcb37db3c0630156388256
+    http://localhost:8080/sgcnegocio/actividades
+    - Si existen actividades se devuelve un estado 200 - Ok
+    - En el caso de no encontrar ningún registro se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
 
     @GetMapping
@@ -33,7 +36,10 @@ public class ActividadesPrioritariasController {
     /*
     ENDPOINT que busca todas las actividades prioritarias por un identificador, el id se debe enviar por la URL
     Ej:
-    http://localhost:8080/sgcnegocio/actividades/buscarActividadPorId/60fcb37db3c0630156388256
+    http://localhost:8080/sgcnegocio/actividades/buscarActividadPorId/61133f919761987103770a49
+    - Si existen actividades se devuelve un estado 200 - Ok
+    - En el caso de no encontrar ningún registro se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
 
     @GetMapping("/buscarActividadPorId/{id}")
@@ -49,6 +55,9 @@ public class ActividadesPrioritariasController {
     ENDPOINT que busca todas las actividades prioritarias por usuario, el nombre de usuario se debe enviar por la URL
     Ej:
     http://localhost:8080/sgcnegocio/actividades/buscarActividadesPorUsuario/nombre
+    - Si existen actividades se devuelve un estado 200 - Ok
+    - En el caso de no encontrar ningún registro se devuelve un estado 404 - NOT FOUND
+    - En el caso de fallar la BD se devuelve un estado 500 - INTERNAL SERVER ERROR
     * */
 
     @GetMapping("/buscarActividadesPorUsuario/{usuario}")
@@ -61,10 +70,12 @@ public class ActividadesPrioritariasController {
     ENDPOINT para guardar una actividad prioritaria
     Se debe enviar un JSON con la actividad y los tiempos de recuperación junto con el usuario
     Ej:
+    http://localhost:8080/sgcnegocio/actividades
+    JSON
     {
-        "user": "60fcb37db3c0630156388256",
         "actividades": "La actividad prioritaria",
-        "tiempoRecuperacion": "2 semanas"
+        "tiemposRecuperacion": "2 semanas"
+        "usuario": "nombre",
     }
     */
 
@@ -80,11 +91,12 @@ public class ActividadesPrioritariasController {
     ENDPOINT para actualizar una actividad prioritaria
     Se debe mandar el id por la URL y los nuevos datos en formato JSON de la actividad que se quiere actualizar
     Ej:
-    http://localhost:8080/sgcnegocio/actividades/60fdc3969845fe5c999df4d3
+    http://localhost:8080/sgcnegocio/actividades/61133f919761987103770a49
+    JSON
     {
-        "user": "60fcb37db3c0630156388256",
         "actividades": "La actividad prioritaria",
-        "tiempoRecuperacion": "2 semanas"
+        "tiemposRecuperacion": "2 semanas"
+        "usuario": "nombre",
     }
     */
 
@@ -96,10 +108,10 @@ public class ActividadesPrioritariasController {
     }
 
     /*
-    ENDPOINT activo
-    Se debe mandar unicamente el id en el URL para eliminar una actividad
+    ENDPOINT
+    Se debe mandar unicamente el id en el URL cuando se va a eliminar una actividad
     Ej:
-    http://localhost:8080/sgcnegocio/actividades/60fdc3969845fe5c999df4d3
+    http://localhost:8080/sgcnegocio/actividades/61133f919761987103770a49
     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> eliminarPorId(@PathVariable("id") String id) {
