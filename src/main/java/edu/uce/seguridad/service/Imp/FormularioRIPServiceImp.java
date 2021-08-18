@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static edu.uce.seguridad.util.Utileria.establecerEstimaciones;
+
 @Service
 public class FormularioRIPServiceImp implements FormularioRIPService {
 
@@ -61,21 +63,7 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         // se supone que ya deben estar ingresados los datos para poder recuperarlos
         Recurso recurso = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
 
-        HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
-
-        // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD - Ya esta mejorado mi llave @ByErick
-
-        recurso.getRecursos().forEach((llave, valor) -> { // Recorro el mapa que me llega del form 3.1
-
-            List<Estimacion> estimacionLista = valor.stream().map(getRecurso -> { // mediante map puedo obtener cada valor de la lista, define el predicado
-                return estimacionDano.definirEstimacion(getRecurso.getNombre(), 0, 0, 0, false); // isntancio un objeto de tipo Estimacion
-            }).collect(Collectors.toList()); // Lo convierto en lista
-
-            estimaciones.put(llave, estimacionLista); // agrego la llave y la estimacion
-
-        });
-
-        estimacionDano.setRecursosNecesarios(estimaciones);
+        estimacionDano.setRecursosNecesarios(establecerEstimaciones(recurso));
         this.estimacionDanoService.agregar(estimacionDano);
 
         return this.formularioRIPRepository.insert(pojo);
