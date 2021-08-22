@@ -1,10 +1,8 @@
 package edu.uce.seguridad.util;
 
-import edu.uce.seguridad.model.Estimacion;
-import edu.uce.seguridad.model.EstimacionDano;
-import edu.uce.seguridad.model.Recurso;
-import edu.uce.seguridad.model.Usuario;
+import edu.uce.seguridad.model.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +66,14 @@ public class Utileria {
         });
 
         return estimaciones;
+    }
+
+    public static FondosDistribucion getFondoTotal(BigDecimal montoTotal) {
+        FondosDistribucion fondosDistribucion = new FondosDistribucion();
+        fondosDistribucion.setMonto(montoTotal);
+        fondosDistribucion.setTipo("Total Fondos Disponibles (A)");
+        fondosDistribucion.setOtros("N/A");
+        return fondosDistribucion;
     }
 
 }
