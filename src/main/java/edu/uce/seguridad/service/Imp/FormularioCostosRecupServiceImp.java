@@ -65,4 +65,13 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
         }
         return listadeCostos;
     }
+
+    @Override
+    public void eliminarPorUsuario(String usuario) {
+        FormularioCostosRecup formCost = this.buscarPorUsuario(usuario);
+        if (formCost == null){
+            throw  new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
+        }
+        this.formularioCostosRecupRepository.deleteByUsuario(usuario);
+    }
 }

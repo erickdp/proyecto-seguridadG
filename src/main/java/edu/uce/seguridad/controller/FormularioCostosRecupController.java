@@ -1,8 +1,6 @@
 package edu.uce.seguridad.controller;
 
-import edu.uce.seguridad.model.ActividadesPrioritarias;
 import edu.uce.seguridad.model.FormularioCostosRecup;
-import edu.uce.seguridad.service.service.ActividadesPrioritariasService;
 import edu.uce.seguridad.service.service.FormularioCostosRecupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class FormularioCostosRecupController {
 
     private FormularioCostosRecupService formularioCostosRecupService;
-    private ActividadesPrioritariasService actividadesPrioritariasService;
 
     @GetMapping("/buscarPorUser/{user}")
     public ResponseEntity<?> buscarPorUser(@PathVariable("user") String user) {
@@ -23,11 +20,11 @@ public class FormularioCostosRecupController {
         return new ResponseEntity<>(costos, HttpStatus.OK);
     }
 
-    @PostMapping("/agregarCosto")
-    public ResponseEntity<?> agregar(@RequestBody FormularioCostosRecup fomrCost) {
-        FormularioCostosRecup cost = this.formularioCostosRecupService.agregar(fomrCost);
-        return new ResponseEntity<>(cost, HttpStatus.CREATED);
-    }
+//    @PostMapping("/agregarCosto")
+//    public ResponseEntity<?> agregar(@RequestBody FormularioCostosRecup fomrCost) {
+//        FormularioCostosRecup cost = this.formularioCostosRecupService.agregar(fomrCost);
+//        return new ResponseEntity<>(cost, HttpStatus.CREATED);
+//    }
 
     @PutMapping("/actualizarCosto/{id}")
     public ResponseEntity<?> actualizar(@RequestBody FormularioCostosRecup fomrCost, @PathVariable("id") String id) {

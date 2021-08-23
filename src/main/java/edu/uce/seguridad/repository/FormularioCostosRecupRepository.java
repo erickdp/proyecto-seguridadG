@@ -7,4 +7,6 @@ public interface FormularioCostosRecupRepository extends MongoRepository<Formula
 
     FormularioCostosRecup findByUsuario(String usuario);
 
+    void deleteByUsuario(String usuario);
+
 }

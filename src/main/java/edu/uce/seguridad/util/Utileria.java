@@ -3,10 +3,7 @@ package edu.uce.seguridad.util;
 import edu.uce.seguridad.model.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utileria {
@@ -66,6 +63,20 @@ public class Utileria {
         });
 
         return estimaciones;
+    }
+
+    public static List<CostoRecuperacion> establecerRecursos(Recurso pojo) {
+        List<CostoRecuperacion> recurs = new ArrayList<>();
+
+        pojo.getRecursos().forEach((llave, valor) -> {
+
+            List<CostoRecuperacion> recurso = valor.stream()
+                    .map(getRecurso -> new CostoRecuperacion(getRecurso.getNombre(), 0, 0)) // se debe guardar aquí
+                    .collect(Collectors.toList());
+            recurs.addAll(recurso);
+
+        });
+        return recurs;
     }
 
     public static FondosDistribucion getFondoTotal(BigDecimal montoTotal) {

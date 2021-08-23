@@ -1,23 +1,27 @@
 package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
-import edu.uce.seguridad.model.Estimacion;
-import edu.uce.seguridad.model.EstimacionDano;
-import edu.uce.seguridad.model.FormularioRIP;
-import edu.uce.seguridad.model.Recurso;
+import edu.uce.seguridad.model.*;
 import edu.uce.seguridad.repository.EstimacionDanoRepository;
+import edu.uce.seguridad.repository.FormularioCostosRecupRepository;
 import edu.uce.seguridad.repository.FormularioRIPRepository;
 import edu.uce.seguridad.repository.RecursoRepository;
+import edu.uce.seguridad.service.service.FormularioCostosRecupService;
 import edu.uce.seguridad.service.service.RecursoService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static edu.uce.seguridad.util.Utileria.establecerEstimaciones;
+import static edu.uce.seguridad.util.Utileria.establecerRecursos;
 
 @Service
 @AllArgsConstructor
@@ -29,6 +33,10 @@ public class RecursoServiceImpl implements RecursoService {
 
     private EstimacionDanoRepository estimacionDanoRepository;
 
+    private FormularioCostosRecupService recupService;
+
+    private FormularioCostosRecupRepository recupRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<Recurso> buscarTodos() throws NoEncontradoExcepcion {
@@ -38,13 +46,16 @@ public class RecursoServiceImpl implements RecursoService {
     @Override
     @Transactional
     public Recurso agregar(Recurso pojo) throws DataAccessException {
-
-
         // guardar / actualizar para el formulario 4.1
-
-        // EstimacionDano debe actualizarse no crarse 
-
-
+        // EstimacionDano debe actualizarse no crarse
+        FormularioCostosRecup costosRecup = FormularioCostosRecup
+                .builder()
+                .recurso(establecerRecursos(pojo))
+                .usuario(pojo.getUsuario())
+                .totalCosto(0)
+                .totalOtro(0)
+                .build();
+        this.recupService.agregar(costosRecup);
         return repository.insert(pojo);
     }
 
@@ -71,6 +82,13 @@ public class RecursoServiceImpl implements RecursoService {
                 this.estimacionDanoRepository.save(estimacionDano);
             });
         }
+        // Formulario 8.2 se debe actualizar cuando se agregue un recurso
+        FormularioCostosRecup costosRecup = this.recupRepository.findByUsuario(pojo.getUsuario());
+        if (costosRecup != null) {
+            costosRecup.setRecurso(establecerRecursos(pojo)); // se formatean los valores
+            this.recupService.actualizar(costosRecup);
+        }
+
         return this.repository.save(pojo);
     }
 
