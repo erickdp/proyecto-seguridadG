@@ -71,7 +71,7 @@ public class Utileria {
         pojo.getRecursos().forEach((llave, valor) -> {
 
             List<CostoRecuperacion> recurso = valor.stream()
-                    .map(getRecurso -> new CostoRecuperacion(getRecurso.getNombre(), 0, 0)) // se debe guardar aquí
+                    .map(getRecurso -> new CostoRecuperacion(getRecurso.getNombre(), 0, "")) // se debe guardar aquí
                     .collect(Collectors.toList());
             recurs.addAll(recurso);
 

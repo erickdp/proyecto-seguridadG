@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface GastosCorrientesRepository extends MongoRepository<GastosCorrientes, String> {
 
-    List<GastosCorrientes> findByUser(String user);
+    GastosCorrientes findByUser(String user);
+
+    void deleteByUser(String user);
 }

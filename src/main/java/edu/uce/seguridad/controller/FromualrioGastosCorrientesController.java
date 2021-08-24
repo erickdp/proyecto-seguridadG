@@ -37,7 +37,7 @@ public class FromualrioGastosCorrientesController {
 
     @GetMapping("/buscarUsuarioGastos/{user}")
     public ResponseEntity<?> buscaporUsuario(@PathVariable("user") String user){
-        List<GastosCorrientes> gasto= this.gastosCorrienteService.buscarGastosCorrientesPorUsuario(user);
+        GastosCorrientes gasto= this.gastosCorrienteService.buscarGastosCorrientesPorUsuario(user);
         return new ResponseEntity<>(gasto,HttpStatus.OK);
     }
 }

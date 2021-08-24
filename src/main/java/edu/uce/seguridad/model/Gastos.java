@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CostoRecuperacion {
+@NoArgsConstructor
+public class Gastos {
 
-    private String nombre;
-    private double costo;
-    private String otros;
+    private String gastosCorrientes;
+    private double monto;
+    private String otro;
 
 }

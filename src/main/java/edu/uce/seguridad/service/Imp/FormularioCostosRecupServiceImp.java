@@ -2,7 +2,9 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
+import edu.uce.seguridad.model.EstatusFinanciero;
 import edu.uce.seguridad.model.FormularioCostosRecup;
+import edu.uce.seguridad.repository.EstatusFinancieroRepository;
 import edu.uce.seguridad.repository.FormularioCostosRecupRepository;
 import edu.uce.seguridad.service.service.FormularioCostosRecupService;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.List;
 public class FormularioCostosRecupServiceImp implements FormularioCostosRecupService {
 
     private FormularioCostosRecupRepository formularioCostosRecupRepository;
+
+    private EstatusFinancieroRepository financieroRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -36,6 +40,16 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
     @Override
     public FormularioCostosRecup actualizar(FormularioCostosRecup pojo) throws DataAccessException {
         this.buscaPorId(pojo.get_id());
+
+
+        EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUsuario()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
+        if (estatus != null) {
+            estatus.setCostoRecuperacionB(pojo.getTotalCosto()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
+            this.financieroRepository.save(estatus);
+        }
+
+
+
         return this.formularioCostosRecupRepository.save(pojo);
     }
 

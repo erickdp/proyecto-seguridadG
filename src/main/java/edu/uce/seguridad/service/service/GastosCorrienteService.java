@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface GastosCorrienteService extends  BaseService<GastosCorrientes, String>{
 
-    List<GastosCorrientes> buscarGastosCorrientesPorUsuario(String usuario);
+    GastosCorrientes buscarGastosCorrientesPorUsuario(String usuario);
+
+    void eliminarPorUsuario(String usuario);
 
 }

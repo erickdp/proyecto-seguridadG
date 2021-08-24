@@ -2,8 +2,10 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
+import edu.uce.seguridad.model.EstatusFinanciero;
 import edu.uce.seguridad.model.FondosDisponibles;
 import edu.uce.seguridad.model.FondosDistribucion;
+import edu.uce.seguridad.repository.EstatusFinancieroRepository;
 import edu.uce.seguridad.repository.FondosDisponiblesRepository;
 import edu.uce.seguridad.service.service.FondosDisponiblesService;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,8 @@ import static edu.uce.seguridad.util.Utileria.getFondoTotal;
 public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
 
     private FondosDisponiblesRepository fondosDisponiblesRepository;
+
+    private EstatusFinancieroRepository financieroRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -57,6 +61,12 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
         }
         FondosDistribucion fondoTotal = fondosDistribucionList.get(fondosDistribucionList.size() - 1); // El monto total en la actualizacion debe de ser el ultimo registro de la lista
         fondoTotal.setMonto(bigDecimal);
+        // Debería existir si o si porque se creo en pasos anteriores
+        EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUsaurio()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
+        if (estatus != null) {
+            estatus.setFondosDisponiblesA(bigDecimal.doubleValue()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
+            this.financieroRepository.save(estatus);
+        }
         return this.fondosDisponiblesRepository.save(pojo);
     }
 

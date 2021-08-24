@@ -2,10 +2,7 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.*;
-import edu.uce.seguridad.repository.EstimacionDanoRepository;
-import edu.uce.seguridad.repository.FormularioCostosRecupRepository;
-import edu.uce.seguridad.repository.FormularioRIPRepository;
-import edu.uce.seguridad.repository.RecursoRepository;
+import edu.uce.seguridad.repository.*;
 import edu.uce.seguridad.service.service.FormularioCostosRecupService;
 import edu.uce.seguridad.service.service.RecursoService;
 import lombok.AllArgsConstructor;
@@ -13,12 +10,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static edu.uce.seguridad.util.Utileria.establecerEstimaciones;
 import static edu.uce.seguridad.util.Utileria.establecerRecursos;
@@ -37,6 +30,8 @@ public class RecursoServiceImpl implements RecursoService {
 
     private FormularioCostosRecupRepository recupRepository;
 
+    private EstatusFinancieroRepository financieroRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<Recurso> buscarTodos() throws NoEncontradoExcepcion {
@@ -53,9 +48,12 @@ public class RecursoServiceImpl implements RecursoService {
                 .recurso(establecerRecursos(pojo))
                 .usuario(pojo.getUsuario())
                 .totalCosto(0)
-                .totalOtro(0)
                 .build();
         this.recupService.agregar(costosRecup);
+        // Se debe crear el formulario 8.4 por defecto
+        this.financieroRepository.insert(EstatusFinanciero.builder()
+                .usuario(pojo.getUsuario())
+                .build());
         return repository.insert(pojo);
     }
 
