@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static edu.uce.seguridad.util.Utileria.calcularBalance;
+
 @Service
 @AllArgsConstructor
 public class GastosCorrientesServiceImpl implements GastosCorrienteService {
@@ -48,6 +50,7 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
         EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUser()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
         if (estatus != null) {
             estatus.setGastosOrdinariosC(pojo.getTotalGastos()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
+            estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }
         return this.gastosCorrientesRepository.save(pojo);

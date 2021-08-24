@@ -1,6 +1,7 @@
 package edu.uce.seguridad.util;
 
 import edu.uce.seguridad.model.*;
+import sun.font.EAttribute;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -85,6 +86,12 @@ public class Utileria {
         fondosDistribucion.setTipo("Total Fondos Disponibles (A)");
         fondosDistribucion.setOtros("N/A");
         return fondosDistribucion;
+    }
+
+    public static double calcularBalance(EstatusFinanciero estatusFinanciero) {
+        return estatusFinanciero.getFondosDisponiblesA() +
+                estatusFinanciero.getCostoRecuperacionB() +
+                estatusFinanciero.getGastosOrdinariosC();
     }
 
 }

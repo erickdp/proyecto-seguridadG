@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static edu.uce.seguridad.util.Utileria.getFondoTotal;
+import static edu.uce.seguridad.util.Utileria.calcularBalance;
 
 @Service
 @AllArgsConstructor
@@ -65,6 +66,7 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
         EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUsaurio()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
         if (estatus != null) {
             estatus.setFondosDisponiblesA(bigDecimal.doubleValue()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
+            estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }
         return this.fondosDisponiblesRepository.save(pojo);
