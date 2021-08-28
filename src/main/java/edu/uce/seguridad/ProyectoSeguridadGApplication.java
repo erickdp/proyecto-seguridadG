@@ -38,17 +38,17 @@ public class ProyectoSeguridadGApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        HashMap<String, List<String>> mapa = new HashMap<>();
-
-        mapa.put("v1", Arrays.asList("E1", "E2", "E3"));
-        mapa.put("v2", Arrays.asList("E4", "E5", "E6"));
-        mapa.put("v3", Arrays.asList("E9", "E8", "E7"));
-
-        if(mapa.containsKey("v4")) {
-            log.info("No hay v4");
-        } else if (mapa.containsKey("v1")) {
-            log.info("Si hay v1");
-        }
+//        HashMap<String, List<String>> mapa = new HashMap<>();
+//
+//        mapa.put("v1", Arrays.asList("E1", "E2", "E3"));
+//        mapa.put("v2", Arrays.asList("E4", "E5", "E6"));
+//        mapa.put("v3", Arrays.asList("E9", "E8", "E7"));
+//
+//        if(mapa.containsKey("v4")) {
+//            log.info("No hay v4");
+//        } else if (mapa.containsKey("v1")) {
+//            log.info("Si hay v1");
+//        }
 
 //        mapaRecursos.forEach((miLlave, valor) -> {
 //

@@ -6,7 +6,6 @@ import edu.uce.seguridad.model.ActividadesPrioritarias;
 import edu.uce.seguridad.repository.ActividadesPrioritariasRepository;
 import edu.uce.seguridad.service.service.ActividadesPrioritariasService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ActividadesPrioritariasServiceImpl implements ActividadesPrioritariasService {
 
-    @Autowired
     private ActividadesPrioritariasRepository repository;
 
     @Override

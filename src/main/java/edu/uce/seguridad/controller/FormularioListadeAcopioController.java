@@ -73,7 +73,7 @@ public class FormularioListadeAcopioController {
     public ResponseEntity<?> modificarListadeAcopio(@RequestBody FormularioListadeAcopio listas, @PathVariable("id") String id){
         listas.setId(id);
         this.formularioListadeAcopioService.actualizar(listas);
-        return  new ResponseEntity<>(listas,HttpStatus.CREATED);
+        return  new ResponseEntity<>(listas,HttpStatus.OK);
 
     }
      /*

@@ -1,8 +1,11 @@
 package edu.uce.seguridad.util;
 
-import edu.uce.seguridad.model.Usuario;
+import edu.uce.seguridad.model.*;
+import sun.font.EAttribute;
 
-import java.util.Random;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Utileria {
 
@@ -43,6 +46,52 @@ public class Utileria {
             pass.append((char) (r.nextInt(26) + 'A'));
         }
         return pass.toString();
+    }
+
+    public static Map<String, List<Estimacion>> establecerEstimaciones(Recurso recurso) {
+        HashMap<String, List<Estimacion>> estimaciones = new HashMap<>();
+
+        // TODO: Reconozco que este código es una basura pero cumple su trabajo, se aceptan mejoras XD - Ya esta mejorado mi llave @ByErick
+
+        recurso.getRecursos().forEach((llave, valor) -> { // Recorro el mapa que me llega del form 3.1
+
+            List<Estimacion> estimacionLista = valor.stream().map(getRecurso -> { // mediante map puedo obtener cada valor de la lista, define el predicado
+                return new EstimacionDano().definirEstimacion(getRecurso.getNombre(), 0, 0, 0, false); // isntancio un objeto de tipo Estimacion
+            }).collect(Collectors.toList()); // Lo convierto en lista
+
+            estimaciones.put(llave, estimacionLista); // agrego la llave y la estimacion
+
+        });
+
+        return estimaciones;
+    }
+
+    public static List<CostoRecuperacion> establecerRecursos(Recurso pojo) {
+        List<CostoRecuperacion> recurs = new ArrayList<>();
+
+        pojo.getRecursos().forEach((llave, valor) -> {
+
+            List<CostoRecuperacion> recurso = valor.stream()
+                    .map(getRecurso -> new CostoRecuperacion(getRecurso.getNombre(), 0, "")) // se debe guardar aquí
+                    .collect(Collectors.toList());
+            recurs.addAll(recurso);
+
+        });
+        return recurs;
+    }
+
+    public static FondosDistribucion getFondoTotal(BigDecimal montoTotal) {
+        FondosDistribucion fondosDistribucion = new FondosDistribucion();
+        fondosDistribucion.setMonto(montoTotal);
+        fondosDistribucion.setTipo("Total Fondos Disponibles (A)");
+        fondosDistribucion.setOtros("N/A");
+        return fondosDistribucion;
+    }
+
+    public static double calcularBalance(EstatusFinanciero estatusFinanciero) {
+        return estatusFinanciero.getFondosDisponiblesA() +
+                estatusFinanciero.getCostoRecuperacionB() +
+                estatusFinanciero.getGastosOrdinariosC();
     }
 
 }

@@ -52,7 +52,7 @@ public class ProteccionYMitigacionServiceImp implements ProteccionYMitigacionSer
     @Transactional
     public void eliminarDocumento(String identificador) throws EliminacionException {
         List<ProteccionYMitigacion> formPM = this.proteccionYMitigacionRepository.findByUsuario(identificador);
-        formPM.forEach(this.proteccionYMitigacionRepository::delete);
+        this.proteccionYMitigacionRepository.deleteAll(formPM);
     }
 
     @Override

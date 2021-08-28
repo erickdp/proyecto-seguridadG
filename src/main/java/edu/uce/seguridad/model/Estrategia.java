@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Estrategia {
 
+    private String nombreEstrategia;
+
     private String prioridad;
     private String resumenEstrategia;
     private String actividadesReanudar;
