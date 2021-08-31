@@ -94,4 +94,19 @@ public class Utileria {
                 estatusFinanciero.getGastosOrdinariosC();
     }
 
+    public static List<DataAmenazas> agregarAmenazasGeneral(BiaListaAmenazas amenazas) {
+        List<DataAmenazas> dataAmenazasGeneral = new ArrayList<>();
+
+        amenazas.getLista().forEach((clave, valor) -> {
+
+            List<DataAmenazas> dataAmenazas = valor.stream().map(getAmenaza ->
+                    new DataAmenazas(getAmenaza.getTipoAmenaza(), 0, 0, 0)
+            ).collect(Collectors.toList());
+
+            dataAmenazasGeneral.addAll(dataAmenazas);
+
+        });
+        return dataAmenazasGeneral;
+    }
+
 }
