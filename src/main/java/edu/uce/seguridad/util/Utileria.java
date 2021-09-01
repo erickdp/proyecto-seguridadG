@@ -109,4 +109,17 @@ public class Utileria {
         return dataAmenazasGeneral;
     }
 
+    public static List<DataRecursos> recursosDefault() {
+        List<String> dataDefault = Arrays.asList("Inmuebles", "Equipos", "Tecnológico", "Humanos", "Primordiales", "Secundarios");
+        List<DataRecursos> dataRecursosList = new ArrayList<>();
+
+        for (String data : dataDefault) {
+            dataRecursosList.add(new DataRecursos(
+                    new DataAmenazas(data, 0, 0, 0),
+                    0,
+                    0));
+        }
+        return dataRecursosList;
+    }
+
 }

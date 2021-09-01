@@ -23,5 +23,6 @@ public class BiaValoracionGeneral {
     @Indexed(unique = true)
     private String usuario;
     private List<DataAmenazas> amenazas;
+    private List<DataRecursos> recursos;
 
 }
