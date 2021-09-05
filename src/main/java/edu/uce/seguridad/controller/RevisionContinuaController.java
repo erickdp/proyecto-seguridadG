@@ -98,13 +98,13 @@ public class RevisionContinuaController {
         }
     }
     */
-    @PostMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<Object> guardar(@RequestBody RevisionContinua revisionEnviada) {
-        RevisionContinua revision = service.agregar(revisionEnviada);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}")
-                .buildAndExpand(revision.get_id()).toUri();
-        return ResponseEntity.created(location).build();
-    }
+//    @PostMapping(produces = "application/json", consumes = "application/json")
+//    public ResponseEntity<Object> guardar(@RequestBody RevisionContinua revisionEnviada) {
+//        RevisionContinua revision = service.agregar(revisionEnviada);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}")
+//                .buildAndExpand(revision.get_id()).toUri();
+//        return ResponseEntity.created(location).build();
+//    }
 
     /*
     ENDPOINT para actualizar una revisión continua
