@@ -153,9 +153,9 @@ public class RevisionContinuaController {
     Ej:
     http://localhost:8080/sgcnegocio/revisiones/61133f919761987103770a49
     */
-    @DeleteMapping("/{usuario}")
-    public ResponseEntity<Object> eliminarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
-        service.eliminarDocumento(nombreUsuario);
-        return new ResponseEntity<Object>(HttpStatus.OK);
-    }
+//    @DeleteMapping("/{usuario}")
+//    public ResponseEntity<Object> eliminarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
+//        service.eliminarDocumento(nombreUsuario);
+//        return new ResponseEntity<Object>(HttpStatus.OK);
+//    }
 }
