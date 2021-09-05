@@ -113,13 +113,32 @@ public class Utileria {
         List<String> dataDefault = Arrays.asList("Inmuebles", "Equipos", "Tecnológico", "Humanos", "Primordiales", "Secundarios");
         List<DataRecursos> dataRecursosList = new ArrayList<>();
 
-        for (String data : dataDefault) {
+        dataDefault.forEach(data -> {
             dataRecursosList.add(new DataRecursos(
                     new DataAmenazas(data, 0, 0, 0),
                     0,
                     0));
-        }
+        });
+
         return dataRecursosList;
+    }
+
+    public static List<FormularioRevision> formulariosDefault() {
+        List<FormularioRevision> formularioRevisions = new ArrayList<>();
+        List<String> formDefault = Arrays.asList("Marco teorico del PCN, Proposito, Alcance, y equipo",
+                                                "Actividades Prioritarias y Tiempos de Recuperación Ideales",
+                                                "Recursos necesarios para PCN",
+                                                "Evaluación de riesgos",
+                                                "Protección antes del Desastre y Mitigación",
+                                                "Respuesta de Emergencia ante el desastre",
+                                                "Estrategias para resumir operaciones prematuramente",
+                                                "Estar preparado financieramente",
+                                                "Practica tu Plan",
+                                                "Monitorea, Revisa y Mejora");
+        formDefault.forEach(formulario -> {
+            formularioRevisions.add(new FormularioRevision(formulario, "", "", "", ""));
+        });
+        return formularioRevisions;
     }
 
 }

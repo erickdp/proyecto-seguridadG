@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormularioRevision {
+    private String temaRevVer;
     private String formulario;
     private String estado;
     private String cambios;

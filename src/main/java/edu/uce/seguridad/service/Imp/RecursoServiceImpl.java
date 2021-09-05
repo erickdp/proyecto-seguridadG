@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static edu.uce.seguridad.util.Utileria.establecerEstimaciones;
 import static edu.uce.seguridad.util.Utileria.establecerRecursos;
+import static edu.uce.seguridad.util.Utileria.formulariosDefault;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +32,8 @@ public class RecursoServiceImpl implements RecursoService {
     private FormularioCostosRecupRepository recupRepository;
 
     private EstatusFinancieroRepository financieroRepository;
+
+    private RevisionContinuaRepo revisionContinuaRepo;
 
     @Override
     @Transactional(readOnly = true)
@@ -53,6 +56,11 @@ public class RecursoServiceImpl implements RecursoService {
         // Se debe crear el formulario 8.4 por defecto
         this.financieroRepository.insert(EstatusFinanciero.builder()
                 .usuario(pojo.getUsuario())
+                .build());
+        // Se crea el formulario 10.1
+        this.revisionContinuaRepo.insert(RevisionContinua.builder()
+                .usuario(pojo.getUsuario())
+                .temas(formulariosDefault())
                 .build());
         return repository.insert(pojo);
     }
