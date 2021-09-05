@@ -11,6 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class bia2Servicio {
 
-    private String recursosServicio;
+    private String recursosInternos;
     private String propietarioProveedor;
 }
