@@ -111,20 +111,10 @@ public class Utileria {
 
     public static List<DataRecursos> recursosDefault() {
         List<String> dataDefault = Arrays.asList("Inmuebles", "Equipos", "Tecnológico", "Humanos", "Primordiales", "Secundarios");
-        List<DataRecursos> dataRecursosList = new ArrayList<>();
-
-        dataDefault.forEach(data -> {
-            dataRecursosList.add(new DataRecursos(
-                    new DataAmenazas(data, 0, 0, 0),
-                    0,
-                    0));
-        });
-
-        return dataRecursosList;
+        return dataDefault.stream().map(data -> new DataRecursos(new DataAmenazas(data, 0, 0, 0), 0, 0)).collect(Collectors.toList());
     }
 
     public static List<FormularioRevision> formulariosDefault() {
-        List<FormularioRevision> formularioRevisions = new ArrayList<>();
         List<String> formDefault = Arrays.asList("Marco teorico del PCN, Proposito, Alcance, y equipo",
                                                 "Actividades Prioritarias y Tiempos de Recuperación Ideales",
                                                 "Recursos necesarios para PCN",
@@ -135,10 +125,7 @@ public class Utileria {
                                                 "Estar preparado financieramente",
                                                 "Practica tu Plan",
                                                 "Monitorea, Revisa y Mejora");
-        formDefault.forEach(formulario -> {
-            formularioRevisions.add(new FormularioRevision(formulario, "", "", "", ""));
-        });
-        return formularioRevisions;
+        return formDefault.stream().map(data -> new FormularioRevision(data, "", "", "", "")).collect(Collectors.toList());
     }
 
 }
