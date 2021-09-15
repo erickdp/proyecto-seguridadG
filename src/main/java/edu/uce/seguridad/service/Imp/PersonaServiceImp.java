@@ -4,6 +4,7 @@ import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioRIP;
 import edu.uce.seguridad.model.Persona;
+import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.*;
 import edu.uce.seguridad.util.Utileria;
@@ -61,8 +62,11 @@ public class PersonaServiceImp implements PersonaService {
     @Override
     @Transactional
     public Persona actualizar(Persona pojo) throws DataAccessException {
-        pojo.setUsuario(Utileria.generarUsuario
-                (pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole()));
+        Usuario nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
+        while (this.personaRepository.findPersonaByUsuario(nuevoUsuario.getNombreUsuario()).get() != null) {
+            nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
+        }
+        pojo.setUsuario(nuevoUsuario);
         return this.personaRepository.save(pojo);
     }
 
@@ -144,8 +148,8 @@ public class PersonaServiceImp implements PersonaService {
         this.personaRepository.deleteById(persona.get_id());
         this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(nombreUsuario); // SE ELIMINA EL FORM DE ALCANCE
         this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(nombreUsuario); // SE ELIMINA EL FORM DE LIDERAZGO
-        this.listaContactoService.eliminarConcatosPorUser(nombreUsuario);
-        this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario);
+        this.listaContactoService.eliminarConcatosPorUser(nombreUsuario); // Lista de contactos servicio eliminado
+        this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario); // Lista de evaluacion servicio eliminado
         this.recursoService.eliminarDocumento(nombreUsuario); // 3.2 LISTO
         this.formularioRIPService.eliminarPorUsusario(nombreUsuario); // 4.1 listo
         this.estimacionDanoService.eliminarDocumento(nombreUsuario); // Eliminacion por usuario del form 4.2

@@ -78,5 +78,6 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
         if (formularioAlcance != null) {
             this.formularioAlcanceRepository.delete(formularioAlcance);
         }
+        // Si no encuentra el formulario no generar una excepcion para que siga el flujo normal de eliminacion en otros formularios.
     }
 }

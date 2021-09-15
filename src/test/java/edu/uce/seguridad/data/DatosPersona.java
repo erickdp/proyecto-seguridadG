@@ -8,7 +8,7 @@ import java.util.Optional;
 public class DatosPersona {
     public static Optional<Persona> getPersona001() {
         Persona persona = new Persona();
-        Usuario usuario = new Usuario(null, "erickdp", "1234", "REPRESENTANTE");
+        Usuario usuario = new Usuario("erickdp", "1234", "REPRESENTANTE");
         persona.set_id("1");
         persona.setOrganizacion("UNIVERSIDAD CENTRAL DEL ECUADOR");
         persona.setUsuario(usuario);
