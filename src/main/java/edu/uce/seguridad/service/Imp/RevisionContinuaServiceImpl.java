@@ -49,4 +49,12 @@ public class RevisionContinuaServiceImpl implements RevisionContinuaService {
     public RevisionContinua buscarRevisionPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         return this.repository.findRevisionByUsuario(nombreUsuario);
     }
+
+    @Override
+    public void eliminarRespuestaFormularioRevisionContinua(String nombreUsuario) {
+        RevisionContinua revision = this.repository.findRevisionByUsuario(nombreUsuario);
+        if (revision != null) {
+            this.repository.delete(revision);
+        }
+    }
 }

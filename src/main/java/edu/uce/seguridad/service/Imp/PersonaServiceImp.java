@@ -40,6 +40,16 @@ public class PersonaServiceImp implements PersonaService {
     private FondosDisponiblesService fondosDisponiblesService;
     private FormularioCostosRecupService formularioCostosRecupService;
     private GastosCorrienteService gastosCorrienteService;
+    private FormularioMedidasFinancierasService medidasFinancierasService;
+    private FormularioPlanDePruebaService formularioPlanDePruebaService;
+    private RevisionContinuaService revisionContinuaService;
+    private ControlPcnService controlPcnService;
+    private BIAAnalisiImpactoNegocioService impactoNegocioService;
+    private BIACuestionarioService biaCuestionarioService;
+    private Bia2Service bia2Service;
+    private BIAEstrategiasCNService biaEstrategiasCNService;
+    private BiaListaAmenazasService listaAmenazasService;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -166,6 +176,16 @@ public class PersonaServiceImp implements PersonaService {
         this.fondosDisponiblesService.eliminarConUsuario(nombreUsuario); // Eliminacion de form 8.1
         this.formularioCostosRecupService.eliminarConUsuario(nombreUsuario); // Eliminación de form 8.2
         this.gastosCorrienteService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 8.3 by saul end
+        this.medidasFinancierasService.eliminarPorMedidasFinancieras(nombreUsuario);//Eliminacion de form 8.5 by sam
+        this.formularioPlanDePruebaService.eliminarDocumento(nombreUsuario);//Eliminación de form 9.1 by sam
+        this.revisionContinuaService.eliminarDocumento(nombreUsuario);//Eliminación de form 10.1 by sam
+        this.controlPcnService.eliminarDocumento(nombreUsuario);//Eliminar form 10.2 by sam
+        this.impactoNegocioService.eliminarDocumento(nombreUsuario);//Eliminar Bia 6 by sam
+        this.biaCuestionarioService.eliminarDocumento(nombreUsuario);//Eliminar form Bia 6.1 by sam
+        this.bia2Service.eliminarDocumento(nombreUsuario);//Eliminar form 6.2 by sam
+        this.biaEstrategiasCNService.eliminarDocumento(nombreUsuario);//Eliminar form Bia 6.3 by sam
+        this.listaAmenazasService.eliminarDocumento(nombreUsuario);//Eliminar form Bia 6.4 by sam
+
     }
 
     @Override

@@ -3,6 +3,7 @@ package edu.uce.seguridad.service.Imp;
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.ControlPcn;
+import edu.uce.seguridad.model.FormularioMedidasFinancieras;
 import edu.uce.seguridad.model.RespuestasControlPcn;
 import edu.uce.seguridad.repository.ControlPcnRepository;
 import edu.uce.seguridad.service.service.ControlPcnService;
@@ -65,5 +66,11 @@ public class ControlPcnServiceImp implements ControlPcnService {
     @Transactional
     public void eliminarDocumento(String identificador) throws EliminacionException {
         this.controlPcnRepository.findByUsuario(identificador).ifPresent(this.controlPcnRepository::delete);
+    }
+
+    @Override
+    public void eliminarRespuestaFormularioAlcance(String nombreUsuario) {
+        this.controlPcnRepository.findByUsuario(nombreUsuario).ifPresent(this.controlPcnRepository::delete);
+
     }
 }

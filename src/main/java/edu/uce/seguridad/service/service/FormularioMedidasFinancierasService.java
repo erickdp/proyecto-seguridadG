@@ -8,6 +8,8 @@ import java.util.List;
 public interface FormularioMedidasFinancierasService extends BaseService<FormularioMedidasFinancieras, String>{
     
     List<FormularioMedidasFinancieras> buscarPorUserFiltrarPorMedidasFinancieras (String user) throws NoEncontradoExcepcion;
-    
+
     void eliminarPorMedidasFinancieras (String user);
+    void eliminarPorUsuario(String nombreUsuario);
+
 }

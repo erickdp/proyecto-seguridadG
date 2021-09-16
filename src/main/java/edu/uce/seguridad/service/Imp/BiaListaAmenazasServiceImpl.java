@@ -91,4 +91,13 @@ public class BiaListaAmenazasServiceImpl implements BiaListaAmenazasService {
         }
         return data;
     }
+
+    @Override
+    public void eliminarRespuestaFormularioAmenaza(String nombreUsuario) {
+        BiaListaAmenazas bia = this.biaListaAmenazasRepository.findByUsuario(nombreUsuario);
+        if (bia != null ){
+            this.biaListaAmenazasRepository.delete(bia);
+
+        }
+    }
 }
