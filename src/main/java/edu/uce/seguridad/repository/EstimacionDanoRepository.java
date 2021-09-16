@@ -10,4 +10,6 @@ public interface EstimacionDanoRepository extends MongoRepository<EstimacionDano
     List<EstimacionDano> findByUsuario(String usuario);
 
     Optional<EstimacionDano> findByUsuarioAndRiesgo(String usuario, String riesgo);
+
+
 }

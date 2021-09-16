@@ -73,7 +73,7 @@ public class FormularioListadeAcopioServiceImp implements FormularioListadeAcopi
     public void eliminarPorUsuario(String usuario) {
         List<FormularioListadeAcopio> listadeAcopios = buscarporUsuario(usuario);
         if (!listadeAcopios.isEmpty()){
-            listadeAcopios.forEach(lista -> this.eliminarDocumento(lista.getId()));
+            listadeAcopios.forEach(lista -> this.formularioListadeAcopioRepository.delete(lista));
         }
 
     }

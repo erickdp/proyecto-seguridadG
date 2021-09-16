@@ -88,4 +88,10 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
         Optional<FondosDisponibles> fondosDisponibles = this.fondosDisponiblesRepository.findByUsaurio(identificador);
         fondosDisponibles.ifPresent(this.fondosDisponiblesRepository::delete);
     }
+
+    @Override
+    public void eliminarConUsuario(String usuario) {
+        Optional<FondosDisponibles> fondosDisponibles = this.fondosDisponiblesRepository.findByUsaurio(usuario);
+        fondosDisponibles.ifPresent(elemento -> this.fondosDisponiblesRepository.delete(fondosDisponibles.get()));
+    }
 }

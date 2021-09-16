@@ -77,7 +77,7 @@ public class ListaContactoExternoServiceImp implements ListaContactoExternoServi
     public void eliminarConcatosPorUser(String user) {
         List<ListaContactoExterno> contactos = this.repository.findByUserOrderByTipoContactoAsc(user);
         if (!contactos.isEmpty()) {
-            contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
+            contactos.forEach(contacto -> this.repository.delete(contacto));
         }
     }
 }

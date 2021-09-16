@@ -21,24 +21,25 @@ import java.util.Optional;
 public class PersonaServiceImp implements PersonaService {
 
     private PersonaRepository personaRepository;
-
     private FormularioAlcanceService formularioAlcanceService;
-
     private FormularioLiderazgoService formularioLiderazgoService;
-
     private ListaContactoService listaContactoService;
-
     private ListaEvaluacionService listaEvaluacionService;
-
     private FormularioRIPService formularioRIPService;
-
     private EstimacionDanoService estimacionDanoService;
-
     private RecursoService recursoService;
-
     private ProteccionYMitigacionService proteccionYMitigacionService;
-
     private EvacuacionYRescateService evacuacionYRescateService;
+    private CentroOperacionService centroOperacionService;
+    private ContactoEmergenciaService contactoEmergenciaService;
+    private ListaContactoExternoService listaContactoExternoService;
+    private FormularioListadeAcopioService formularioListadeAcopioService;
+    private FormularioEvaluacionDanosIIService formularioEvaluacionDanosIIService;
+    private EstrategiasContinuidadService estrategiasContinuidadService;
+    private EstrategiaService estrategiaService;
+    private FondosDisponiblesService fondosDisponiblesService;
+    private FormularioCostosRecupService formularioCostosRecupService;
+    private GastosCorrienteService gastosCorrienteService;
 
     @Override
     @Transactional(readOnly = true)
@@ -155,6 +156,16 @@ public class PersonaServiceImp implements PersonaService {
         this.estimacionDanoService.eliminarDocumento(nombreUsuario); // Eliminacion por usuario del form 4.2
         this.proteccionYMitigacionService.eliminarDocumento(nombreUsuario); // Eliminacion de form 5.1
         this.evacuacionYRescateService.eliminarDocumento(nombreUsuario); // Eliminacion de fomr 6.1
+        this.centroOperacionService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 6.2 listo by saul start
+        this.contactoEmergenciaService.eliminarConUsuario(nombreUsuario); // Eliminacion fe form 6.3
+        this.listaContactoExternoService.eliminarConcatosPorUser(nombreUsuario); // Eliminacion de form 6.4
+        this.formularioListadeAcopioService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 6.5
+        this.formularioEvaluacionDanosIIService.eliminarEvaluacionesPorUser(nombreUsuario); // Eliminacion de form 6.6
+        this.estrategiaService.eliminarConUsuario(nombreUsuario); // Eliminacion de fomr 7.1
+        this.estrategiasContinuidadService.eliminarConUsuario(nombreUsuario); // Eliminacion de fomr 7.2
+        this.fondosDisponiblesService.eliminarConUsuario(nombreUsuario); // Eliminacion de form 8.1
+        this.formularioCostosRecupService.eliminarConUsuario(nombreUsuario); // Eliminación de form 8.2
+        this.gastosCorrienteService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 8.3 by saul end
     }
 
     @Override

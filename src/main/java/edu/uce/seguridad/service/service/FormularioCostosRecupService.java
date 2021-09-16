@@ -8,4 +8,6 @@ public interface FormularioCostosRecupService extends BaseService<FormularioCost
 
     void eliminarPorUsuario(String usuario);
 
+    void eliminarConUsuario(String usuario);
+
 }

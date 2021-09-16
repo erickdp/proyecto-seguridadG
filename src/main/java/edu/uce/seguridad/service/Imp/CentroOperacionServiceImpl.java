@@ -48,4 +48,12 @@ public class CentroOperacionServiceImpl implements CentroOperacionService {
     public CentroOperacion buscarCentroPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         return this.repository.findCentroByUsuario(nombreUsuario);
     }
+
+    @Override
+    public void eliminarPorUsuario(String usuario) {
+        CentroOperacion centroOperacion = this.buscarCentroPorUsuario(usuario);
+        if (centroOperacion != null) {
+            this.repository.delete(centroOperacion);
+        }
+    }
 }
