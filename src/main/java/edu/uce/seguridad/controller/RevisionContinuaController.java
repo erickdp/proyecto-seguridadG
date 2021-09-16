@@ -98,13 +98,13 @@ public class RevisionContinuaController {
         }
     }
     */
-    @PostMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<Object> guardar(@RequestBody RevisionContinua revisionEnviada) {
-        RevisionContinua revision = service.agregar(revisionEnviada);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}")
-                .buildAndExpand(revision.get_id()).toUri();
-        return ResponseEntity.created(location).build();
-    }
+//    @PostMapping(produces = "application/json", consumes = "application/json")
+//    public ResponseEntity<Object> guardar(@RequestBody RevisionContinua revisionEnviada) {
+//        RevisionContinua revision = service.agregar(revisionEnviada);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}")
+//                .buildAndExpand(revision.get_id()).toUri();
+//        return ResponseEntity.created(location).build();
+//    }
 
     /*
     ENDPOINT para actualizar una revisión continua
@@ -153,9 +153,9 @@ public class RevisionContinuaController {
     Ej:
     http://localhost:8080/sgcnegocio/revisiones/61133f919761987103770a49
     */
-    @DeleteMapping("/{usuario}")
-    public ResponseEntity<Object> eliminarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
-        service.eliminarDocumento(nombreUsuario);
-        return new ResponseEntity<Object>(HttpStatus.OK);
-    }
+//    @DeleteMapping("/{usuario}")
+//    public ResponseEntity<Object> eliminarPorUsuario(@PathVariable("usuario") String nombreUsuario) {
+//        service.eliminarDocumento(nombreUsuario);
+//        return new ResponseEntity<Object>(HttpStatus.OK);
+//    }
 }

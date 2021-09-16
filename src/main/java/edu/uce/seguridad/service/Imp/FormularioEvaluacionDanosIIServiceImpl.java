@@ -75,7 +75,7 @@ public class FormularioEvaluacionDanosIIServiceImpl implements FormularioEvaluac
     public void eliminarEvaluacionesPorUser(String user) {
         List<FormularioEvaluacionDanosII> evaluacionDanos = buscarPorUsuario(user);
         if (!evaluacionDanos.isEmpty()) {
-            evaluacionDanos.forEach(evaluacion -> this.eliminarDocumento(evaluacion.get_id()));
+            evaluacionDanos.forEach(evaluacion -> this.evaluacionDanoRepository.delete(evaluacion));
         }
     }
 

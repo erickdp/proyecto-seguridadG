@@ -3,8 +3,10 @@ package edu.uce.seguridad.service.Imp;
 import edu.uce.seguridad.exception.MiClaseException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Organizacion;
+import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.OrganizacionRepository;
 import edu.uce.seguridad.service.service.OrganizacionService;
+import edu.uce.seguridad.service.service.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.Optional;
 public class OrganizacionServiceImp implements OrganizacionService {
 
     private OrganizacionRepository organizacionRepository;
+
+    private PersonaService personaService;
 
     @Override
     @Transactional(readOnly = true)
@@ -87,7 +91,11 @@ public class OrganizacionServiceImp implements OrganizacionService {
         if (organizacion == null) {
             throw new NoEncontradoExcepcion("No se ha encontrado la organización: ".concat(nombreOrganizacion));
         }
-        this.organizacionRepository.deleteById(organizacion.get_id());
+        this.organizacionRepository.deleteById(organizacion.get_id()); // Al eliminar la organizacion se eliminan tambien los socios a esa organizacion
+        List<Persona> personas = this.personaService.buscarPersonaPorOrganizacion(organizacion.getOrganizacion());
+        if (!personas.isEmpty()) {
+            personas.forEach(persona -> this.personaService.eliminarPersonaPorNombreUsuario(persona.getUsuario().getNombreUsuario()));
+        }
     }
 
     @Override

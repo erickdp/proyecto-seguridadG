@@ -27,7 +27,7 @@ public class ProyectoSeguridadGApplication implements CommandLineRunner {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/sgcnegocio/**")
-                        .allowedOrigins("http://localhost:3000", "http://localhost:8080")
+                        .allowedOrigins("http://localhost:3000", "http://localhost:8080", "https://front-seguridades.herokuapp.com")
                         .allowedHeaders("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .maxAge(3600);

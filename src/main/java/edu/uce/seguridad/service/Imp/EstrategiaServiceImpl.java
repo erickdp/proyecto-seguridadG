@@ -80,9 +80,15 @@ public class EstrategiaServiceImpl implements EstrategiaService {
         throw new NoEncontradoExcepcion("resumen", "No se encontro el registro para el usuario:".concat(usuario));
     }
 
+    @Override
+    public void eliminarConUsuario(String usuario) {
+        Optional<ResumenDeEstrategias>  resumenDeEstrategias = this.buscarporUsuario(usuario);
+        resumenDeEstrategias.ifPresent(deEstrategias -> this.estrategiaRepository.delete(deEstrategias));
+    }
+
     // By Erick
     @Transactional
-    private void generarEstrategiasContinuidad(ResumenDeEstrategias pojo, boolean bandera) {
+    public void generarEstrategiasContinuidad(ResumenDeEstrategias pojo, boolean bandera) {
         String[] categoria = {"recursosInternos", "serviciosPublicos", "sociosExternos"};
 
         if(bandera) { // Si actualiza el form 7.1 el 7.2 desaparece y toma los nuevos datos del 7.1

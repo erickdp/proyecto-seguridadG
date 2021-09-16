@@ -4,6 +4,7 @@ import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioRIP;
 import edu.uce.seguridad.model.Persona;
+import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.*;
 import edu.uce.seguridad.util.Utileria;
@@ -20,24 +21,25 @@ import java.util.Optional;
 public class PersonaServiceImp implements PersonaService {
 
     private PersonaRepository personaRepository;
-
     private FormularioAlcanceService formularioAlcanceService;
-
     private FormularioLiderazgoService formularioLiderazgoService;
-
     private ListaContactoService listaContactoService;
-
     private ListaEvaluacionService listaEvaluacionService;
-
     private FormularioRIPService formularioRIPService;
-
     private EstimacionDanoService estimacionDanoService;
-
     private RecursoService recursoService;
-
     private ProteccionYMitigacionService proteccionYMitigacionService;
-
     private EvacuacionYRescateService evacuacionYRescateService;
+    private CentroOperacionService centroOperacionService;
+    private ContactoEmergenciaService contactoEmergenciaService;
+    private ListaContactoExternoService listaContactoExternoService;
+    private FormularioListadeAcopioService formularioListadeAcopioService;
+    private FormularioEvaluacionDanosIIService formularioEvaluacionDanosIIService;
+    private EstrategiasContinuidadService estrategiasContinuidadService;
+    private EstrategiaService estrategiaService;
+    private FondosDisponiblesService fondosDisponiblesService;
+    private FormularioCostosRecupService formularioCostosRecupService;
+    private GastosCorrienteService gastosCorrienteService;
 
     @Override
     @Transactional(readOnly = true)
@@ -61,8 +63,11 @@ public class PersonaServiceImp implements PersonaService {
     @Override
     @Transactional
     public Persona actualizar(Persona pojo) throws DataAccessException {
-        pojo.setUsuario(Utileria.generarUsuario
-                (pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole()));
+        Usuario nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
+        while (this.personaRepository.findPersonaByUsuario(nuevoUsuario.getNombreUsuario()).get() != null) {
+            nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
+        }
+        pojo.setUsuario(nuevoUsuario);
         return this.personaRepository.save(pojo);
     }
 
@@ -144,13 +149,23 @@ public class PersonaServiceImp implements PersonaService {
         this.personaRepository.deleteById(persona.get_id());
         this.formularioAlcanceService.eliminarRespuestaFormularioAlcance(nombreUsuario); // SE ELIMINA EL FORM DE ALCANCE
         this.formularioLiderazgoService.eliminarRespuestaFormularioLiderazgo(nombreUsuario); // SE ELIMINA EL FORM DE LIDERAZGO
-        this.listaContactoService.eliminarConcatosPorUser(nombreUsuario);
-        this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario);
+        this.listaContactoService.eliminarConcatosPorUser(nombreUsuario); // Lista de contactos servicio eliminado
+        this.listaEvaluacionService.eliminarEvaluacionesPorUser(nombreUsuario); // Lista de evaluacion servicio eliminado
         this.recursoService.eliminarDocumento(nombreUsuario); // 3.2 LISTO
         this.formularioRIPService.eliminarPorUsusario(nombreUsuario); // 4.1 listo
         this.estimacionDanoService.eliminarDocumento(nombreUsuario); // Eliminacion por usuario del form 4.2
         this.proteccionYMitigacionService.eliminarDocumento(nombreUsuario); // Eliminacion de form 5.1
         this.evacuacionYRescateService.eliminarDocumento(nombreUsuario); // Eliminacion de fomr 6.1
+        this.centroOperacionService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 6.2 listo by saul start
+        this.contactoEmergenciaService.eliminarConUsuario(nombreUsuario); // Eliminacion fe form 6.3
+        this.listaContactoExternoService.eliminarConcatosPorUser(nombreUsuario); // Eliminacion de form 6.4
+        this.formularioListadeAcopioService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 6.5
+        this.formularioEvaluacionDanosIIService.eliminarEvaluacionesPorUser(nombreUsuario); // Eliminacion de form 6.6
+        this.estrategiaService.eliminarConUsuario(nombreUsuario); // Eliminacion de fomr 7.1
+        this.estrategiasContinuidadService.eliminarConUsuario(nombreUsuario); // Eliminacion de fomr 7.2
+        this.fondosDisponiblesService.eliminarConUsuario(nombreUsuario); // Eliminacion de form 8.1
+        this.formularioCostosRecupService.eliminarConUsuario(nombreUsuario); // Eliminación de form 8.2
+        this.gastosCorrienteService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 8.3 by saul end
     }
 
     @Override

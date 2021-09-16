@@ -1,7 +1,6 @@
 package edu.uce.seguridad.util;
 
 import edu.uce.seguridad.model.*;
-import sun.font.EAttribute;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -92,6 +91,40 @@ public class Utileria {
         return estatusFinanciero.getFondosDisponiblesA() +
                 estatusFinanciero.getCostoRecuperacionB() +
                 estatusFinanciero.getGastosOrdinariosC();
+    }
+
+    public static List<DataAmenazas> agregarAmenazasGeneral(BiaListaAmenazas amenazas) {
+        List<DataAmenazas> dataAmenazasGeneral = new ArrayList<>();
+
+        amenazas.getLista().forEach((clave, valor) -> {
+
+            List<DataAmenazas> dataAmenazas = valor.stream().map(getAmenaza ->
+                    new DataAmenazas(getAmenaza.getTipoAmenaza(), 0, 0, 0)
+            ).collect(Collectors.toList());
+
+            dataAmenazasGeneral.addAll(dataAmenazas);
+
+        });
+        return dataAmenazasGeneral;
+    }
+
+    public static List<DataRecursos> recursosDefault() {
+        List<String> dataDefault = Arrays.asList("Inmuebles", "Equipos", "Tecnológico", "Humanos", "Primordiales", "Secundarios");
+        return dataDefault.stream().map(data -> new DataRecursos(new DataAmenazas(data, 0, 0, 0), 0, 0)).collect(Collectors.toList());
+    }
+
+    public static List<FormularioRevision> formulariosDefault() {
+        List<String> formDefault = Arrays.asList("Marco teorico del PCN, Proposito, Alcance, y equipo",
+                                                "Actividades Prioritarias y Tiempos de Recuperación Ideales",
+                                                "Recursos necesarios para PCN",
+                                                "Evaluación de riesgos",
+                                                "Protección antes del Desastre y Mitigación",
+                                                "Respuesta de Emergencia ante el desastre",
+                                                "Estrategias para resumir operaciones prematuramente",
+                                                "Estar preparado financieramente",
+                                                "Practica tu Plan",
+                                                "Monitorea, Revisa y Mejora");
+        return formDefault.stream().map(data -> new FormularioRevision(data, "", "", "", "")).collect(Collectors.toList());
     }
 
 }

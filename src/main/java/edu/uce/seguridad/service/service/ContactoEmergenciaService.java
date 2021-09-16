@@ -9,4 +9,6 @@ public interface ContactoEmergenciaService extends BaseService<ContactoEmergenci
     ContactoEmergencia buscarContactoPorDepartamento(String nombreDepartamento) throws NoEncontradoExcepcion;
 
     List<ContactoEmergencia> buscarContactosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
+
+    void eliminarConUsuario(String usuario);
 }

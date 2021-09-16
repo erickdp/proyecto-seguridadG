@@ -53,4 +53,12 @@ public class ContactoEmergenciaServImpl implements ContactoEmergenciaService {
     public List<ContactoEmergencia> buscarContactosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         return this.repository.findContactosByUsuario(nombreUsuario);
     }
+
+    @Override
+    public void eliminarConUsuario(String usuario) {
+        List<ContactoEmergencia> contactoEmergencia = this.buscarContactosPorUsuario(usuario);
+        if (!contactoEmergencia.isEmpty()) {
+            contactoEmergencia.forEach(contactoEmergencia1 -> this.repository.delete(contactoEmergencia1));
+        }
+    }
 }

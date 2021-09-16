@@ -91,4 +91,12 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
         }
         this.formularioCostosRecupRepository.deleteByUsuario(usuario);
     }
+
+    @Override
+    public void eliminarConUsuario(String usuario) {
+        FormularioCostosRecup formCost = this.buscarPorUsuario(usuario);
+        if (formCost != null) {
+            this.formularioCostosRecupRepository.delete(formCost);
+        }
+    }
 }
