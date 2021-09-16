@@ -49,6 +49,7 @@ public class PersonaServiceImp implements PersonaService {
     private Bia2Service bia2Service;
     private BIAEstrategiasCNService biaEstrategiasCNService;
     private BiaListaAmenazasService listaAmenazasService;
+    private EstatusFinancieroService estatusFinancieroService;
 
 
     @Override
@@ -176,6 +177,7 @@ public class PersonaServiceImp implements PersonaService {
         this.fondosDisponiblesService.eliminarConUsuario(nombreUsuario); // Eliminacion de form 8.1
         this.formularioCostosRecupService.eliminarConUsuario(nombreUsuario); // Eliminación de form 8.2
         this.gastosCorrienteService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 8.3 by saul end
+        this.estatusFinancieroService.eliminarPorUsuario(nombreUsuario);//Eliminación de form 8.4
         this.medidasFinancierasService.eliminarPorMedidasFinancieras(nombreUsuario);//Eliminacion de form 8.5 by sam
         this.formularioPlanDePruebaService.eliminarDocumento(nombreUsuario);//Eliminación de form 9.1 by sam
         this.revisionContinuaService.eliminarDocumento(nombreUsuario);//Eliminación de form 10.1 by sam
