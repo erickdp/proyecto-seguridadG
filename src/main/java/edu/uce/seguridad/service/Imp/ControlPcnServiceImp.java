@@ -69,7 +69,7 @@ public class ControlPcnServiceImp implements ControlPcnService {
     }
 
     @Override
-    public void eliminarRespuestaFormularioAlcance(String nombreUsuario) {
+    public void eliminarRespuestaFormularioPCN(String nombreUsuario) {
         this.controlPcnRepository.findByUsuario(nombreUsuario).ifPresent(this.controlPcnRepository::delete);
 
     }

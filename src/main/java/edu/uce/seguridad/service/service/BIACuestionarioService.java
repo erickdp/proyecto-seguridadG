@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface BIACuestionarioService extends BaseService<BIACuestionario, String> {
     Map<String, Double> obtenerPromedioCuestionario(String organizacion);
-    void eliminarRespuestaFormularioAlcance(String nombreUsuario);
+    void eliminarRespuestaFormularioBIAC(String nombreUsuario);
 }

@@ -29,7 +29,7 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
 
     @Override
     @Transactional
-    public void eliminarPorUsuario(String nombreUsuario) {
+    public void eliminarPorUsuarioFinanciero(String nombreUsuario) {
         List<FormularioMedidasFinancieras> form= this.repository.findByUserByMedidasFinancieras(nombreUsuario);
         if (!form.isEmpty()) {
             form.forEach(contacto -> this.eliminarDocumento(contacto.getUser()));

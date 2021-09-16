@@ -10,6 +10,6 @@ public interface FormularioMedidasFinancierasService extends BaseService<Formula
     List<FormularioMedidasFinancieras> buscarPorUserFiltrarPorMedidasFinancieras (String user) throws NoEncontradoExcepcion;
 
     void eliminarPorMedidasFinancieras (String user);
-    void eliminarPorUsuario(String nombreUsuario);
+    void eliminarPorUsuarioFinanciero(String nombreUsuario);
 
 }

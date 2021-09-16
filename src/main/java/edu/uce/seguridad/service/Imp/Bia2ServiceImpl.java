@@ -70,7 +70,7 @@ public class Bia2ServiceImpl implements Bia2Service {
     }
 
     @Override
-    public void eliminarporUsuario(String usuario) {
+    public void eliminarporUsuarioBIA(String usuario) {
         List<Bia2> bia2List = buscarporUsuario(usuario);
         if (!bia2List.isEmpty()){
             bia2List.forEach(lista -> this.eliminarDocumento(lista.get_id()));

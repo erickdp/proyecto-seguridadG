@@ -120,7 +120,7 @@ public class BIACuestionarioServiceImp implements BIACuestionarioService {
     }
 
     @Override
-    public void eliminarRespuestaFormularioAlcance(String nombreUsuario) {
+    public void eliminarRespuestaFormularioBIAC(String nombreUsuario) {
         this.biaCuestionarioRepository.findByUsuario(nombreUsuario).ifPresent(this.biaCuestionarioRepository::delete);
     }
 

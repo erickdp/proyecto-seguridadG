@@ -179,14 +179,14 @@ public class PersonaServiceImp implements PersonaService {
         this.gastosCorrienteService.eliminarPorUsuario(nombreUsuario); // Eliminacion de form 8.3 by saul end
         this.estatusFinancieroService.eliminarPorUsuario(nombreUsuario);//Eliminación de form 8.4
         this.medidasFinancierasService.eliminarPorMedidasFinancieras(nombreUsuario);//Eliminacion de form 8.5 by sam
-        this.formularioPlanDePruebaService.eliminarDocumento(nombreUsuario);//Eliminación de form 9.1 by sam
-        this.revisionContinuaService.eliminarDocumento(nombreUsuario);//Eliminación de form 10.1 by sam
-        this.controlPcnService.eliminarDocumento(nombreUsuario);//Eliminar form 10.2 by sam
-        this.impactoNegocioService.eliminarDocumento(nombreUsuario);//Eliminar Bia 6 by sam
-        this.biaCuestionarioService.eliminarDocumento(nombreUsuario);//Eliminar form Bia 6.1 by sam
-        this.bia2Service.eliminarDocumento(nombreUsuario);//Eliminar form 6.2 by sam
-        this.biaEstrategiasCNService.eliminarDocumento(nombreUsuario);//Eliminar form Bia 6.3 by sam
-        this.listaAmenazasService.eliminarDocumento(nombreUsuario);//Eliminar form Bia 6.4 by sam
+        this.formularioPlanDePruebaService.eliminarRespuestaFormularioPlanDePruebas(nombreUsuario);//Eliminación de form 9.1 by sam
+        this.revisionContinuaService.eliminarRespuestaFormularioRevisionContinua(nombreUsuario);//Eliminación de form 10.1 by sam
+        this.controlPcnService.eliminarRespuestaFormularioPCN(nombreUsuario);//Eliminar form 10.2 by sam
+        this.impactoNegocioService.eliminarRespuestaBiaAnalisisNegocio(nombreUsuario);//Eliminar Bia 6 by sam
+        this.biaCuestionarioService.eliminarRespuestaFormularioBIAC(nombreUsuario);//Eliminar form Bia 6.1 by sam
+        this.bia2Service.eliminarporUsuarioBIA(nombreUsuario);//Eliminar form 6.2 by sam
+        this.biaEstrategiasCNService.eliminarRespuestaFormularioEstrategiaCN(nombreUsuario);//Eliminar form Bia 6.3 by sam
+        this.listaAmenazasService.eliminarRespuestaFormularioAmenaza(nombreUsuario);//Eliminar form Bia 6.4 by sam
 
     }
 
