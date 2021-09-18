@@ -88,8 +88,8 @@ public class Utileria {
     }
 
     public static double calcularBalance(EstatusFinanciero estatusFinanciero) {
-        return estatusFinanciero.getFondosDisponiblesA() +
-                estatusFinanciero.getCostoRecuperacionB() +
+        return estatusFinanciero.getFondosDisponiblesA() -
+                estatusFinanciero.getCostoRecuperacionB() -
                 estatusFinanciero.getGastosOrdinariosC();
     }
 
