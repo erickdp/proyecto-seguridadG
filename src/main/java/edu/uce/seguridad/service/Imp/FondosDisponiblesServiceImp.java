@@ -41,31 +41,17 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
     @Override
     @Transactional
     public FondosDisponibles agregar(FondosDisponibles pojo) throws DataAccessException {
-        BigDecimal bigDecimal = new BigDecimal("0"); // En el back se raliza la suma de los montos para generar el monto final
-        List<FondosDistribucion> fondosDistribucionList = pojo.getFondosDistribucion();
-        for (FondosDistribucion fondo : fondosDistribucionList) {
-            bigDecimal = bigDecimal.add(fondo.getMonto());
-        }
-        fondosDistribucionList.add(getFondoTotal(bigDecimal));
+        // En el front se realiza la suma de Total Fondos Disponibles (A)
         return this.fondosDisponiblesRepository.insert(pojo);
     }
 
     @Override
     @Transactional
     public FondosDisponibles actualizar(FondosDisponibles pojo) throws DataAccessException {
-        List<FondosDistribucion> fondosDistribucionList = pojo.getFondosDistribucion();
-        BigDecimal bigDecimal = new BigDecimal("0");
-        for (FondosDistribucion fondo : fondosDistribucionList) {
-            if (!fondo.getTipo().equalsIgnoreCase("Total Fondos Disponibles (A)")) {
-                bigDecimal = bigDecimal.add(fondo.getMonto());
-            }
-        }
-        FondosDistribucion fondoTotal = fondosDistribucionList.get(fondosDistribucionList.size() - 1); // El monto total en la actualizacion debe de ser el ultimo registro de la lista
-        fondoTotal.setMonto(bigDecimal);
         // Debería existir si o si porque se creo en pasos anteriores
         EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUsaurio()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
         if (estatus != null) {
-            estatus.setFondosDisponiblesA(bigDecimal.doubleValue()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
+            estatus.setFondosDisponiblesA(pojo.getTotalFondos()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
             estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }
