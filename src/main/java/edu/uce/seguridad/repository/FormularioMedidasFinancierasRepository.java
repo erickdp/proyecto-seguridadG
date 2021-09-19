@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FormularioMedidasFinancierasRepository extends MongoRepository<FormularioMedidasFinancieras, String>{
     
-    List<FormularioMedidasFinancieras> findByUserOrderByMedidasFinancieras(String user);
+    List<FormularioMedidasFinancieras> findByUser(String user);
     
 }
