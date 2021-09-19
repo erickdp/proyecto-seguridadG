@@ -68,6 +68,15 @@ public class FormularioPlanDePruebaServiceImp implements FormularioPlanDePruebaS
     }
 
     @Override
+    public void eliminarRespuestaFormularioPlanDePruebas(String nombreUsuario) {
+        List<FormularioPlanDePrueba> contactos = this.repository.findByUserOrderByTipoDeEjercicio(nombreUsuario);
+        if (!contactos.isEmpty()) {
+            contactos.forEach(contacto -> this.eliminarDocumento(contacto.getUser()));
+        }
+
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<FormularioPlanDePrueba> buscarTodos() throws NoEncontradoExcepcion {
         List<FormularioPlanDePrueba> contactos = this.repository.findAll();

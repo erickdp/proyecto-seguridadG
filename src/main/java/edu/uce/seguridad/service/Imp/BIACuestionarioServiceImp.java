@@ -118,4 +118,11 @@ public class BIACuestionarioServiceImp implements BIACuestionarioService {
         promedio.put("sin_registros", 0d);
         return promedio;
     }
+
+    @Override
+    public void eliminarRespuestaFormularioBIAC(String nombreUsuario) {
+        this.biaCuestionarioRepository.findByUsuario(nombreUsuario).ifPresent(this.biaCuestionarioRepository::delete);
+    }
+
+
 }

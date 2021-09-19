@@ -9,4 +9,5 @@ public interface FormularioPlanDePruebaService extends BaseService<FormularioPla
     List<FormularioPlanDePrueba> buscarPorUserFiltrarPorTipoDeEjercicio (String user) throws NoEncontradoExcepcion;
 
     void eliminarPorTipoDeEjercicio(String user);
+    void eliminarRespuestaFormularioPlanDePruebas(String nombreUsuario);
 }

@@ -88,4 +88,10 @@ public class BIAAnalisiImpactoNegocioServiceImp implements BIAAnalisiImpactoNego
         Optional<BIAAnalisiImpactoNegocio> negocioRepositoryByUsuario = this.negocioRepository.findByUsuario(identificador);
         negocioRepositoryByUsuario.ifPresent(this.negocioRepository::delete);
     }
+
+    @Override
+    public void eliminarRespuestaBiaAnalisisNegocio(String nombreUsuario) {
+        Optional<BIAAnalisiImpactoNegocio> negocioRepositoryByUsuario = this.negocioRepository.findByUsuario(nombreUsuario);
+        negocioRepositoryByUsuario.ifPresent(this.negocioRepository::delete);
+    }
 }
