@@ -20,7 +20,7 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
     @Override
     @Transactional(readOnly = true)
     public List<FormularioMedidasFinancieras> buscarPorUserFiltrarPorMedidasFinancieras(String user) throws NoEncontradoExcepcion {
-        List<FormularioMedidasFinancieras> contactos = this.repository.findByUser(user);
+        List<FormularioMedidasFinancieras> contactos = this.repository.findByUserOrderByMedidasFinancieras(user);
         if (contactos.isEmpty()) {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(user));
         }
@@ -30,7 +30,7 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
     @Override
     @Transactional
     public void eliminarPorUsuarioFinanciero(String nombreUsuario) {
-        List<FormularioMedidasFinancieras> form= this.repository.findByUser(nombreUsuario);
+        List<FormularioMedidasFinancieras> form= this.repository.findByUserOrderByMedidasFinancieras(nombreUsuario);
         if (!form.isEmpty()) {
             form.forEach(contacto -> this.eliminarDocumento(contacto.getUser()));
         }
@@ -86,7 +86,7 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
     @Override
     @Transactional
     public void eliminarPorMedidasFinancieras(String user) {
-        List<FormularioMedidasFinancieras> contactos = this.repository.findByUser(user);
+        List<FormularioMedidasFinancieras> contactos = this.repository.findByUserOrderByMedidasFinancieras(user);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
         }
