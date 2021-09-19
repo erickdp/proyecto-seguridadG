@@ -65,10 +65,10 @@ public class EstatusFinancieroServiceImp implements EstatusFinancieroService {
     }
 
     @Override
-    public void eliminarPorUsuario(String usuario) {
-        EstatusFinanciero estatusFinanciero = this.financieronRepository.findByUsuario(usuario);
+    public void eliminarPorUsuario(String nombreUsuario) {
+        EstatusFinanciero estatusFinanciero = this.financieronRepository.findByUsuario(nombreUsuario);
         if (estatusFinanciero != null) {
-            this.financieronRepository.deleteByUsuario(usuario);
+            this.financieronRepository.deleteByUsuario(nombreUsuario);
         }
     }
 }

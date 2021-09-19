@@ -2,6 +2,7 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioMedidasFinancieras;
+import edu.uce.seguridad.model.GastosCorrientes;
 import edu.uce.seguridad.repository.FormularioMedidasFinancierasRepository;
 import edu.uce.seguridad.service.service.FormularioMedidasFinancierasService;
 import java.util.List;
@@ -24,6 +25,15 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros para: ".concat(user));
         }
         return contactos;
+    }
+
+    @Override
+    @Transactional
+    public void eliminarPorUsuarioFinanciero(String nombreUsuario) {
+        List<FormularioMedidasFinancieras> form= this.repository.findByUser(nombreUsuario);
+        if (!form.isEmpty()) {
+            form.forEach(contacto -> this.eliminarDocumento(contacto.getUser()));
+        }
     }
 
 

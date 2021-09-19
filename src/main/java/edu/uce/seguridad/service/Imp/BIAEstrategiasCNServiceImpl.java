@@ -22,6 +22,14 @@ public class BIAEstrategiasCNServiceImpl implements BIAEstrategiasCNService {
     }
 
     @Override
+    public void eliminarRespuestaFormularioEstrategiaCN(String nombreUsuario) {
+        List<BIAEstrategiasCN> estrategiaCN = this.repository.findEstrategiasByUsuario(nombreUsuario);
+        if (!estrategiaCN.isEmpty()) {
+            estrategiaCN.forEach(form -> this.eliminarDocumento(form.getUsuario()));
+        }
+    }
+
+    @Override
     public List<BIAEstrategiasCN> buscarTodos() throws NoEncontradoExcepcion {
         return this.repository.findAll();
     }

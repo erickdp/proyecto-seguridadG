@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface BIAEstrategiasCNService extends BaseService<BIAEstrategiasCN, String> {
     List<BIAEstrategiasCN> buscarEstrategiasPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
+
+    void eliminarRespuestaFormularioEstrategiaCN(String nombreUsuario);
+
 }

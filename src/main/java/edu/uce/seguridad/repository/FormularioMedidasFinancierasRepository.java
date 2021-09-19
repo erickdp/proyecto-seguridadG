@@ -8,5 +8,4 @@ import java.util.List;
 public interface FormularioMedidasFinancierasRepository extends MongoRepository<FormularioMedidasFinancieras, String>{
     
     List<FormularioMedidasFinancieras> findByUser(String user);
-    
 }
