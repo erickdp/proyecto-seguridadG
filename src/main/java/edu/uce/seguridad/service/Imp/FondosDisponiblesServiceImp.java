@@ -41,6 +41,16 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
     @Override
     @Transactional
     public FondosDisponibles agregar(FondosDisponibles pojo) throws DataAccessException {
+        EstatusFinanciero status = this.financieroRepository.findByUsuario(pojo.getUsaurio());
+        if (status == null) { // En el caso de que no exista genero un estado financiero solo con el valor del total A y sin balanceABC
+            status = new EstatusFinanciero();
+            status.setUsuario(pojo.getUsaurio());
+            status.setFondosDisponiblesA(pojo.getTotalFondos());
+        } else { // Si ya existe entonces agrego el nuevo valor del total A y calculo el nuevo balance
+            status.setFondosDisponiblesA(pojo.getTotalFondos());
+            status.setBalanceABC(calcularBalance(status));
+        }
+        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado A
         // En el front se realiza la suma de Total Fondos Disponibles (A)
         return this.fondosDisponiblesRepository.insert(pojo);
     }
@@ -48,10 +58,10 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
     @Override
     @Transactional
     public FondosDisponibles actualizar(FondosDisponibles pojo) throws DataAccessException {
-        // Debería existir si o si porque se creo en pasos anteriores
+        // Si es estado financiero esta ya echo entonces toma la nueva variable de FondosDisponibles totalFondos;
         EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUsaurio()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
         if (estatus != null) {
-            estatus.setFondosDisponiblesA(pojo.getTotalFondos()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
+            estatus.setFondosDisponiblesA(pojo.getTotalFondos()); // el total se gurada en una variable primitiva double y eso se setea en el estado
             estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }

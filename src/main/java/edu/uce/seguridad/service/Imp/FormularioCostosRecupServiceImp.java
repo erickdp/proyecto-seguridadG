@@ -36,6 +36,17 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
 
     @Override
     public FormularioCostosRecup agregar(FormularioCostosRecup pojo) throws DataAccessException {
+        EstatusFinanciero status = this.financieroRepository.findByUsuario(pojo.getUsuario());
+        if (status == null) { // En el caso de que no exista genero un estado financiero solo con el valor del total B y sin balanceABC
+            status = new EstatusFinanciero();
+            status.setUsuario(pojo.getUsuario());
+            status.setFondosDisponiblesA(pojo.getTotalCosto());
+        } else { // Si ya existe entonces agrego el nuevo valor del total B y calculo el nuevo balance
+            status.setFondosDisponiblesA(pojo.getTotalCosto());
+            status.setBalanceABC(calcularBalance(status));
+        }
+        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
+        // En el front se realiza la suma de Total (B)
         return this.formularioCostosRecupRepository.insert(pojo);
     }
 

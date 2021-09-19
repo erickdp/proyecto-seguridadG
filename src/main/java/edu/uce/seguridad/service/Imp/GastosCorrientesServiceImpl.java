@@ -40,6 +40,17 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
     @Override
     @Transactional
     public GastosCorrientes agregar(GastosCorrientes pojo) throws DataAccessException {
+        EstatusFinanciero status = this.financieroRepository.findByUsuario(pojo.getUser());
+        if (status == null) { // En el caso de que no exista genero un estado financiero solo con el valor del total C y sin balanceABC
+            status = new EstatusFinanciero();
+            status.setUsuario(pojo.getUser());
+            status.setFondosDisponiblesA(pojo.getTotalGastos());
+        } else { // Si ya existe entonces agrego el nuevo valor del total C y calculo el nuevo balance
+            status.setFondosDisponiblesA(pojo.getTotalGastos());
+            status.setBalanceABC(calcularBalance(status));
+        }
+        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
+        // En el front se realiza la suma de Total (C)
         return this.gastosCorrientesRepository.insert(pojo);
     }
 
