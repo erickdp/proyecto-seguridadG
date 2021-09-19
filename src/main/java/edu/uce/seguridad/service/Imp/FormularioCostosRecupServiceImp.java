@@ -27,9 +27,9 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
     @Override
     @Transactional(readOnly = true)
     public List<FormularioCostosRecup> buscarTodos() throws NoEncontradoExcepcion {
-        List<FormularioCostosRecup> lista= this.formularioCostosRecupRepository.findAll();
-        if (lista.isEmpty()){
-            throw  new NoEncontradoExcepcion("respuesta", "No se han encontrado registros");
+        List<FormularioCostosRecup> lista = this.formularioCostosRecupRepository.findAll();
+        if (lista.isEmpty()) {
+            throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros");
         }
         return lista;
     }
@@ -41,11 +41,12 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
             status = new EstatusFinanciero();
             status.setUsuario(pojo.getUsuario());
             status.setFondosDisponiblesA(pojo.getTotalCosto());
+            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
         } else { // Si ya existe entonces agrego el nuevo valor del total B y calculo el nuevo balance
             status.setFondosDisponiblesA(pojo.getTotalCosto());
             status.setBalanceABC(calcularBalance(status));
+            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
         }
-        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
         // En el front se realiza la suma de Total (B)
         return this.formularioCostosRecupRepository.insert(pojo);
     }
@@ -63,24 +64,23 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
         }
 
 
-
         return this.formularioCostosRecupRepository.save(pojo);
     }
 
     @Override
     public FormularioCostosRecup buscaPorId(String identificador) throws NoEncontradoExcepcion {
         FormularioCostosRecup formularioCostosRecup = this.formularioCostosRecupRepository.findById(identificador).orElse(null);
-        if (formularioCostosRecup == null){
-            throw new NoEncontradoExcepcion("respuesta", "EL registro con el id: " .concat(identificador) + "No se ha encontrado");
+        if (formularioCostosRecup == null) {
+            throw new NoEncontradoExcepcion("respuesta", "EL registro con el id: ".concat(identificador) + "No se ha encontrado");
         }
-        return  formularioCostosRecup;
+        return formularioCostosRecup;
     }
 
     @Override
     public void eliminarDocumento(String identificador) throws EliminacionException {
         FormularioCostosRecup formCost = this.buscaPorId(identificador);
-        if (formCost == null){
-            throw  new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
+        if (formCost == null) {
+            throw new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
         }
         this.formularioCostosRecupRepository.delete(formCost);
     }
@@ -88,8 +88,8 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
     @Override
     public FormularioCostosRecup buscarPorUsuario(String usuario) {
         FormularioCostosRecup listadeCostos = this.formularioCostosRecupRepository.findByUsuario(usuario);
-        if (listadeCostos == null){
-            throw new NoEncontradoExcepcion("respuesta", "No se encontro el formulario para el usuario:" .concat(usuario));
+        if (listadeCostos == null) {
+            throw new NoEncontradoExcepcion("respuesta", "No se encontro el formulario para el usuario:".concat(usuario));
         }
         return listadeCostos;
     }
@@ -97,8 +97,8 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
     @Override
     public void eliminarPorUsuario(String usuario) {
         FormularioCostosRecup formCost = this.buscarPorUsuario(usuario);
-        if (formCost == null){
-            throw  new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
+        if (formCost == null) {
+            throw new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
         }
         this.formularioCostosRecupRepository.deleteByUsuario(usuario);
     }

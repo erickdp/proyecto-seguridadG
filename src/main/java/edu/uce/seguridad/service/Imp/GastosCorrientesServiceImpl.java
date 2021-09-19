@@ -45,11 +45,12 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
             status = new EstatusFinanciero();
             status.setUsuario(pojo.getUser());
             status.setFondosDisponiblesA(pojo.getTotalGastos());
+            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
         } else { // Si ya existe entonces agrego el nuevo valor del total C y calculo el nuevo balance
             status.setFondosDisponiblesA(pojo.getTotalGastos());
             status.setBalanceABC(calcularBalance(status));
+            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
         }
-        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
         // En el front se realiza la suma de Total (C)
         return this.gastosCorrientesRepository.insert(pojo);
     }

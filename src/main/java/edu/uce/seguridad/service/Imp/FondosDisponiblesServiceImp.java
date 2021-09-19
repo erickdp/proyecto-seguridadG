@@ -46,11 +46,12 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
             status = new EstatusFinanciero();
             status.setUsuario(pojo.getUsaurio());
             status.setFondosDisponiblesA(pojo.getTotalFondos());
+            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado A
         } else { // Si ya existe entonces agrego el nuevo valor del total A y calculo el nuevo balance
             status.setFondosDisponiblesA(pojo.getTotalFondos());
             status.setBalanceABC(calcularBalance(status));
+            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado A
         }
-        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado A
         // En el front se realiza la suma de Total Fondos Disponibles (A)
         return this.fondosDisponiblesRepository.insert(pojo);
     }
