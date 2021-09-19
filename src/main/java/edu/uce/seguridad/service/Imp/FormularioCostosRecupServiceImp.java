@@ -40,20 +40,19 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
         if (status == null) { // En el caso de que no exista genero un estado financiero solo con el valor del total B y sin balanceABC
             status = new EstatusFinanciero();
             status.setUsuario(pojo.getUsuario());
-            status.setFondosDisponiblesA(pojo.getTotalCosto());
-            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
+            status.setCostoRecuperacionB(pojo.getTotalCosto());
         } else { // Si ya existe entonces agrego el nuevo valor del total B y calculo el nuevo balance
-            status.setFondosDisponiblesA(pojo.getTotalCosto());
+            status.setCostoRecuperacionB(pojo.getTotalCosto());
             status.setBalanceABC(calcularBalance(status));
-            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
         }
+        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado B
         // En el front se realiza la suma de Total (B)
         return this.formularioCostosRecupRepository.insert(pojo);
     }
 
     @Override
     public FormularioCostosRecup actualizar(FormularioCostosRecup pojo) throws DataAccessException {
-        this.buscaPorId(pojo.get_id());
+        this.buscaPorId(pojo.get_id()); // Esto no es necesario si el nombre del ususario está indexado como único en el objeto, por tanto no se crean 2 registros distintos By Erick
 
 
         EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUsuario()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos

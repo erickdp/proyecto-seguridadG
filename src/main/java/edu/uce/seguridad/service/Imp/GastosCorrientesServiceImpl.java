@@ -44,13 +44,12 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
         if (status == null) { // En el caso de que no exista genero un estado financiero solo con el valor del total C y sin balanceABC
             status = new EstatusFinanciero();
             status.setUsuario(pojo.getUser());
-            status.setFondosDisponiblesA(pojo.getTotalGastos());
-            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
+            status.setGastosOrdinariosC(pojo.getTotalGastos());
         } else { // Si ya existe entonces agrego el nuevo valor del total C y calculo el nuevo balance
-            status.setFondosDisponiblesA(pojo.getTotalGastos());
+            status.setGastosOrdinariosC(pojo.getTotalGastos());
             status.setBalanceABC(calcularBalance(status));
-            this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
         }
+        this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
         // En el front se realiza la suma de Total (C)
         return this.gastosCorrientesRepository.insert(pojo);
     }
@@ -58,7 +57,7 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
     @Override
     @Transactional
     public GastosCorrientes actualizar(GastosCorrientes pojo) throws DataAccessException {
-        this.buscaPorId(pojo.get_id());
+        this.buscaPorId(pojo.get_id()); // Esto no es necesario si el nombre del ususario está indexado como único en el objeto, por tanto no se crean 2 registros distintos By Erick
         EstatusFinanciero estatus = this.financieroRepository.findByUsuario(pojo.getUser()); // Se debe generar un nuevo usuario para que se creen todos los registros automáticos
         if (estatus != null) {
             estatus.setGastosOrdinariosC(pojo.getTotalGastos()); // cast a double (ver si es mejor el uso de una variable para que sea dinámico la suma en el front)
