@@ -8,4 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface BIAControlesAlineadosALosImpactosRepository extends MongoRepository<BIAControlesAlineadosALosImpactos, String >{
     
      List<BIAControlesAlineadosALosImpactos> findByUserOrderByInmueble(String user);
+     
+     void deletedByUser(String user);
 }
