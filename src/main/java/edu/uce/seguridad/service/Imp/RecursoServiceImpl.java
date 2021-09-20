@@ -54,9 +54,9 @@ public class RecursoServiceImpl implements RecursoService {
                 .build();
         this.recupService.agregar(costosRecup);
         // Se debe crear el formulario 8.4 por defecto
-        this.financieroRepository.insert(EstatusFinanciero.builder()
-                .usuario(pojo.getUsuario())
-                .build());
+//        this.financieroRepository.insert(EstatusFinanciero.builder()
+//                .usuario(pojo.getUsuario())
+//                .build());
         // Se crea el formulario 10.1
         this.revisionContinuaRepo.insert(RevisionContinua.builder()
                 .usuario(pojo.getUsuario())
