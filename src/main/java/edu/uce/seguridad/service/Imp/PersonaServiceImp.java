@@ -50,7 +50,11 @@ public class PersonaServiceImp implements PersonaService {
     private BIAEstrategiasCNService biaEstrategiasCNService;
     private BiaListaAmenazasService listaAmenazasService;
     private EstatusFinancieroService estatusFinancieroService;
-
+    private BIAPeriocidadDeAccionesDeControlEnRecursosService biaPeriocidadDeAcciones;
+    private BIAEficenciaBasadaEnControlesDeRecursosService biaEficienciaBasadaEnControl;
+    private BIAControlesAlineadosALosImpactosService biacaalis;
+    private BIAAutomatizacionDeControlEnRecursosService biaAutomatizacion;
+    private BiaValoracionGeneralService biaValoracionGeneral;
 
     @Override
     @Transactional(readOnly = true)
@@ -187,6 +191,11 @@ public class PersonaServiceImp implements PersonaService {
         this.bia2Service.eliminarporUsuarioBIA(nombreUsuario);//Eliminar form 6.2 by sam
         this.biaEstrategiasCNService.eliminarRespuestaFormularioEstrategiaCN(nombreUsuario);//Eliminar form Bia 6.3 by sam
         this.listaAmenazasService.eliminarRespuestaFormularioAmenaza(nombreUsuario);//Eliminar form Bia 6.4 by sam
+        this.biaValoracionGeneral.eliminarConUsuario(nombreUsuario);//Eliminar bia 6.4 Valoracion by leo
+        this.biacaalis.eliminarConUsuario(nombreUsuario);//Eliminar form Bia 6.5 controles alineados 6.5 by leo
+        this.biaPeriocidadDeAcciones.eliminarConUsuario(nombreUsuario); //Eliminar Bia 6.5 periocidad by leo
+        this.biaEficienciaBasadaEnControl.eliminarConUsuario(nombreUsuario);//Eliminar Bia 6.5 eficiencia by leo
+        this.biaAutomatizacion.eliminarConUsuario(nombreUsuario);//Eliminar Bia 6.5 Automatizacion by leo
 
     }
 

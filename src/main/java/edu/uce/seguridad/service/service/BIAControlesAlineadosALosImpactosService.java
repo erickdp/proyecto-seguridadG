@@ -9,4 +9,5 @@ public interface BIAControlesAlineadosALosImpactosService extends BaseService<BI
     List<BIAControlesAlineadosALosImpactos> buscarPorUserFiltrarPorInmueble (String user) throws NoEncontradoExcepcion;
     
     void eliminarPorInmueble (String user);
+    void eliminarConUsuario(String user);
 }

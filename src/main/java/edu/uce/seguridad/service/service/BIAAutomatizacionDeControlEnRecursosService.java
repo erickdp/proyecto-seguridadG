@@ -9,5 +9,6 @@ public interface BIAAutomatizacionDeControlEnRecursosService extends BaseService
         List<BIAAutomatizacionDeControlEnRecursos> buscarPorUserFiltrarPorInmueble (String user) throws NoEncontradoExcepcion;
     
     void eliminarPorInmueble (String user);   
+    void eliminarConUsuario(String user);
      
 }
