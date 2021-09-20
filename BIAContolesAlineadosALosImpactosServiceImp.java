@@ -26,7 +26,7 @@ public class BIAContolesAlineadosALosImpactosServiceImp implements BIAControlesA
         }
         return contactos;}
 
-    @Override
+   /* @Override
      @Transactional
     public void eliminarPorInmueble(String user) {
         List<BIAControlesAlineadosALosImpactos> contactos = this.repository.findByUserOrderByInmueble(user);
@@ -34,7 +34,7 @@ public class BIAContolesAlineadosALosImpactosServiceImp implements BIAControlesA
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
         }
     }
-
+*/
     @Override
     @Transactional(readOnly = true)
     public List<BIAControlesAlineadosALosImpactos> buscarTodos() throws NoEncontradoExcepcion {
@@ -77,4 +77,12 @@ public class BIAContolesAlineadosALosImpactosServiceImp implements BIAControlesA
         this.repository.delete(contatos);
     }
     
+    @Override
+    @Transactional
+    public void eliminarBIAControlesAlineadosALosImpactos(String nombreUsuario) throws NoEncontradoExcepcion{
+        BIAControlesAlineadosALosImpactos contatos= (BIAControlesAlineadosALosImpactos) this.repository.findByUserOrderByInmueble(nombreUsuario);
+        if (contatos != null) {
+            this.repository.delete(contatos);
+        }
+    }
 }

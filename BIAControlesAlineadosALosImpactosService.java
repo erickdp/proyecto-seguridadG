@@ -8,5 +8,5 @@ import java.util.List;
 public interface BIAControlesAlineadosALosImpactosService extends BaseService<BIAControlesAlineadosALosImpactos, String>{
     List<BIAControlesAlineadosALosImpactos> buscarPorUserFiltrarPorInmueble (String user) throws NoEncontradoExcepcion;
     
-    void eliminarPorInmueble (String user);
+    void eliminarBIAControlesAlineadosALosImpactos (String user);
 }

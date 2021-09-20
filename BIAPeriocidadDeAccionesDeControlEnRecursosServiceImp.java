@@ -27,15 +27,15 @@ public class BIAPeriocidadDeAccionesDeControlEnRecursosServiceImp implements BIA
         return contactos;
     }
 
-    @Override
+ /*   @Override
     @Transactional
     public void eliminarPorInmueble(String user) {
         List<BIAPeriocidadDeAccionesDeControlEnRecursos> contactos = this.repository.findByUserOrderByInmueble(user);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
         }
-    }
-
+  }
+*/  
     @Override
     @Transactional(readOnly = true)
     public List<BIAPeriocidadDeAccionesDeControlEnRecursos> buscarTodos() throws NoEncontradoExcepcion {
@@ -68,7 +68,14 @@ public class BIAPeriocidadDeAccionesDeControlEnRecursosServiceImp implements BIA
         }
         return contactos;
     }
-
+    @Override
+    @Transactional
+    public void eliminarBIAPeriocidadDeAccionesDeControlEnRecursos(String nombreUsuario) throws NoEncontradoExcepcion{
+        BIAPeriocidadDeAccionesDeControlEnRecursos contatos= (BIAPeriocidadDeAccionesDeControlEnRecursos) this.repository.findByUserOrderByInmueble(nombreUsuario);
+        if (contatos != null) {
+            this.repository.delete(contatos);
+        }
+    }
     @Override
     @Transactional
     public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion {
@@ -78,5 +85,6 @@ public class BIAPeriocidadDeAccionesDeControlEnRecursosServiceImp implements BIA
         }
         this.repository.delete(contatos);
     }
-
+    
+    
 }

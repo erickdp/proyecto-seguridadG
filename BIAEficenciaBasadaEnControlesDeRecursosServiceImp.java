@@ -26,14 +26,15 @@ public class BIAEficenciaBasadaEnControlesDeRecursosServiceImp implements BIAEfi
         return contactos;
     }
 
-    @Override
+   /* @Override
     @Transactional
     public void eliminarPorInmueble(String user) {
            List<BIAEficenciaBasadaEnControlesDeRecursos> contactos = this.repository.findByUserOrderByInmueble(user);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
         }
-    }
+    } 
+    */
 
     @Override
     @Transactional(readOnly = true)
@@ -76,5 +77,14 @@ public class BIAEficenciaBasadaEnControlesDeRecursosServiceImp implements BIAEfi
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
         this.repository.delete(contatos);
+    }
+    
+    @Override
+    @Transactional
+    public void eliminarBIAEficenciaBasadaEnControlesDeRecursos(String nombreUsuario) throws NoEncontradoExcepcion{
+        BIAEficenciaBasadaEnControlesDeRecursos contatos= (BIAEficenciaBasadaEnControlesDeRecursos) this.repository.findByUserOrderByInmueble(nombreUsuario);
+        if (contatos != null) {
+            this.repository.delete(contatos);
+        }
     }
 }

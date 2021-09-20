@@ -10,6 +10,6 @@ import java.util.List;
 public interface BIAPeriocidadDeAccionesDeControlEnRecursosService extends BaseService<BIAPeriocidadDeAccionesDeControlEnRecursos, String> {
      List<BIAPeriocidadDeAccionesDeControlEnRecursos> buscarPorUserFiltrarPorInmueble (String user) throws NoEncontradoExcepcion;
     
-    void eliminarPorInmueble (String user);   
+    void eliminarBIAPeriocidadDeAccionesDeControlEnRecursos (String user);   
     
 }

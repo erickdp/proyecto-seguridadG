@@ -27,7 +27,7 @@ public class BIAAutomatizacionDeControlEnRecursosServiceImp implements BIAAutoma
         return contactos;
     }
 
-    @Override
+    /*@Override
     @Transactional
     public void eliminarPorInmueble(String user) {
         List<BIAAutomatizacionDeControlEnRecursos> contactos = this.repository.findByUserOrderByInmueble(user);
@@ -35,6 +35,7 @@ public class BIAAutomatizacionDeControlEnRecursosServiceImp implements BIAAutoma
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
         }
     }
+*/
 
     @Override
     @Transactional(readOnly = true)
@@ -79,4 +80,12 @@ public class BIAAutomatizacionDeControlEnRecursosServiceImp implements BIAAutoma
         this.repository.delete(contatos);
     }
 
+    @Override
+    @Transactional
+    public void eliminarBIAAutomatizacionDeControlEnRecursos(String nombreUsuario) throws NoEncontradoExcepcion{
+        BIAAutomatizacionDeControlEnRecursos contatos= (BIAAutomatizacionDeControlEnRecursos) this.repository.findByUserOrderByInmueble(nombreUsuario);
+        if (contatos != null) {
+            this.repository.delete(contatos);
+        }
+    }
 }

@@ -8,6 +8,6 @@ import java.util.List;
 public interface BIAAutomatizacionDeControlEnRecursosService extends BaseService<BIAAutomatizacionDeControlEnRecursos, String> {
         List<BIAAutomatizacionDeControlEnRecursos> buscarPorUserFiltrarPorInmueble (String user) throws NoEncontradoExcepcion;
     
-    void eliminarPorInmueble (String user);   
+    void eliminarBIAAutomatizacionDeControlEnRecursos (String user);   
      
 }

@@ -8,5 +8,5 @@ public interface BIAEficenciaBasadaEnControlesDeRecursosService extends BaseServ
 
     List<BIAEficenciaBasadaEnControlesDeRecursos> buscarPorUserFiltrarPorInmueble(String user) throws NoEncontradoExcepcion;
 
-    void eliminarPorInmueble(String user);
+    void eliminarBIAEficenciaBasadaEnControlesDeRecursos(String user);
 }
