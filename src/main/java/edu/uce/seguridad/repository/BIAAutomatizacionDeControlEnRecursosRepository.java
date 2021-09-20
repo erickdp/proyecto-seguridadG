@@ -7,4 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface BIAAutomatizacionDeControlEnRecursosRepository extends MongoRepository<BIAAutomatizacionDeControlEnRecursos, String > {
      List<BIAAutomatizacionDeControlEnRecursos> findByUserOrderByInmueble(String user);
+     
+     void deleteByUser(String user);
 }
