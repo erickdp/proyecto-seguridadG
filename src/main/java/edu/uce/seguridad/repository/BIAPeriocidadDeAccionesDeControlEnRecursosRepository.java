@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface BIAPeriocidadDeAccionesDeControlEnRecursosRepository extends MongoRepository<BIAPeriocidadDeAccionesDeControlEnRecursos, String > {
          List<BIAPeriocidadDeAccionesDeControlEnRecursos> findByUserOrderByInmueble(String user);
-         void deletedByUser(String user);
+         void deleteByUser(String user);
 }

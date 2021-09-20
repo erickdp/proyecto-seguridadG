@@ -8,5 +8,5 @@ public interface BIAEficenciaBasadaEnControlesDeRecursosRepository extends Mongo
 
     List<BIAEficenciaBasadaEnControlesDeRecursos> findByUserOrderByInmueble(String user);
 
-    void deletedByUser(String user);
+    void deleteByUser(String user);
 }

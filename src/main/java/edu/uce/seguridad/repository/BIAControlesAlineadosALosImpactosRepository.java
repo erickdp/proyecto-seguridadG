@@ -9,5 +9,5 @@ public interface BIAControlesAlineadosALosImpactosRepository extends MongoReposi
     
      List<BIAControlesAlineadosALosImpactos> findByUserOrderByInmueble(String user);
      
-     void deletedByUser(String user);
+     void deleteByUser(String user);
 }
