@@ -82,9 +82,7 @@ public class BIAContolesAlineadosALosImpactosServiceImp implements BIAControlesA
     public void eliminarConUsuario(String user) {
         List<BIAControlesAlineadosALosImpactos> contatos = this.buscarPorUserFiltrarPorInmueble(user);
         if (!contatos.isEmpty()) {
-            for (BIAControlesAlineadosALosImpactos contato : contatos) {
-                this.repository.deletedByUser(user);
-            }
+            contatos.forEach(element -> this.repository.delete(element));
         }
     }
 }

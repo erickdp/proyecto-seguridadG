@@ -63,9 +63,9 @@ public class BiaValoracionGeneralServiceImpl implements BiaValoracionGeneralServ
 
     @Override
     public void eliminarConUsuario(String user) {
-            BiaValoracionGeneral bia = this.biaValoracionGeneralRepository.findByUsuario(user);
-        if (bia != null ){
-            this.biaValoracionGeneralRepository.delete(bia);
-
-        }}
+        BiaValoracionGeneral bia = this.biaValoracionGeneralRepository.findByUsuario(user);
+        if (bia != null) {
+            this.biaValoracionGeneralRepository.deletedByUser(user);
+        }
+    }
 }

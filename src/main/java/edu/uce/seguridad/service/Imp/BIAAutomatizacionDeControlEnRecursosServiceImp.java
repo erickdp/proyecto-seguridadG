@@ -84,9 +84,7 @@ public class BIAAutomatizacionDeControlEnRecursosServiceImp implements BIAAutoma
     public void eliminarConUsuario(String user) {
         List<BIAAutomatizacionDeControlEnRecursos> contatos = this.buscarPorUserFiltrarPorInmueble(user);
         if (!contatos.isEmpty()) {
-            for (BIAAutomatizacionDeControlEnRecursos contato : contatos) {
-                this.repository.deletedByUser(user);
-            }
+            contatos.forEach(element -> this.repository.delete(element));
         }
     }
 

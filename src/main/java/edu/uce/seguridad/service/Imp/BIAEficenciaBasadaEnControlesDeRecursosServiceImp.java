@@ -82,8 +82,6 @@ public class BIAEficenciaBasadaEnControlesDeRecursosServiceImp implements BIAEfi
     public void eliminarConUsuario(String user) {
         List<BIAEficenciaBasadaEnControlesDeRecursos> contatos = this.buscarPorUserFiltrarPorInmueble(user);
         if (!contatos.isEmpty()) {
-            for (BIAEficenciaBasadaEnControlesDeRecursos contato : contatos) {
-                this.repository.deletedByUser(user);
-            }
+            contatos.forEach(element -> this.repository.delete(element));
         }}
 }
