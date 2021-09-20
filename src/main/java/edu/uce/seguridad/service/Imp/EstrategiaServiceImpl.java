@@ -13,10 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -82,7 +79,7 @@ public class EstrategiaServiceImpl implements EstrategiaService {
 
     @Override
     public void eliminarConUsuario(String usuario) {
-        Optional<ResumenDeEstrategias>  resumenDeEstrategias = this.buscarporUsuario(usuario);
+        Optional<ResumenDeEstrategias> resumenDeEstrategias = this.buscarporUsuario(usuario);
         resumenDeEstrategias.ifPresent(deEstrategias -> this.estrategiaRepository.delete(deEstrategias));
     }
 
@@ -91,35 +88,27 @@ public class EstrategiaServiceImpl implements EstrategiaService {
     public void generarEstrategiasContinuidad(ResumenDeEstrategias pojo, boolean bandera) {
         String[] categoria = {"recursosInternos", "serviciosPublicos", "sociosExternos"};
 
-        if(bandera) { // Si actualiza el form 7.1 el 7.2 desaparece y toma los nuevos datos del 7.1
+        if (bandera) { // Si actualiza el form 7.1 el 7.2 desaparece y toma los nuevos datos del 7.1
             List<EstrategiasContinuidad> list = this.estrategiasContinuidadRepository.findByUsuario(pojo.getUsuario());
             this.estrategiasContinuidadRepository.deleteAll(list);
         }
-
-        RecursoPrioridad recursoPrioridad = new RecursoPrioridad();
-        recursoPrioridad.setRecurso("");
-        recursoPrioridad.setQueProcede("");
-        recursoPrioridad.setDetalleMedida("");
-        recursoPrioridad.setPeriodo("Mediano Plazo");
-        recursoPrioridad.setDeparEncargado("");
 
         HashMap<String, List<RecursoPrioridad>> hashMap = new HashMap<>();
 
         pojo.getEstrategia().forEach((llave, valor) -> {
 
-            EstrategiasContinuidad estrategiasContinuidad = new EstrategiasContinuidad(); // Se crea otra instancia porque al persistir setea al objeto con el id
-            estrategiasContinuidad.setUsuario(pojo.getUsuario());
-
             valor.forEach(estrategia -> {  // Hubiera sido mejor separar las estrategias en documentos diferentes y no una lista por que no son categorias X_X =(
+                EstrategiasContinuidad estrategiasContinuidad = new EstrategiasContinuidad(); // Se crea otra instancia porque al persistir setea al objeto con el id
+                estrategiasContinuidad.setUsuario(pojo.getUsuario());
                 estrategiasContinuidad.setActividadPrioritaria(estrategia.getNombreEstrategia());
+
+                hashMap.put(categoria[0], Collections.emptyList());
+                hashMap.put(categoria[1], Collections.emptyList());
+                hashMap.put(categoria[2], Collections.emptyList());
+
+                estrategiasContinuidad.setCategorias(hashMap);
+                this.estrategiasContinuidadRepository.insert(estrategiasContinuidad);
             });
-
-            hashMap.put(categoria[0], Arrays.asList(recursoPrioridad, recursoPrioridad));
-            hashMap.put(categoria[1], Arrays.asList(recursoPrioridad, recursoPrioridad));
-            hashMap.put(categoria[2], Arrays.asList(recursoPrioridad, recursoPrioridad));
-
-            estrategiasContinuidad.setCategorias(hashMap);
-            this.estrategiasContinuidadRepository.insert(estrategiasContinuidad);
 
         });
     }
