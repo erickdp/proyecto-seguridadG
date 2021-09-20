@@ -78,6 +78,7 @@ public class BIAContolesAlineadosALosImpactosServiceImp implements BIAControlesA
     }
 
     @Override
+    @Transactional
     public void eliminarConUsuario(String user) {
         List<BIAControlesAlineadosALosImpactos> contatos = this.buscarPorUserFiltrarPorInmueble(user);
         if (!contatos.isEmpty()) {

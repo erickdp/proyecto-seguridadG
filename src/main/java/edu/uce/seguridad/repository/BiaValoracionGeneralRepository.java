@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface BiaValoracionGeneralRepository extends MongoRepository<BiaValoracionGeneral, String> {
 
     BiaValoracionGeneral findByUsuario(String usuario);
-
+    void deletedByUser(String user);
 }
