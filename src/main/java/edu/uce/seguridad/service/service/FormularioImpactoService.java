@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FormularioImpactoService extends BaseService<FormularioComparativoImpacto, String> {
     List<FormularioComparativoImpacto> buscarFormularioImpPorUsua(String usuario);
+
+    void eliminarImpactosUsuario(String usuario);
 }

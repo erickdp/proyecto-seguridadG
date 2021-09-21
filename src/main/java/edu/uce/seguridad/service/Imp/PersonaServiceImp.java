@@ -55,6 +55,11 @@ public class PersonaServiceImp implements PersonaService {
     private BIAControlesAlineadosALosImpactosService biacaalis;
     private BIAAutomatizacionDeControlEnRecursosService biaAutomatizacion;
     private BiaValoracionGeneralService biaValoracionGeneral;
+    private ActividadesPrioritariasService actividadesService;
+    private FormularioImpactoService formularioImpactoService;
+    private HojaDeRevisionDeGerenciaService hojaDeRevisionDeGerenciaService;
+    private ImpactoService impactoService;
+    private PeriodoTolerableService periodoTolerableService;
 
     @Override
     @Transactional(readOnly = true)
@@ -196,7 +201,11 @@ public class PersonaServiceImp implements PersonaService {
         this.biaPeriocidadDeAcciones.eliminarConUsuario(nombreUsuario); //Eliminar Bia 6.5 periocidad by leo
         this.biaEficienciaBasadaEnControl.eliminarConUsuario(nombreUsuario);//Eliminar Bia 6.5 eficiencia by leo
         this.biaAutomatizacion.eliminarConUsuario(nombreUsuario);//Eliminar Bia 6.5 Automatizacion by leo
-
+        this.actividadesService.eliminarActividadUsuario(nombreUsuario); // Elimina formulario 2.3 Actividades prioritarias
+        this.formularioImpactoService.eliminarImpactosUsuario(nombreUsuario); // Elimina formulario 2.1 Niveles de impacto
+        this.hojaDeRevisionDeGerenciaService.eliminarPorAsuntoARevisaryVerificar(nombreUsuario); // Eliminina formulario 10.2 Hoja de revisión de gerencia
+        this.impactoService.eliminarImpactosUsuario(nombreUsuario); // Elimina el impacto de negocio
+        this.periodoTolerableService.eliminarPeriodosPorUsuario(nombreUsuario); // Elimina el formulario 2.2 Período máximo tolerable de interrupción
     }
 
     @Override

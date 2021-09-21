@@ -49,4 +49,12 @@ public class ActividadesPrioritariasServiceImpl implements ActividadesPrioritari
     public List<ActividadesPrioritarias> buscarActividadesPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         return this.repository.findActividadesByUsuario(nombreUsuario);
     }
+
+    @Override
+    public void eliminarActividadUsuario(String nombreUsuario) {
+        List<ActividadesPrioritarias> actividadesPrioritarias = this.repository.findActividadesByUsuario(nombreUsuario);
+        if (!actividadesPrioritarias.isEmpty()) {
+            actividadesPrioritarias.forEach(actividad -> this.eliminarDocumento(actividad.get_id()));
+        }
+    }
 }

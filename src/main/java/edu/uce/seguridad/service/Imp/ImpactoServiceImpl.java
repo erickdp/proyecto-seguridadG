@@ -47,4 +47,12 @@ public class ImpactoServiceImpl implements ImpactoService {
     public ImpactoNegocio buscarImpactoPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         return this.repository.findImpactoByUsuario(nombreUsuario);
     }
+
+    @Override
+    public void eliminarImpactosUsuario(String usuario) {
+        List<ImpactoNegocio> impactos = this.repository.findImpactosUsuario(usuario);
+        if (!impactos.isEmpty()) {
+            impactos.forEach(impacto -> this.eliminarDocumento(impacto.get_id()));
+        }
+    }
 }

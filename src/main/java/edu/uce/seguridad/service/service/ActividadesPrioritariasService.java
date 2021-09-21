@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ActividadesPrioritariasService extends BaseService<ActividadesPrioritarias, String> {
     List<ActividadesPrioritarias> buscarActividadesPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
+
+    void eliminarActividadUsuario(String nombreUsuario);
 }

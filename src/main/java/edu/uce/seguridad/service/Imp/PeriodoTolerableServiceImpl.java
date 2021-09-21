@@ -49,4 +49,12 @@ public class PeriodoTolerableServiceImpl implements PeriodoTolerableService {
     public List<PeriodoTolerable> buscarPeriodosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion {
         return this.repository.findPeriodosByUsuario(nombreUsuario);
     }
+
+    @Override
+    public void eliminarPeriodosPorUsuario(String usuario) {
+        List<PeriodoTolerable> periodos = this.repository.findPeriodosByUsuario(usuario);
+        if (!periodos.isEmpty()) {
+            periodos.forEach(periodo -> this.eliminarDocumento(periodo.get_id()));
+        }
+    }
 }

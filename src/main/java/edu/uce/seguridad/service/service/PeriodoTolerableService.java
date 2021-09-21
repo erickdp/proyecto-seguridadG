@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PeriodoTolerableService extends BaseService<PeriodoTolerable, String> {
     List<PeriodoTolerable> buscarPeriodosPorUsuario(String nombreUsuario) throws NoEncontradoExcepcion;
+
+    void eliminarPeriodosPorUsuario(String user);
 }

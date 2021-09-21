@@ -1,6 +1,5 @@
 package edu.uce.seguridad.service.Imp;
 
-import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioComparativoImpacto;
 import edu.uce.seguridad.repository.FormularioImpactoRepository;
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class FormularioImpactoServiceImpl  implements FormularioImpactoService {
+public class FormularioImpactoServiceImpl implements FormularioImpactoService {
 
     @Autowired
     private FormularioImpactoRepository formularioImpactoRepository;
@@ -21,8 +20,8 @@ public class FormularioImpactoServiceImpl  implements FormularioImpactoService {
     @Override
     @Transactional(readOnly = true)
     public List<FormularioComparativoImpacto> buscarTodos() throws NoEncontradoExcepcion {
-        List<FormularioComparativoImpacto> impacto= this.formularioImpactoRepository.findAll();
-        if (impacto.isEmpty()){
+        List<FormularioComparativoImpacto> impacto = this.formularioImpactoRepository.findAll();
+        if (impacto.isEmpty()) {
             throw new NoEncontradoExcepcion("respuesta", "No se encontro el registro");
         }
         return impacto;
@@ -44,8 +43,8 @@ public class FormularioImpactoServiceImpl  implements FormularioImpactoService {
     @Override
     @Transactional(readOnly = true)
     public FormularioComparativoImpacto buscaPorId(String identificador) throws NoEncontradoExcepcion {
-        FormularioComparativoImpacto impactos= this.formularioImpactoRepository.findById(identificador).orElse(null);
-        if (impactos == null){
+        FormularioComparativoImpacto impactos = this.formularioImpactoRepository.findById(identificador).orElse(null);
+        if (impactos == null) {
             throw new NoEncontradoExcepcion("respuesta", "No se ha encontrado el registro");
         }
         return impactos;
@@ -54,7 +53,7 @@ public class FormularioImpactoServiceImpl  implements FormularioImpactoService {
     @Override
     @Transactional
     public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion {
-        FormularioComparativoImpacto imp= this.buscaPorId(identificador);
+        FormularioComparativoImpacto imp = this.buscaPorId(identificador);
         if (identificador == null) {
             throw new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el registro");
         }
@@ -64,11 +63,19 @@ public class FormularioImpactoServiceImpl  implements FormularioImpactoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<FormularioComparativoImpacto> buscarFormularioImpPorUsua(String usuario) throws NoEncontradoExcepcion{
+    public List<FormularioComparativoImpacto> buscarFormularioImpPorUsua(String usuario) throws NoEncontradoExcepcion {
         List<FormularioComparativoImpacto> impa = this.formularioImpactoRepository.findFormularioComparativoImpactoByUser(usuario);
-        if (impa == null){
+        if (impa == null) {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros para el contacto :".concat(usuario));
         }
         return impa;
+    }
+
+    @Override
+    public void eliminarImpactosUsuario(String usuario) {
+        List<FormularioComparativoImpacto> impactos = this.formularioImpactoRepository.findFormularioComparativoImpactoByUser(usuario);
+        if (!impactos.isEmpty()) {
+            impactos.forEach(impacto -> this.eliminarDocumento(impacto.getId()));
+        }
     }
 }
