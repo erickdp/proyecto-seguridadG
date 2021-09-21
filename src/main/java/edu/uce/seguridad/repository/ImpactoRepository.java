@@ -10,5 +10,5 @@ public interface ImpactoRepository extends MongoRepository<ImpactoNegocio, Strin
     @Query("{'usuario.nombreUsuario': ?0}")
     ImpactoNegocio findImpactoByUsuario(String nombreUsuario);
 
-    List<ImpactoNegocio> findByUsuario(String nombreUsuario);
+    List<ImpactoNegocio> findByUsuarioNombreUsuario(String nombreUsuario);
 }

@@ -50,7 +50,7 @@ public class ImpactoServiceImpl implements ImpactoService {
 
     @Override
     public void eliminarImpactosUsuario(String usuario) {
-        List<ImpactoNegocio> impactos = this.repository.findByUsuario(usuario);
+        List<ImpactoNegocio> impactos = this.repository.findByUsuarioNombreUsuario(usuario);
         if (!impactos.isEmpty()) {
             impactos.forEach(impacto -> this.eliminarDocumento(impacto.get_id()));
         }
