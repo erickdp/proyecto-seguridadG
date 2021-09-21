@@ -33,4 +33,9 @@ public class BIACuestionarioController {
     public ResponseEntity<?> obtenerPromedioCuestionario(@PathVariable String organizacion) {
         return new ResponseEntity<>(this.biaCuestionarioService.obtenerPromedioCuestionario(organizacion), HttpStatus.OK);
     }
+
+    @GetMapping("/promedioTotal")
+    public ResponseEntity<?> obtenerPromedioCuestionarioTotal() {
+        return new ResponseEntity<>(this.biaCuestionarioService.obtenerPromedioCuestionario(null), HttpStatus.OK);
+    }
 }

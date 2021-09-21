@@ -94,7 +94,7 @@ public class EstrategiaServiceImpl implements EstrategiaService {
         }
 
         HashMap<String, List<RecursoPrioridad>> hashMap = new HashMap<>();
-
+//        By Erick
         pojo.getEstrategia().forEach((llave, valor) -> {
 
             valor.forEach(estrategia -> {  // Hubiera sido mejor separar las estrategias en documentos diferentes y no una lista por que no son categorias X_X =(

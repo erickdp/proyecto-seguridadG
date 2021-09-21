@@ -5,9 +5,11 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.BIACuestionario;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.repository.BIACuestionarioRepository;
+import edu.uce.seguridad.repository.BIAPreguntaRepository;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.BIACuestionarioService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,14 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BIACuestionarioServiceImp implements BIACuestionarioService {
 
     private PersonaRepository personaRepository;
 
     private BIACuestionarioRepository biaCuestionarioRepository;
+
+    private BIAPreguntaRepository biaPreguntaRepository;
 
     @Override
     public List<BIACuestionario> buscarTodos() throws NoEncontradoExcepcion {
@@ -57,61 +62,56 @@ public class BIACuestionarioServiceImp implements BIACuestionarioService {
         this.biaCuestionarioRepository.findByUsuario(identificador).ifPresent(this.biaCuestionarioRepository::delete);
     }
 
+    // Metodo que permite obtener el promedio de las preguntas de manera dinamica
     @Override
     public Map<String, Double> obtenerPromedioCuestionario(String organizacion) {
-        List<Persona> personas = this.personaRepository.findPersonaByRolAndOrganization("DEPARTAMENTO", organizacion);
 
-        int pregunta1 = 0;
-        int pregunta2 = 0;
-        int pregunta3 = 0;
-        int pregunta4 = 0;
-        int pregunta5 = 0;
-        int pregunta6 = 0;
-        int pregunta7 = 0;
-        int pregunta8 = 0;
-        int pregunta9 = 0;
-        int pregunta10 = 0;
-        int pregunta11 = 0;
-        int pregunta12 = 0;
+        List<Persona> personas;
+        if (organizacion == null) {
+            personas = this.personaRepository.findPersonaByRole("DEPARTAMENTO");
+        } else {
+            personas = this.personaRepository.findPersonaByRolAndOrganization("DEPARTAMENTO", organizacion);
+        }
+
+        HashMap<String, Integer> totalPreguntas = new HashMap<>();
+
+        for (int i = 0; i < this.biaPreguntaRepository.findAll().size(); i++) { // Defino el numero de preguntas que existen
+            totalPreguntas.put("pregunta_" + (i + 1), 0);
+        }
 
         HashMap<String, Double> promedio = new HashMap<>();
+
+        int totalParticipantes = 0;
 
         if (!personas.isEmpty()) {
 
             for (Persona persona :
                     personas) {
                 Optional<BIACuestionario> cuestionario = this.biaCuestionarioRepository.findByUsuario(persona.getUsuario().getNombreUsuario());
-                if (cuestionario.isPresent()) {
-                    List<Byte> respuestas = cuestionario.get().getRespuestas();
+                if (cuestionario.isPresent() && cuestionario.get().getRespuestas() != null) { // Debe de tener inicializado las respuestas, sino no se contabilizan sus calificaciones
 
-                    pregunta1 += respuestas.get(0);
-                    pregunta2 += respuestas.get(1);
-                    pregunta3 += respuestas.get(2);
-                    pregunta4 += respuestas.get(3);
-                    pregunta5 += respuestas.get(4);
-                    pregunta6 += respuestas.get(5);
-                    pregunta7 += respuestas.get(6);
-                    pregunta8 += respuestas.get(7);
-                    pregunta9 += respuestas.get(8);
-                    pregunta10 += respuestas.get(9);
-                    pregunta11 += respuestas.get(10);
-                    pregunta12 += respuestas.get(11);
+                    List<Integer> respuestas = cuestionario.get().getRespuestas();
 
+                    if (!respuestas.isEmpty() && !respuestas.contains(0)) { // Si tiene inicializado sus preguntas pero sin ninguna respuesta tampoco, no se contabiliza para el promedio total
+                        totalParticipantes++;
+
+
+                        for (int i = 0; i < respuestas.size(); i++) { // Incremento el puntaje a las preguntas existentes
+
+                            Integer sumaPregunta = totalPreguntas.get("pregunta_" + (i + 1));
+
+                            sumaPregunta += respuestas.get(i);
+
+                            totalPreguntas.put("pregunta_" + (i + 1), sumaPregunta);
+
+                        }
+                    }
                 }
             }
 
-            promedio.put("promedio_1", pregunta1 / personas.size() + 0d);
-            promedio.put("promedio_2", pregunta2 / personas.size() + 0d);
-            promedio.put("promedio_3", pregunta3 / personas.size() + 0d);
-            promedio.put("promedio_4", pregunta4 / personas.size() + 0d);
-            promedio.put("promedio_5", pregunta5 / personas.size() + 0d);
-            promedio.put("promedio_6", pregunta6 / personas.size() + 0d);
-            promedio.put("promedio_7", pregunta7 / personas.size() + 0d);
-            promedio.put("promedio_8", pregunta8 / personas.size() + 0d);
-            promedio.put("promedio_9", pregunta9 / personas.size() + 0d);
-            promedio.put("promedio_10", pregunta10 / personas.size() + 0d);
-            promedio.put("promedio_11", pregunta11 / personas.size() + 0d);
-            promedio.put("promedio_12", pregunta12 / personas.size() + 0d);
+            for (Map.Entry<String, Integer> entry : totalPreguntas.entrySet()) {
+                promedio.put(entry.getKey().concat("_promedio"), Math.round(((double) entry.getValue() / totalParticipantes) * 100.0) / 100.0); // redondeo a 2 decimales
+            }
 
             return promedio;
         }
@@ -123,6 +123,5 @@ public class BIACuestionarioServiceImp implements BIACuestionarioService {
     public void eliminarRespuestaFormularioBIAC(String nombreUsuario) {
         this.biaCuestionarioRepository.findByUsuario(nombreUsuario).ifPresent(this.biaCuestionarioRepository::delete);
     }
-
 
 }

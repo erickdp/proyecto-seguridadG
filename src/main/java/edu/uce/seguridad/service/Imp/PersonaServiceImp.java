@@ -70,19 +70,17 @@ public class PersonaServiceImp implements PersonaService {
     @Override
     @Transactional
     public Persona agregar(Persona pojo) throws DataAccessException {
-        pojo.setUsuario(Utileria.generarUsuario
-                (pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole()));
+        Usuario nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
+        while (this.personaRepository.findPersonaByUsuario(nuevoUsuario.getNombreUsuario()).isPresent()) { // Si el nombre de usuario existe que haga uno nuevo hasta que no haya otro igual
+            nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
+        }
+        pojo.setUsuario(nuevoUsuario);
         return this.personaRepository.insert(pojo);
     }
 
     @Override
     @Transactional
     public Persona actualizar(Persona pojo) throws DataAccessException {
-        Usuario nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
-        while (this.personaRepository.findPersonaByUsuario(nuevoUsuario.getNombreUsuario()).get() != null) {
-            nuevoUsuario = Utileria.generarUsuario(pojo.getNombre(), pojo.getApellido(), pojo.getUsuario().getRole());
-        }
-        pojo.setUsuario(nuevoUsuario);
         return this.personaRepository.save(pojo);
     }
 
