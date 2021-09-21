@@ -23,5 +23,5 @@ public class ImpactoNegocio {
     private double probabilidad;
     private double prioridad;
     private String identificacion;
-    private Usuario usuario;
+    private String usuario;
 }
