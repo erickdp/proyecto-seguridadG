@@ -74,43 +74,53 @@ public class BIACuestionarioServiceImp implements BIACuestionarioService {
         }
 
         HashMap<String, Integer> totalPreguntas = new HashMap<>();
+        HashMap<String, Integer> totalParticipantes = new HashMap<>();
 
         for (int i = 0; i < this.biaPreguntaRepository.findAll().size(); i++) { // Defino el numero de preguntas que existen
             totalPreguntas.put("pregunta_" + (i + 1), 0);
+            totalParticipantes.put("participantes_" + (i + 1), 0);
         }
 
         HashMap<String, Double> promedio = new HashMap<>();
-
-        int totalParticipantes = 0;
 
         if (!personas.isEmpty()) {
 
             for (Persona persona :
                     personas) {
                 Optional<BIACuestionario> cuestionario = this.biaCuestionarioRepository.findByUsuario(persona.getUsuario().getNombreUsuario());
-                if (cuestionario.isPresent() && cuestionario.get().getRespuestas() != null) { // Debe de tener inicializado las respuestas, sino no se contabilizan sus calificaciones
-
+                if (cuestionario.isPresent() && cuestionario.get().getRespuestas() != null && !cuestionario.get().getRespuestas().isEmpty()) { // Debe de tener inicializado las respuestas, sino no se contabilizan sus calificaciones
+                    // Si tiene inicializado sus preguntas pero sin ninguna respuesta tampoco, no se contabiliza para el promedio total
                     List<Integer> respuestas = cuestionario.get().getRespuestas();
 
-                    if (!respuestas.isEmpty() && !respuestas.contains(0)) { // Si tiene inicializado sus preguntas pero sin ninguna respuesta tampoco, no se contabiliza para el promedio total
-                        totalParticipantes++;
+                    for (int i = 0; i < respuestas.size(); i++) { // Incremento el puntaje a las preguntas existentes
 
+                        Integer calificacion = respuestas.get(i);
 
-                        for (int i = 0; i < respuestas.size(); i++) { // Incremento el puntaje a las preguntas existentes
+                        if (calificacion.equals(0)) { // La calificacion debe de ser distinta de 0 para contabilizar en el promedio
+                            continue;
+                        }
 
                             Integer sumaPregunta = totalPreguntas.get("pregunta_" + (i + 1));
+
+                        Integer actualizarParticipantes = totalParticipantes.get("participantes_" + (i + 1));// El contado de participantes se actualiza
+                        totalParticipantes.put("participantes_" + (i + 1),
+                                ++actualizarParticipantes
+                            );
 
                             sumaPregunta += respuestas.get(i);
 
                             totalPreguntas.put("pregunta_" + (i + 1), sumaPregunta);
 
-                        }
                     }
                 }
             }
 
-            for (Map.Entry<String, Integer> entry : totalPreguntas.entrySet()) {
-                promedio.put(entry.getKey().concat("_promedio"), Math.round(((double) entry.getValue() / totalParticipantes) * 100.0) / 100.0); // redondeo a 2 decimales
+            for (int i = 0; i < totalPreguntas.size(); i++) {
+                Integer preguntaSumaTotal = totalPreguntas.get("pregunta_" + (i + 1));
+                log.info("Suma calificaciones total de preugunta " + (i + 1) + " " + preguntaSumaTotal);
+                Integer participantesSumaTotal = totalParticipantes.get("participantes_" + (i + 1));
+                log.info("Suma participantes total de pregunta " + (i + 1) + " " + participantesSumaTotal);
+                promedio.put("pregunta_" + (i + 1) + "_promedio",  Math.round(((double) preguntaSumaTotal / participantesSumaTotal) * 100.0) / 100.0);
             }
 
             return promedio;
