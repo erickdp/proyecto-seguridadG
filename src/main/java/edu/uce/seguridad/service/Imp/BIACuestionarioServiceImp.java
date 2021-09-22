@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -130,6 +131,7 @@ public class BIACuestionarioServiceImp implements BIACuestionarioService {
     }
 
     @Override
+    @Transactional
     public void eliminarRespuestaFormularioBIAC(String nombreUsuario) {
         this.biaCuestionarioRepository.findByUsuario(nombreUsuario).ifPresent(this.biaCuestionarioRepository::delete);
     }
