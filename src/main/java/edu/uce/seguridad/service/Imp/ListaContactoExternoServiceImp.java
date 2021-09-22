@@ -54,7 +54,7 @@ public class ListaContactoExternoServiceImp implements ListaContactoExternoServi
     @Override
     @Transactional
     public void eliminarDocumento(String identificador) throws NoEncontradoExcepcion {
-        ListaContactoExterno contacto = this.buscaPorId(identificador);
+        ListaContactoExterno contacto = this.repository.findById(identificador).orElse(null);
         if (contacto == null) {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
