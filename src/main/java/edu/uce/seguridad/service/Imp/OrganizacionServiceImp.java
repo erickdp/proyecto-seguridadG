@@ -87,12 +87,12 @@ public class OrganizacionServiceImp implements OrganizacionService {
     @Override
     @Transactional
     public void eliminarPorNombreOrganizacion(String nombreOrganizacion) throws NoEncontradoExcepcion {
-        Organizacion organizacion = this.buscarPorNombreOrganizacion(nombreOrganizacion);
-        if (organizacion == null) {
+        Optional<Organizacion> organizacion = this.organizacionRepository.findOrganizacionByOrganizacion(nombreOrganizacion);
+        if (!organizacion.isPresent()) {
             throw new NoEncontradoExcepcion("No se ha encontrado la organización: ".concat(nombreOrganizacion));
         }
-        this.organizacionRepository.deleteById(organizacion.get_id()); // Al eliminar la organizacion se eliminan tambien los socios a esa organizacion
-        List<Persona> personas = this.personaService.buscarPersonaPorOrganizacion(organizacion.getOrganizacion());
+        this.organizacionRepository.deleteById(organizacion.get().get_id()); // Al eliminar la organizacion se eliminan tambien los socios a esa organizacion
+        List<Persona> personas = this.personaService.buscarPersonaPorOrganizacion(organizacion.get().getOrganizacion());
         if (!personas.isEmpty()) {
             personas.forEach(persona -> this.personaService.eliminarPersonaPorNombreUsuario(persona.getUsuario().getNombreUsuario()));
         }
