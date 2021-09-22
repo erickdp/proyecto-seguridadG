@@ -114,17 +114,24 @@ public class Utileria {
     }
 
     public static List<FormularioRevision> formulariosDefault() {
-        List<String> formDefault = Arrays.asList("Marco teorico del PCN, Proposito, Alcance, y equipo",
-                                                "Actividades Prioritarias y Tiempos de Recuperación Ideales",
-                                                "Recursos necesarios para PCN",
-                                                "Evaluación de riesgos",
-                                                "Protección antes del Desastre y Mitigación",
-                                                "Respuesta de Emergencia ante el desastre",
-                                                "Estrategias para resumir operaciones prematuramente",
-                                                "Estar preparado financieramente",
-                                                "Practica tu Plan",
-                                                "Monitorea, Revisa y Mejora");
-        return formDefault.stream().map(data -> new FormularioRevision(data, "", "", "", "")).collect(Collectors.toList());
+        HashMap<Integer, String> datos = new HashMap<>();
+        datos.put(1, "Marco teorico del PCN, Proposito, Alcance, y equipo");
+        datos.put(2,"Actividades Prioritarias y Tiempos de Recuperación Ideales");
+        datos.put(3, "Recursos necesarios para PCN");
+        datos.put(4, "Evaluación de riesgos");
+        datos.put(5, "Protección antes del Desastre y Mitigación");
+        datos.put(6, "Respuesta de Emergencia ante el desastre");
+        datos.put(7, "Estrategias para resumir operaciones prematuramente");
+        datos.put(8, "Estar preparado financieramente");
+        datos.put(9, "Practica tu Plan");
+        datos.put(10, "Monitorea, Revisa y Mejora");
+
+        List<FormularioRevision> lista = new ArrayList<>();
+
+        datos.forEach((llave, valor) -> {
+            lista.add(new FormularioRevision(llave, valor, "", "", "", ""));
+        });
+        return lista;
     }
 
 }
