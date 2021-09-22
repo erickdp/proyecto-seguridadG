@@ -100,7 +100,7 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
 
     @Override
     public void eliminarPorUsuario(String usuario) {
-        GastosCorrientes gastosCO = this.buscarGastosCorrientesPorUsuario(usuario);
+        GastosCorrientes gastosCO = this.gastosCorrientesRepository.findByUser(usuario);
         if (gastosCO != null) {
             this.gastosCorrientesRepository.delete(gastosCO);
         }

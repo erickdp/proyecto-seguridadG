@@ -73,9 +73,10 @@ public class FormularioEvaluacionDanosIIServiceImpl implements FormularioEvaluac
 
     @Override
     public void eliminarEvaluacionesPorUser(String user) {
-        List<FormularioEvaluacionDanosII> evaluacionDanos = buscarPorUsuario(user);
+//        List<FormularioEvaluacionDanosII> evaluacionDanos = buscarPorUsuario(user); ZzZ al delegar la busqueda a otro lanza una excepcion
+        List<FormularioEvaluacionDanosII> evaluacionDanos = this.evaluacionDanoRepository.findByUsuario(user);
         if (!evaluacionDanos.isEmpty()) {
-            evaluacionDanos.forEach(evaluacion -> this.evaluacionDanoRepository.delete(evaluacion));
+            this.evaluacionDanoRepository.deleteAll(evaluacionDanos);
         }
     }
 

@@ -81,7 +81,7 @@ public class BIAPeriocidadDeAccionesDeControlEnRecursosServiceImp implements BIA
 
     @Override
     public void eliminarConUsuario(String user) {
-            List<BIAPeriocidadDeAccionesDeControlEnRecursos> contatos = this.buscarPorUserFiltrarPorInmueble(user);
+            List<BIAPeriocidadDeAccionesDeControlEnRecursos> contatos = this.repository.findByUserOrderByInmueble(user);
         if (!contatos.isEmpty()) {
             contatos.forEach(element -> this.repository.delete(element));
         }

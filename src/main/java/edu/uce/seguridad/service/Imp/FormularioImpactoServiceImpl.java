@@ -75,7 +75,7 @@ public class FormularioImpactoServiceImpl implements FormularioImpactoService {
     public void eliminarImpactosUsuario(String usuario) {
         List<FormularioComparativoImpacto> impactos = this.formularioImpactoRepository.findFormularioComparativoImpactoByUser(usuario);
         if (!impactos.isEmpty()) {
-            impactos.forEach(impacto -> this.eliminarDocumento(impacto.getId()));
+            this.formularioImpactoRepository.deleteAll(impactos);
         }
     }
 }

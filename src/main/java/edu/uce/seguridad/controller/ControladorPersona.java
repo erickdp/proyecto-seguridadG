@@ -139,11 +139,11 @@ public class ControladorPersona {
     - Si se elimina la persona se devuelve un estado 202 - ACCEPTED
     * */
     @DeleteMapping("/eliminarUsuario/{nombreUsuario}")
-    public ResponseEntity<Void> eliminarUsuario(
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void eliminarUsuario(
             @PathVariable(value = "nombreUsuario") String usuario
     ) {
         this.personaService.eliminarPersonaPorNombreUsuario(usuario);
-        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 
     /*

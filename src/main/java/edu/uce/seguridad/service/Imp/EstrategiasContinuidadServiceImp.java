@@ -66,9 +66,9 @@ public class EstrategiasContinuidadServiceImp implements EstrategiasContinuidadS
 
     @Override
     public void eliminarConUsuario(String usuario) {
-        List<EstrategiasContinuidad> list = this.buscarPorUsuario(usuario);
+        List<EstrategiasContinuidad> list = this.estrategiasContinuidadRepository.findByUsuario(usuario);
         if (!list.isEmpty()) {
-            list.forEach(elemento -> this.estrategiasContinuidadRepository.delete(elemento));
+            this.estrategiasContinuidadRepository.deleteAll(list);
         }
     }
 }

@@ -79,7 +79,7 @@ public class EstrategiaServiceImpl implements EstrategiaService {
 
     @Override
     public void eliminarConUsuario(String usuario) {
-        Optional<ResumenDeEstrategias> resumenDeEstrategias = this.buscarporUsuario(usuario);
+        Optional<ResumenDeEstrategias> resumenDeEstrategias = this.estrategiaRepository.findByUsuario(usuario);
         resumenDeEstrategias.ifPresent(deEstrategias -> this.estrategiaRepository.delete(deEstrategias));
     }
 

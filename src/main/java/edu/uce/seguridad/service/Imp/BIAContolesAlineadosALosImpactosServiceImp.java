@@ -80,9 +80,9 @@ public class BIAContolesAlineadosALosImpactosServiceImp implements BIAControlesA
     @Override
     @Transactional
     public void eliminarConUsuario(String user) {
-        List<BIAControlesAlineadosALosImpactos> contatos = this.buscarPorUserFiltrarPorInmueble(user);
+        List<BIAControlesAlineadosALosImpactos> contatos = this.repository.findByUserOrderByInmueble(user);
         if (!contatos.isEmpty()) {
-            contatos.forEach(element -> this.repository.delete(element));
+            this.repository.deleteAll(contatos);
         }
     }
 }

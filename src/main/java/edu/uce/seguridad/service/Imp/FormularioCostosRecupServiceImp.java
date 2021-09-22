@@ -104,7 +104,7 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
 
     @Override
     public void eliminarConUsuario(String usuario) {
-        FormularioCostosRecup formCost = this.buscarPorUsuario(usuario);
+        FormularioCostosRecup formCost = this.formularioCostosRecupRepository.findByUsuario(usuario);
         if (formCost != null) {
             this.formularioCostosRecupRepository.delete(formCost);
         }
