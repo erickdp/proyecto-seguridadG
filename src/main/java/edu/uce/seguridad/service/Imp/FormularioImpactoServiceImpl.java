@@ -62,7 +62,7 @@ public class FormularioImpactoServiceImpl implements FormularioImpactoService {
             throw new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el registro");
         }
         this.formularioImpactoRepository.delete(imp);
-
+        estadoCompletadoService.verificarEstadoPaso2(imp.getUser());
     }
 
     @Override
@@ -80,6 +80,7 @@ public class FormularioImpactoServiceImpl implements FormularioImpactoService {
         List<FormularioComparativoImpacto> impactos = this.formularioImpactoRepository.findFormularioComparativoImpactoByUser(usuario);
         if (!impactos.isEmpty()) {
             this.formularioImpactoRepository.deleteAll(impactos);
+            estadoCompletadoService.verificarEstadoPaso2(usuario);
         }
     }
 }

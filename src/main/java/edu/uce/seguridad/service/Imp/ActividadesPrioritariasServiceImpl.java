@@ -45,6 +45,7 @@ public class ActividadesPrioritariasServiceImpl implements ActividadesPrioritari
         ActividadesPrioritarias actividades = this.buscaPorId(identificador);
         if (actividades != null) {
             this.repository.delete(actividades);
+            estadoCompletadoService.verificarEstadoPaso2(actividades.getUsuario());
         }
     }
 

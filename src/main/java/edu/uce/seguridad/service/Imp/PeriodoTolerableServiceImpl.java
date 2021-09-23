@@ -46,6 +46,7 @@ public class PeriodoTolerableServiceImpl implements PeriodoTolerableService {
         PeriodoTolerable periodo = this.buscaPorId(identificador);
         if (periodo != null) {
             this.repository.delete(periodo);
+            estadoCompletadoService.verificarEstadoPaso2(periodo.getUsuario());
         }
     }
 
