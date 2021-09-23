@@ -51,7 +51,9 @@ public class EstrategiaServiceImpl implements EstrategiaService {
     public ResumenDeEstrategias actualizar(ResumenDeEstrategias pojo) throws DataAccessException {
         this.buscaPorId(pojo.get_id());
         generarEstrategiasContinuidad(pojo, true);
-        return this.estrategiaRepository.save(pojo);
+        ResumenDeEstrategias aux = this.estrategiaRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario());
+        return aux;
     }
 
     @Override
