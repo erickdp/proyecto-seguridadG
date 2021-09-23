@@ -24,6 +24,8 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
 
     private EstatusFinancieroRepository financieroRepository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<FormularioCostosRecup> buscarTodos() throws NoEncontradoExcepcion {
@@ -61,9 +63,9 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
             estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }
-
-
-        return this.formularioCostosRecupRepository.save(pojo);
+        FormularioCostosRecup aux = this.formularioCostosRecupRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -82,6 +84,7 @@ public class FormularioCostosRecupServiceImp implements FormularioCostosRecupSer
             throw new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
         }
         this.formularioCostosRecupRepository.delete(formCost);
+        estadoCompletadoService.verificarEstadoPaso8(formCost.getUsuario());
     }
 
     @Override

@@ -35,6 +35,8 @@ public class RecursoServiceImpl implements RecursoService {
 
     private RevisionContinuaRepo revisionContinuaRepo;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<Recurso> buscarTodos() throws NoEncontradoExcepcion {
@@ -44,6 +46,8 @@ public class RecursoServiceImpl implements RecursoService {
     @Override
     @Transactional
     public Recurso agregar(Recurso pojo) throws DataAccessException {
+        Recurso aux = repository.insert(pojo);
+
         // guardar / actualizar para el formulario 4.1
         // EstimacionDano debe actualizarse no crarse
         FormularioCostosRecup costosRecup = FormularioCostosRecup
@@ -62,7 +66,9 @@ public class RecursoServiceImpl implements RecursoService {
 //                .usuario(pojo.getUsuario())
 //                .temas(formulariosDefault())
 //                .build());
-        return repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso3(pojo.getUsuario());
+        return aux;
+
     }
 
     @Override
@@ -110,6 +116,7 @@ public class RecursoServiceImpl implements RecursoService {
         Recurso recurso = this.buscarRecursoPorUsuario(identificador);
         if (recurso != null) {
             this.repository.delete(recurso);
+            estadoCompletadoService.verificarEstadoPaso3(recurso.getUsuario());
         }
     }
 

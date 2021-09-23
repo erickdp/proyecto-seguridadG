@@ -16,6 +16,7 @@ import java.util.List;
 public class EstatusFinancieroServiceImp implements EstatusFinancieroService {
 
     private EstatusFinancieroRepository financieronRepository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     public List<EstatusFinanciero> buscarTodos() throws NoEncontradoExcepcion {
@@ -34,7 +35,9 @@ public class EstatusFinancieroServiceImp implements EstatusFinancieroService {
     @Override
     public EstatusFinanciero actualizar(EstatusFinanciero pojo) throws DataAccessException {
         this.buscaPorId(pojo.get_id());
-        return this.financieronRepository.save(pojo);
+        EstatusFinanciero aux =this.financieronRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -53,6 +56,7 @@ public class EstatusFinancieroServiceImp implements EstatusFinancieroService {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros");
         }
         this.financieronRepository.delete(esFin);
+        estadoCompletadoService.verificarEstadoPaso8(esFin.getUsuario());
     }
 
     @Override
@@ -69,6 +73,7 @@ public class EstatusFinancieroServiceImp implements EstatusFinancieroService {
         EstatusFinanciero estatusFinanciero = this.financieronRepository.findByUsuario(nombreUsuario);
         if (estatusFinanciero != null) {
             this.financieronRepository.deleteByUsuario(nombreUsuario);
+            estadoCompletadoService.verificarEstadoPaso8(estatusFinanciero.getUsuario());
         }
     }
 }
