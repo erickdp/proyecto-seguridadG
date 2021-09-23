@@ -4,6 +4,7 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioComparativoImpacto;
 import edu.uce.seguridad.repository.FormularioImpactoRepository;
 import edu.uce.seguridad.service.service.FormularioImpactoService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class FormularioImpactoServiceImpl implements FormularioImpactoService {
 
-    @Autowired
     private FormularioImpactoRepository formularioImpactoRepository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -30,7 +32,9 @@ public class FormularioImpactoServiceImpl implements FormularioImpactoService {
     @Override
     @Transactional
     public FormularioComparativoImpacto agregar(FormularioComparativoImpacto pojo) throws DataAccessException {
-        return this.formularioImpactoRepository.insert(pojo);
+        FormularioComparativoImpacto aux = this.formularioImpactoRepository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso2(pojo.getUser());
+        return aux;
     }
 
     @Override

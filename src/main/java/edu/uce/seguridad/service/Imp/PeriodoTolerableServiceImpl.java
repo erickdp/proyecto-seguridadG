@@ -17,6 +17,8 @@ public class PeriodoTolerableServiceImpl implements PeriodoTolerableService {
 
     private PeriodoTolerableRepository repository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     public List<PeriodoTolerable> buscarTodos() throws NoEncontradoExcepcion {
         return this.repository.findAll();
@@ -24,7 +26,9 @@ public class PeriodoTolerableServiceImpl implements PeriodoTolerableService {
 
     @Override
     public PeriodoTolerable agregar(PeriodoTolerable pojo) throws DataAccessException {
-        return repository.insert(pojo);
+        PeriodoTolerable aux = repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso2(pojo.getUsuario());
+        return aux;
     }
 
     @Override

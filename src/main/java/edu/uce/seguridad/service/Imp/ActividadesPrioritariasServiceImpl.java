@@ -16,6 +16,7 @@ import java.util.List;
 public class ActividadesPrioritariasServiceImpl implements ActividadesPrioritariasService {
 
     private ActividadesPrioritariasRepository repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     public List<ActividadesPrioritarias> buscarTodos() throws NoEncontradoExcepcion {
@@ -24,7 +25,9 @@ public class ActividadesPrioritariasServiceImpl implements ActividadesPrioritari
 
     @Override
     public ActividadesPrioritarias agregar(ActividadesPrioritarias pojo) throws DataAccessException {
-        return repository.insert(pojo);
+        ActividadesPrioritarias aux = repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso2(pojo.getUsuario());
+        return aux;
     }
 
     @Override

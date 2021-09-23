@@ -16,6 +16,7 @@ public class EstadoCompletadoServiceImpl {
 
     private FormularioAlcanceRepository formularioAlcanceRepository;
     private FormularioLiderazgoRepository formularioLiderazgoRepository;
+
     private FormularioImpactoRepository formularioImpactoRepository;
     private PeriodoTolerableRepository periodoTolerableRepository;
     private ActividadesPrioritariasRepository actividadesPrioritariasRepository;
@@ -43,6 +44,7 @@ public class EstadoCompletadoServiceImpl {
 
     public void verificarEstadoPaso1(String user) {
         int contador = 0;
+        int paso = 1;
         String respuesta = "No completado";
 
         this.verificarExistencia(user);
@@ -59,11 +61,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 2) {
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso2(String user) {
         int contador = 0;
+        int paso = 2;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -83,11 +86,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 3) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso3(String user) {
         int contador = 0;
+        int paso = 3;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -97,11 +101,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 1) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso4(String user) {
         int contador = 0;
+        int paso = 4;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -119,11 +124,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 2) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso5(String user) {
         int contador = 0;
+        int paso = 5;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -133,11 +139,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 1) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso6(String user) {
         int contador = 0;
+        int paso = 6;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -166,11 +173,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 6) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso7(String user) {
         int contador = 0;
+        int paso = 7;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -186,11 +194,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 2) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso8(String user) {
         int contador = 0;
+        int paso = 8;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -216,11 +225,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 5) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso9(String user) {
         int contador = 0;
+        int paso = 9;
         String respuesta = "No completado";
         this.verificarExistencia(user);
 
@@ -230,11 +240,12 @@ public class EstadoCompletadoServiceImpl {
         if (contador == 1) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
     public void verificarEstadoPaso10(String user) {
         int contador = 0;
+        int paso = 10;
         String respuesta = "En curso";
 
         this.verificarExistencia(user);
@@ -254,13 +265,13 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
 
-        guardar(respuesta, user);
+        guardar(respuesta, user, paso);
     }
 
-    public void guardar(String respuesta, String user) {
+    public void guardar(String respuesta, String user, int paso) {
         RevisionContinua rev = this.revisionContinuaRepo.findRevisionByUsuario(user);
         List<FormularioRevision> formRev = rev.getTemas();
-        formRev.get(0).setEstado(respuesta);
+        formRev.get(paso-1).setEstado(respuesta);
         rev.setTemas(formRev);
         revisionContinuaRepo.save(rev);
     }
