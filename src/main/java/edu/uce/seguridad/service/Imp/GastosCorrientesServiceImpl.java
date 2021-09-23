@@ -27,6 +27,8 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
 
     private EstatusFinancieroRepository financieroRepository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<GastosCorrientes> buscarTodos() throws NoEncontradoExcepcion {
@@ -50,6 +52,7 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
             status.setBalanceABC(calcularBalance(status));
         }
         this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado C
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUser());
         // En el front se realiza la suma de Total (C)
         return this.gastosCorrientesRepository.insert(pojo);
     }
@@ -64,7 +67,9 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
             estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }
-        return this.gastosCorrientesRepository.save(pojo);
+        GastosCorrientes aux = this.gastosCorrientesRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUser());
+        return aux;
     }
 
     @Override
@@ -85,6 +90,7 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
         }
         this.gastosCorrientesRepository.delete(gastosCO);
+        estadoCompletadoService.verificarEstadoPaso8(gastosCO.getUser());
 
     }
 
@@ -103,6 +109,7 @@ public class GastosCorrientesServiceImpl implements GastosCorrienteService {
         GastosCorrientes gastosCO = this.gastosCorrientesRepository.findByUser(usuario);
         if (gastosCO != null) {
             this.gastosCorrientesRepository.delete(gastosCO);
+            estadoCompletadoService.verificarEstadoPaso8(gastosCO.getUser());
         }
     }
 }

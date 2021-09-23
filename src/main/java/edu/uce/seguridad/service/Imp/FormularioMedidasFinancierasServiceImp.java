@@ -6,16 +6,19 @@ import edu.uce.seguridad.model.GastosCorrientes;
 import edu.uce.seguridad.repository.FormularioMedidasFinancierasRepository;
 import edu.uce.seguridad.service.service.FormularioMedidasFinancierasService;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class FormularioMedidasFinancierasServiceImp implements FormularioMedidasFinancierasService {
 
-    @Autowired
     private FormularioMedidasFinancierasRepository repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
     
     @Override
     @Transactional(readOnly = true)
@@ -50,7 +53,9 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
     @Override
     @Transactional
     public FormularioMedidasFinancieras agregar(FormularioMedidasFinancieras pojo) throws DataAccessException {
-        return this.repository.insert(pojo);
+        FormularioMedidasFinancieras aux = this.repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUser());
+        return aux;
     }
 
     @Override
@@ -80,6 +85,7 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
         this.repository.delete(contatos);
+        estadoCompletadoService.verificarEstadoPaso8(contatos.getUser());
    }
     
      // By Leo robado de Erick es para que cuando elimine el usuario todos sus registros igual se eliminen
@@ -89,6 +95,7 @@ public class FormularioMedidasFinancierasServiceImp implements FormularioMedidas
         List<FormularioMedidasFinancieras> contactos = this.repository.findByUserOrderByMedidasFinancieras(user);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
+            estadoCompletadoService.verificarEstadoPaso8(contactos.get(0).getUser()); // posible error
         }
     }
 }

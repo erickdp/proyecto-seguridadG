@@ -28,6 +28,8 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
 
     private EstatusFinancieroRepository financieroRepository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<FondosDisponibles> buscarTodos() throws NoEncontradoExcepcion {
@@ -51,6 +53,7 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
             status.setBalanceABC(calcularBalance(status));
         }
         this.financieroRepository.save(status); // Guardo el estado financiero para que si de fondos disponibles va hacia la pestana de estatus solo tenga el estado A
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUsaurio());
         // En el front se realiza la suma de Total Fondos Disponibles (A)
         return this.fondosDisponiblesRepository.insert(pojo);
     }
@@ -65,7 +68,9 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
             estatus.setBalanceABC(calcularBalance(estatus));
             this.financieroRepository.save(estatus);
         }
-        return this.fondosDisponiblesRepository.save(pojo);
+        FondosDisponibles aux =  this.fondosDisponiblesRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso8(pojo.getUsaurio());
+        return aux;
     }
 
     @Override
@@ -83,11 +88,13 @@ public class FondosDisponiblesServiceImp implements FondosDisponiblesService {
     public void eliminarDocumento(String identificador) throws EliminacionException {
         Optional<FondosDisponibles> fondosDisponibles = this.fondosDisponiblesRepository.findByUsaurio(identificador);
         fondosDisponibles.ifPresent(this.fondosDisponiblesRepository::delete);
+        estadoCompletadoService.verificarEstadoPaso8(fondosDisponibles.get().getUsaurio());
     }
 
     @Override
     public void eliminarConUsuario(String usuario) {
         Optional<FondosDisponibles> fondosDisponibles = this.fondosDisponiblesRepository.findByUsaurio(usuario);
         fondosDisponibles.ifPresent(elemento -> this.fondosDisponiblesRepository.delete(fondosDisponibles.get()));
+        estadoCompletadoService.verificarEstadoPaso8(fondosDisponibles.get().getUsaurio());
     }
 }
