@@ -73,6 +73,7 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
         }
         this.formularioAlcanceRepository.delete(formu);
+        estadoCompletadoService.verificarEstadoPaso1(formu.getUser());
     }
 
     @Override
@@ -92,6 +93,7 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
         FormularioAlcance formularioAlcance = this.formularioAlcanceRepository.findFormularioAlcanceByUser(nombreUsuario);
         if (formularioAlcance != null) {
             this.formularioAlcanceRepository.delete(formularioAlcance);
+            estadoCompletadoService.verificarEstadoPaso1(formularioAlcance.getUser());
         }
         // Si no encuentra el formulario no generar una excepcion para que siga el flujo normal de eliminacion en otros formularios.
     }

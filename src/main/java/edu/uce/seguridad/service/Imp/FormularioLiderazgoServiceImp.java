@@ -75,6 +75,7 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
             throw new NoEncontradoExcepcion("Respuesta", "No se han encontrado registros");
         }
         this.formularioLiderazgoRepository.delete(formLide);
+        estadoCompletadoService.verificarEstadoPaso1(formLide.getUser());
     }
 
     @Override
@@ -94,6 +95,7 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
         FormularioLiderazgo formularioLiderazgo = this.formularioLiderazgoRepository.findFormularioLiderazgoByUser(nombreUsuario);
         if (formularioLiderazgo != null) {
             this.formularioLiderazgoRepository.delete(formularioLiderazgo);
+            estadoCompletadoService.verificarEstadoPaso1(formularioLiderazgo.getUser());
         }
     }
 
