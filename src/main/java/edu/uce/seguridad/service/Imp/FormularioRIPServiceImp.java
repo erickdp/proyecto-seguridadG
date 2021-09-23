@@ -64,9 +64,10 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
         Recurso recurso = this.recursoService.buscarRecursoPorUsuario(pojo.getUser());
 
         estimacionDano.setRecursosNecesarios(establecerEstimaciones(recurso));
-        this.estimacionDanoService.agregar(estimacionDano);
+
         FormularioRIP aux = this.formularioRIPRepository.insert(pojo);
         estadoCompletadoService.verificarEstadoPaso4(pojo.getUser());
+        this.estimacionDanoService.agregar(estimacionDano);
         return aux;
     }
 
