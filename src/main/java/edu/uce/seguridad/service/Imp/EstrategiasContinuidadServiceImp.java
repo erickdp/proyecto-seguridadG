@@ -3,6 +3,7 @@ package edu.uce.seguridad.service.Imp;
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.EstrategiasContinuidad;
+import edu.uce.seguridad.model.PeriodoTolerable;
 import edu.uce.seguridad.repository.EstrategiasContinuidadRepository;
 import edu.uce.seguridad.service.service.EstrategiasContinuidadService;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.List;
 public class EstrategiasContinuidadServiceImp implements EstrategiasContinuidadService {
 
     private EstrategiasContinuidadRepository estrategiasContinuidadRepository;
+
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -37,7 +40,9 @@ public class EstrategiasContinuidadServiceImp implements EstrategiasContinuidadS
     @Override
     @Transactional
     public EstrategiasContinuidad actualizar(EstrategiasContinuidad pojo) throws DataAccessException {
-        return this.estrategiasContinuidadRepository.save(pojo);
+        EstrategiasContinuidad aux = this.estrategiasContinuidadRepository.save(pojo);;
+        estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -51,6 +56,7 @@ public class EstrategiasContinuidadServiceImp implements EstrategiasContinuidadS
         List<EstrategiasContinuidad> list = this.estrategiasContinuidadRepository.findByUsuario(identificador);
         if(!list.isEmpty()) {
             this.estrategiasContinuidadRepository.deleteAll(list);
+            estadoCompletadoService.verificarEstadoPaso7(list.get(0).getUsuario());
         }
     }
 
@@ -69,6 +75,7 @@ public class EstrategiasContinuidadServiceImp implements EstrategiasContinuidadS
         List<EstrategiasContinuidad> list = this.estrategiasContinuidadRepository.findByUsuario(usuario);
         if (!list.isEmpty()) {
             this.estrategiasContinuidadRepository.deleteAll(list);
+            estadoCompletadoService.verificarEstadoPaso7(list.get(0).getUsuario());
         }
     }
 }

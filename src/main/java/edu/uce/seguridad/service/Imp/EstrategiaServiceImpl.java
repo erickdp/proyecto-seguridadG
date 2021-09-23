@@ -23,6 +23,8 @@ public class EstrategiaServiceImpl implements EstrategiaService {
 
     private EstrategiasContinuidadRepository estrategiasContinuidadRepository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<ResumenDeEstrategias> buscarTodos() throws NoEncontradoExcepcion {
@@ -36,9 +38,11 @@ public class EstrategiaServiceImpl implements EstrategiaService {
     @Override
     @Transactional
     public ResumenDeEstrategias agregar(ResumenDeEstrategias pojo) throws DataAccessException {
+        ResumenDeEstrategias aux = this.estrategiaRepository.insert(pojo);
         // Por cada estrategia se crea un form 7.2
         generarEstrategiasContinuidad(pojo, false);
-        return this.estrategiaRepository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -108,6 +112,7 @@ public class EstrategiaServiceImpl implements EstrategiaService {
 
                 estrategiasContinuidad.setCategorias(hashMap);
                 this.estrategiasContinuidadRepository.insert(estrategiasContinuidad);
+                estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario());
             });
 
         });
