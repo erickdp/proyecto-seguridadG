@@ -41,7 +41,9 @@ public class EvacuacionYRescateServiceImp implements EvacuacionYRescateService {
     @Override
     @Transactional
     public EvacuacionYRescate actualizar(EvacuacionYRescate pojo) throws DataAccessException {
-        return this.evacuacionYRescateRepository.save(pojo);
+        EvacuacionYRescate aux = this.evacuacionYRescateRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUsuario());
+        return aux;
     }
 
     @Override
