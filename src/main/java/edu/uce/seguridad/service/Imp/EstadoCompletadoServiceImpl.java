@@ -62,6 +62,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso2(String user) {
@@ -87,6 +88,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso3(String user) {
@@ -102,6 +104,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso4(String user) {
@@ -125,6 +128,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso5(String user) {
@@ -140,6 +144,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso6(String user) {
@@ -174,6 +179,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso7(String user) {
@@ -195,6 +201,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso8(String user) {
@@ -226,6 +233,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso9(String user) {
@@ -241,6 +249,7 @@ public class EstadoCompletadoServiceImpl {
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
+        verificarEstadoPaso10(user);
     }
 
     public void verificarEstadoPaso10(String user) {

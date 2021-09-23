@@ -100,8 +100,9 @@ public class RecursoServiceImpl implements RecursoService {
             costosRecup.setRecurso(establecerRecursos(pojo)); // se formatean los valores
             this.recupService.actualizar(costosRecup);
         }
-
-        return this.repository.save(pojo);
+        Recurso aux = this.repository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso3(pojo.getUsuario());
+        return aux;
     }
 
     @Override
