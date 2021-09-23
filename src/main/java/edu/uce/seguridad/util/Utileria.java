@@ -129,9 +129,23 @@ public class Utileria {
         List<FormularioRevision> lista = new ArrayList<>();
 
         datos.forEach((llave, valor) -> {
-            lista.add(new FormularioRevision(llave, valor, "", "", "", ""));
+            lista.add(new FormularioRevision(llave, valor, relacionarForms(llave), "No completado", "", ""));
         });
         return lista;
+    }
+
+    public static String relacionarForms(int llave) {
+        List<String> forms = Arrays.asList("1-1",
+                "2-1\n2-2\n2-3",
+                "3-1",
+                "4-1\n4-2",
+                "5-1",
+                "6-1\n6-2\n6-3\n6-4",
+                "7-1\n7-2",
+                "8-1\n8-2\n8-3\n8-4\n8-5",
+                "9-1",
+                "10-1\n10-2");
+        return forms.get(llave-1);
     }
 
 }
