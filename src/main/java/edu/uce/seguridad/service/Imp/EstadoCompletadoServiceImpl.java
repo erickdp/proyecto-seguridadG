@@ -15,33 +15,31 @@ import static edu.uce.seguridad.util.Utileria.formulariosDefault;
 @AllArgsConstructor
 public class EstadoCompletadoServiceImpl {
 
-    private FormularioAlcanceRepository formularioAlcanceRepository;
-    private FormularioLiderazgoRepository formularioLiderazgoRepository;
-
-    private FormularioImpactoRepository formularioImpactoRepository;
-    private PeriodoTolerableRepository periodoTolerableRepository;
-    private ActividadesPrioritariasRepository actividadesPrioritariasRepository;
-    private RecursoRepository recursoRepository;
-    private FormularioRIPRepository formularioRIPRepository;
-    private EstimacionDanoRepository estimacionDanoRepository;
-    private ProteccionYMitigacionRepository proteccionYMitigacionRepository;
-    private EvacuacionYRescateRepository evacuacionYRescateRepository;
-    private CentroOperacionRepository centroOperacionRepository;
-    private ContactoEmergenciaRepo contactoEmergenciaRepo;
-    private ListaContactoExternoRepository listaContactoExternoRepository;
-    private FormularioListadeAcopioRepository formularioListadeAcopioRepository;
-    private EvaluacionDanoRepository evaluacionDanoRepository;
-    private EstrategiaRepository estrategiaRepository;
-    private EstrategiasContinuidadRepository estrategiasContinuidadRepository;
-    private FondosDisponiblesRepository fondosDisponiblesRepository;
-    private FormularioCostosRecupRepository formularioCostosRecupRepository;
-    private GastosCorrientesRepository gastosCorrientesRepository;
-    private EstatusFinancieroRepository financieroRepository;
-    private FormularioMedidasFinancierasRepository formularioMedidasFinancierasRepository;
-    private FormularioPlanDePruebaRepository formularioPlanDePruebaRepository;
-    private HojaDeRevisionDeGerenciaRepository hojaDeRevisionDeGerenciaRepository;
-    private RevisionContinuaRepo revisionContinuaRepo;
-
+    private final FormularioAlcanceRepository formularioAlcanceRepository;
+    private final FormularioLiderazgoRepository formularioLiderazgoRepository;
+    private final FormularioImpactoRepository formularioImpactoRepository;
+    private final PeriodoTolerableRepository periodoTolerableRepository;
+    private final ActividadesPrioritariasRepository actividadesPrioritariasRepository;
+    private final RecursoRepository recursoRepository;
+    private final FormularioRIPRepository formularioRIPRepository;
+    private final EstimacionDanoRepository estimacionDanoRepository;
+    private final ProteccionYMitigacionRepository proteccionYMitigacionRepository;
+    private final EvacuacionYRescateRepository evacuacionYRescateRepository;
+    private final CentroOperacionRepository centroOperacionRepository;
+    private final ContactoEmergenciaRepo contactoEmergenciaRepo;
+    private final ListaContactoExternoRepository listaContactoExternoRepository;
+    private final FormularioListadeAcopioRepository formularioListadeAcopioRepository;
+    private final EvaluacionDanoRepository evaluacionDanoRepository;
+    private final EstrategiaRepository estrategiaRepository;
+    private final EstrategiasContinuidadRepository estrategiasContinuidadRepository;
+    private final FondosDisponiblesRepository fondosDisponiblesRepository;
+    private final FormularioCostosRecupRepository formularioCostosRecupRepository;
+    private final GastosCorrientesRepository gastosCorrientesRepository;
+    private final EstatusFinancieroRepository financieroRepository;
+    private final FormularioMedidasFinancierasRepository formularioMedidasFinancierasRepository;
+    private final FormularioPlanDePruebaRepository formularioPlanDePruebaRepository;
+    private final HojaDeRevisionDeGerenciaRepository hojaDeRevisionDeGerenciaRepository;
+    private final RevisionContinuaRepo revisionContinuaRepo;
 
     public void verificarEstadoPaso1(String user) {
         int contador = 0;
