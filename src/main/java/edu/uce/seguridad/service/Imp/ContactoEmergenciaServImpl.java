@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ContactoEmergenciaServImpl implements ContactoEmergenciaService {
     private ContactoEmergenciaRepo repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     public List<ContactoEmergencia> buscarTodos() throws NoEncontradoExcepcion {
@@ -23,7 +24,9 @@ public class ContactoEmergenciaServImpl implements ContactoEmergenciaService {
 
     @Override
     public ContactoEmergencia agregar(ContactoEmergencia pojo) throws DataAccessException {
-        return repository.insert(pojo);
+        ContactoEmergencia aux = repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class ContactoEmergenciaServImpl implements ContactoEmergenciaService {
         ContactoEmergencia contacto = this.buscaPorId(identificador);
         if (contacto != null) {
             this.repository.delete(contacto);
+            estadoCompletadoService.verificarEstadoPaso6(contacto.getUsuario());
         }
     }
 
@@ -59,6 +63,7 @@ public class ContactoEmergenciaServImpl implements ContactoEmergenciaService {
         List<ContactoEmergencia> contactoEmergencia = this.buscarContactosPorUsuario(usuario);
         if (!contactoEmergencia.isEmpty()) {
             contactoEmergencia.forEach(contactoEmergencia1 -> this.repository.delete(contactoEmergencia1));
+            estadoCompletadoService.verificarEstadoPaso6(contactoEmergencia.get(0).getUsuario());
         }
     }
 }

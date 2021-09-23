@@ -18,6 +18,8 @@ public class EvacuacionYRescateServiceImp implements EvacuacionYRescateService {
 
     private EvacuacionYRescateRepository evacuacionYRescateRepository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<EvacuacionYRescate> buscarTodos() throws NoEncontradoExcepcion {
@@ -31,7 +33,9 @@ public class EvacuacionYRescateServiceImp implements EvacuacionYRescateService {
     @Override
     @Transactional
     public EvacuacionYRescate agregar(EvacuacionYRescate pojo) throws DataAccessException {
-        return this.evacuacionYRescateRepository.save(pojo);
+        EvacuacionYRescate aux = this.evacuacionYRescateRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -51,6 +55,7 @@ public class EvacuacionYRescateServiceImp implements EvacuacionYRescateService {
     public void eliminarDocumento(String identificador) throws EliminacionException {
         List<EvacuacionYRescate> eyrPojo = this.evacuacionYRescateRepository.findByUsuario(identificador);
         eyrPojo.forEach(this.evacuacionYRescateRepository::delete);
+        estadoCompletadoService.verificarEstadoPaso6(eyrPojo.get(0).getUsuario()); // error de desborde
     }
 
     private static final Map<String, String> RECURSOS_DEFAULT() {

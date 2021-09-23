@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CentroOperacionServiceImpl implements CentroOperacionService {
     private CentroOperacionRepository repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     public List<CentroOperacion> buscarTodos() throws NoEncontradoExcepcion {
@@ -23,7 +24,9 @@ public class CentroOperacionServiceImpl implements CentroOperacionService {
 
     @Override
     public CentroOperacion agregar(CentroOperacion pojo) throws DataAccessException {
-        return repository.insert(pojo);
+        CentroOperacion aux = repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class CentroOperacionServiceImpl implements CentroOperacionService {
         CentroOperacion centros = this.buscaPorId(identificador);
         if (centros != null) {
             this.repository.delete(centros);
+            estadoCompletadoService.verificarEstadoPaso6(centros.getUsuario());
         }
     }
 
@@ -54,6 +58,7 @@ public class CentroOperacionServiceImpl implements CentroOperacionService {
         CentroOperacion centroOperacion = this.buscarCentroPorUsuario(usuario);
         if (centroOperacion != null) {
             this.repository.delete(centroOperacion);
+            estadoCompletadoService.verificarEstadoPaso6(centroOperacion.getUsuario());
         }
     }
 }

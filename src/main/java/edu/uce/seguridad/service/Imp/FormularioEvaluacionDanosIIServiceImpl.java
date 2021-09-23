@@ -17,6 +17,7 @@ import java.util.List;
 public class FormularioEvaluacionDanosIIServiceImpl implements FormularioEvaluacionDanosIIService {
 
     private EvaluacionDanoRepository evaluacionDanoRepository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -31,7 +32,9 @@ public class FormularioEvaluacionDanosIIServiceImpl implements FormularioEvaluac
     @Override
     @Transactional
     public FormularioEvaluacionDanosII agregar(FormularioEvaluacionDanosII pojo) throws DataAccessException {
-        return this.evaluacionDanoRepository.insert(pojo);
+        FormularioEvaluacionDanosII aux = this.evaluacionDanoRepository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUsuario());
+        return aux;
 
     }
 
@@ -60,6 +63,7 @@ public class FormularioEvaluacionDanosIIServiceImpl implements FormularioEvaluac
             throw new NoEncontradoExcepcion("respuesta", "No se encontro registro");
         }
         this.evaluacionDanoRepository.delete(evaluacionDanos);
+        estadoCompletadoService.verificarEstadoPaso6(evaluacionDanos.getUsuario());
     }
 
     @Override
@@ -77,6 +81,7 @@ public class FormularioEvaluacionDanosIIServiceImpl implements FormularioEvaluac
         List<FormularioEvaluacionDanosII> evaluacionDanos = this.evaluacionDanoRepository.findByUsuario(user);
         if (!evaluacionDanos.isEmpty()) {
             this.evaluacionDanoRepository.deleteAll(evaluacionDanos);
+            estadoCompletadoService.verificarEstadoPaso6(evaluacionDanos.get(0).getUsuario()); // desborde posible
         }
     }
 

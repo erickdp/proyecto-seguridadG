@@ -4,6 +4,7 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.ListaContactoExterno;
 import edu.uce.seguridad.repository.ListaContactoExternoRepository;
 import edu.uce.seguridad.service.service.ListaContactoExternoService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ListaContactoExternoServiceImp implements ListaContactoExternoService{
 
-    @Autowired
     private ListaContactoExternoRepository repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
  
     @Override
     @Transactional(readOnly = true)
@@ -30,7 +32,9 @@ public class ListaContactoExternoServiceImp implements ListaContactoExternoServi
     @Override
     @Transactional
     public ListaContactoExterno agregar(ListaContactoExterno pojo) throws DataAccessException {
-        return this.repository.insert(pojo);
+        ListaContactoExterno aux = this.repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUser());
+        return aux;
     }
 
     @Override
@@ -59,6 +63,7 @@ public class ListaContactoExternoServiceImp implements ListaContactoExternoServi
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
         this.repository.delete(contacto);
+        estadoCompletadoService.verificarEstadoPaso6(contacto.getUser());
     }
 
     @Override
@@ -78,6 +83,7 @@ public class ListaContactoExternoServiceImp implements ListaContactoExternoServi
         List<ListaContactoExterno> contactos = this.repository.findByUserOrderByTipoContactoAsc(user);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.repository.delete(contacto));
+            estadoCompletadoService.verificarEstadoPaso6(contactos.get(0).getUser()); // desborde posible
         }
     }
 }

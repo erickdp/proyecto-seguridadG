@@ -16,7 +16,8 @@ import java.util.List;
 @Service
 public class FormularioListadeAcopioServiceImp implements FormularioListadeAcopioService {
 
-    FormularioListadeAcopioRepository formularioListadeAcopioRepository;
+    private FormularioListadeAcopioRepository formularioListadeAcopioRepository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -31,7 +32,9 @@ public class FormularioListadeAcopioServiceImp implements FormularioListadeAcopi
     @Override
     @Transactional
     public FormularioListadeAcopio agregar(FormularioListadeAcopio pojo) throws DataAccessException {
-        return this.formularioListadeAcopioRepository.insert(pojo);
+        FormularioListadeAcopio aux = this.formularioListadeAcopioRepository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso6(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class FormularioListadeAcopioServiceImp implements FormularioListadeAcopi
         throw  new NoEncontradoExcepcion("Respuesta", "No se ha encontrado el Documento");
     }
     this.formularioListadeAcopioRepository.delete(listadeAcopio);
+    estadoCompletadoService.verificarEstadoPaso6(listadeAcopio.getUsuario());
     }
 
     @Override
@@ -74,6 +78,7 @@ public class FormularioListadeAcopioServiceImp implements FormularioListadeAcopi
         List<FormularioListadeAcopio> listadeAcopios = this.formularioListadeAcopioRepository.findByUsuario(usuario);
         if (!listadeAcopios.isEmpty()){
             this.formularioListadeAcopioRepository.deleteAll(listadeAcopios);
+            estadoCompletadoService.verificarEstadoPaso6(listadeAcopios.get(0).getUsuario());
         }
 
     }
