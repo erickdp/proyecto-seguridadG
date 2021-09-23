@@ -255,21 +255,31 @@ public class EstadoCompletadoServiceImpl {
     public void verificarEstadoPaso10(String user) {
         int contador = 0;
         int paso = 10;
-        String respuesta = "En curso";
+        String respuesta = "No completado";
 
         this.verificarExistencia(user);
 
         if (!hojaDeRevisionDeGerenciaRepository.findByUserOrderByAsuntoARevisaryVerificar(user).isEmpty()) {
             contador++;
         }
+        if (revisionContinuaRepo.findRevisionByUsuario(user) != null) {
+            contador++;
+        }
 
-        RevisionContinua rev = this.revisionContinuaRepo.findRevisionByUsuario(user);
-        List<FormularioRevision> lista = rev.getTemas();
-        for (FormularioRevision var : lista) {
-            if (var.getEstado().equals("Completado")) {
-                contador++;
+        if (contador == 2) {
+            contador = 0;
+            RevisionContinua rev = this.revisionContinuaRepo.findRevisionByUsuario(user);
+            List<FormularioRevision> lista = rev.getTemas();
+            for (FormularioRevision var : lista) {
+                if (var.getEstado().equals("Completado")) {
+                    contador++;
+                }
             }
         }
+        if (contador > 0) {
+            respuesta = "En curso";
+        }
+
         if (contador == 9) {
             respuesta = "Completado";
         }
@@ -280,7 +290,7 @@ public class EstadoCompletadoServiceImpl {
     public void guardar(String respuesta, String user, int paso) {
         RevisionContinua rev = this.revisionContinuaRepo.findRevisionByUsuario(user);
         List<FormularioRevision> formRev = rev.getTemas();
-        formRev.get(paso-1).setEstado(respuesta);
+        formRev.get(paso - 1).setEstado(respuesta);
         rev.setTemas(formRev);
         revisionContinuaRepo.save(rev);
     }
