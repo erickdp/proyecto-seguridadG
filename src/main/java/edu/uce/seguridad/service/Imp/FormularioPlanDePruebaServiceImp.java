@@ -5,20 +5,26 @@ import edu.uce.seguridad.model.FormularioPlanDePrueba;
 import edu.uce.seguridad.repository.FormularioPlanDePruebaRepository;
 import edu.uce.seguridad.service.service.FormularioPlanDePruebaService;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class FormularioPlanDePruebaServiceImp implements FormularioPlanDePruebaService{
-    @Autowired
+
     private FormularioPlanDePruebaRepository repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional
     public FormularioPlanDePrueba agregar(FormularioPlanDePrueba pojo) throws DataAccessException {
-        return this.repository.insert(pojo);
+        FormularioPlanDePrueba aux = this.repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso9(pojo.getUser());
+        return aux;
     }
 
     @Override
@@ -46,6 +52,7 @@ public class FormularioPlanDePruebaServiceImp implements FormularioPlanDePruebaS
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
         this.repository.delete(contatos);
+        estadoCompletadoService.verificarEstadoPaso9(contatos.getUser());
     }
 
     @Override
@@ -63,6 +70,7 @@ public class FormularioPlanDePruebaServiceImp implements FormularioPlanDePruebaS
         List<FormularioPlanDePrueba> contactos = this.repository.findByUserOrderByTipoDeEjercicio(user);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.get_id()));
+            estadoCompletadoService.verificarEstadoPaso9(contactos.get(0).getUser()); // posible desborde
         }
 
     }
@@ -72,6 +80,7 @@ public class FormularioPlanDePruebaServiceImp implements FormularioPlanDePruebaS
         List<FormularioPlanDePrueba> contactos = this.repository.findByUserOrderByTipoDeEjercicio(nombreUsuario);
         if (!contactos.isEmpty()) {
             contactos.forEach(contacto -> this.eliminarDocumento(contacto.getUser()));
+            estadoCompletadoService.verificarEstadoPaso9(contactos.get(0).getUser());
         }
 
     }
