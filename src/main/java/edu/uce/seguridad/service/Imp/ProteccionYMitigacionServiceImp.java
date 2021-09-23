@@ -20,6 +20,8 @@ public class ProteccionYMitigacionServiceImp implements ProteccionYMitigacionSer
 
     private ProteccionYMitigacionRepository proteccionYMitigacionRepository;
 
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
+
     @Override
     @Transactional(readOnly = true)
     public List<ProteccionYMitigacion> buscarTodos() throws NoEncontradoExcepcion {
@@ -39,7 +41,9 @@ public class ProteccionYMitigacionServiceImp implements ProteccionYMitigacionSer
     @Override
     @Transactional
     public ProteccionYMitigacion actualizar(ProteccionYMitigacion pojo) throws DataAccessException {
-        return this.proteccionYMitigacionRepository.save(pojo);
+        ProteccionYMitigacion aux = this.proteccionYMitigacionRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso5(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -53,6 +57,7 @@ public class ProteccionYMitigacionServiceImp implements ProteccionYMitigacionSer
     public void eliminarDocumento(String identificador) throws EliminacionException {
         List<ProteccionYMitigacion> formPM = this.proteccionYMitigacionRepository.findByUsuario(identificador);
         this.proteccionYMitigacionRepository.deleteAll(formPM);
+        estadoCompletadoService.verificarEstadoPaso5(formPM.get(0).getUsuario()); // poible error por index desbordado
     }
 
     @Override
