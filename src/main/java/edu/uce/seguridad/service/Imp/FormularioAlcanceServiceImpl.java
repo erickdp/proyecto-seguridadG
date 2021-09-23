@@ -2,8 +2,12 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioAlcance;
+import edu.uce.seguridad.model.FormularioRevision;
+import edu.uce.seguridad.model.RevisionContinua;
 import edu.uce.seguridad.repository.FormularioAlcanceRepository;
+import edu.uce.seguridad.repository.RevisionContinuaRepo;
 import edu.uce.seguridad.service.service.FormularioAlcanceService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -11,11 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static edu.uce.seguridad.util.Utileria.formulariosDefault;
+
 @Service
+@AllArgsConstructor
 public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
 
-    @Autowired
     private FormularioAlcanceRepository formularioAlcanceRepository;
+
+    private RevisionContinuaRepo revisionContinuaRepo;
+
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -30,7 +40,12 @@ public class FormularioAlcanceServiceImpl implements FormularioAlcanceService {
     @Override
     @Transactional
     public FormularioAlcance agregar(FormularioAlcance pojo) throws DataAccessException {
-        return this.formularioAlcanceRepository.insert(pojo);
+
+        FormularioAlcance aux = this.formularioAlcanceRepository.insert(pojo);
+
+        estadoCompletadoService.verificarEstadoPaso1(pojo.getUser());
+
+        return aux;
     }
 
     @Override

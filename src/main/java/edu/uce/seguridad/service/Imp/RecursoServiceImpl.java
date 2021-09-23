@@ -58,10 +58,10 @@ public class RecursoServiceImpl implements RecursoService {
 //                .usuario(pojo.getUsuario())
 //                .build());
         // Se crea el formulario 10.1
-        this.revisionContinuaRepo.insert(RevisionContinua.builder()
-                .usuario(pojo.getUsuario())
-                .temas(formulariosDefault())
-                .build());
+//        this.revisionContinuaRepo.insert(RevisionContinua.builder()
+//                .usuario(pojo.getUsuario())
+//                .temas(formulariosDefault())
+//                .build());
         return repository.insert(pojo);
     }
 

@@ -2,8 +2,12 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioLiderazgo;
+import edu.uce.seguridad.model.FormularioRevision;
+import edu.uce.seguridad.model.RevisionContinua;
 import edu.uce.seguridad.repository.FormularioLiderazgoRepository;
+import edu.uce.seguridad.repository.RevisionContinuaRepo;
 import edu.uce.seguridad.service.service.FormularioLiderazgoService;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,12 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static edu.uce.seguridad.util.Utileria.formulariosDefault;
+
 @Service
-@NoArgsConstructor
+@AllArgsConstructor
 public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService {
 
-    @Autowired
     private FormularioLiderazgoRepository formularioLiderazgoRepository;
+
+    private RevisionContinuaRepo revisionContinuaRepo;
+
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -33,7 +42,12 @@ public class FormularioLiderazgoServiceImp implements FormularioLiderazgoService
     @Override
     @Transactional
     public FormularioLiderazgo agregar(FormularioLiderazgo pojo) throws DataAccessException {
-        return this.formularioLiderazgoRepository.insert(pojo);
+
+        FormularioLiderazgo insertado = this.formularioLiderazgoRepository.insert(pojo);
+
+        estadoCompletadoService.verificarEstadoPaso1(pojo.getUser());
+
+        return insertado;
     }
 
     @Override
