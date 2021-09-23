@@ -1,5 +1,6 @@
 package edu.uce.seguridad.service.Imp;
 
+import edu.uce.seguridad.model.EstimacionDano;
 import edu.uce.seguridad.model.FormularioRevision;
 import edu.uce.seguridad.model.RevisionContinua;
 import edu.uce.seguridad.repository.*;
@@ -114,10 +115,12 @@ public class EstadoCompletadoServiceImpl {
         this.verificarExistencia(user);
 
         if (formularioRIPRepository.findByUser(user) != null) {
+
             contador++;
         }
 
-        if (estimacionDanoRepository.findByUsuario(user) != null) {
+        if (!estimacionDanoRepository.findByUsuario(user).isEmpty()) {
+            List<EstimacionDano> name = estimacionDanoRepository.findByUsuario(user);
             contador++;
         }
 
