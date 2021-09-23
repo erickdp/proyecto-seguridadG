@@ -39,9 +39,10 @@ public class EstrategiaServiceImpl implements EstrategiaService {
     @Transactional
     public ResumenDeEstrategias agregar(ResumenDeEstrategias pojo) throws DataAccessException {
         ResumenDeEstrategias aux = this.estrategiaRepository.insert(pojo);
-        // Por cada estrategia se crea un form 7.2
-        generarEstrategiasContinuidad(pojo, false);
         estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario());
+        // Por cada estrategia se crea un form 7.2
+        generarEstrategiasContinuidad(pojo, false); // lo pongo segundo para que al editar se ponga "Completado"
+
         return aux;
     }
 
@@ -112,7 +113,7 @@ public class EstrategiaServiceImpl implements EstrategiaService {
 
                 estrategiasContinuidad.setCategorias(hashMap);
                 this.estrategiasContinuidadRepository.insert(estrategiasContinuidad);
-                estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario());
+                //estadoCompletadoService.verificarEstadoPaso7(pojo.getUsuario()); // no debe ir
             });
 
         });
