@@ -20,6 +20,7 @@ import java.util.Optional;
 public class ControlPcnServiceImp implements ControlPcnService {
 
     private ControlPcnRepository controlPcnRepository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)

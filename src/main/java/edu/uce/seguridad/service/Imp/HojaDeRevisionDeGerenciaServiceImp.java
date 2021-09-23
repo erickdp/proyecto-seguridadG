@@ -6,16 +6,19 @@ import edu.uce.seguridad.model.HojaDeRevisionDeGerencia;
 import edu.uce.seguridad.repository.HojaDeRevisionDeGerenciaRepository;
 import edu.uce.seguridad.service.service.HojaDeRevisionDeGerenciaService;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGerenciaService{
 
-    @Autowired
     private HojaDeRevisionDeGerenciaRepository repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
     
     @Override
     public List<HojaDeRevisionDeGerencia> buscarPorUserFiltrarPorAsuntoARevisaryVerificar(String user) throws NoEncontradoExcepcion {
@@ -48,7 +51,9 @@ public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGeren
 
     @Override
     public HojaDeRevisionDeGerencia agregar(HojaDeRevisionDeGerencia pojo) throws DataAccessException {
-       return this.repository.insert(pojo);
+        HojaDeRevisionDeGerencia aux = this.repository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso10(pojo.getUser());
+       return aux;
     }
 
     @Override
@@ -76,6 +81,7 @@ public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGeren
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
         this.repository.delete(contatos);
+        estadoCompletadoService.verificarEstadoPaso10(contatos.getUser());
     }
         
     

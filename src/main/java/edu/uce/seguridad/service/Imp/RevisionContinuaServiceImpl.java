@@ -16,6 +16,7 @@ import java.util.List;
 public class RevisionContinuaServiceImpl implements RevisionContinuaService {
 
     private RevisionContinuaRepo repository;
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     public List<RevisionContinua> buscarTodos() throws NoEncontradoExcepcion {
@@ -29,7 +30,9 @@ public class RevisionContinuaServiceImpl implements RevisionContinuaService {
 
     @Override
     public RevisionContinua actualizar(RevisionContinua pojo) throws DataAccessException {
-        return this.repository.save(pojo);
+        RevisionContinua aux = this.repository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso10(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class RevisionContinuaServiceImpl implements RevisionContinuaService {
         RevisionContinua revision = this.buscaPorId(identificador);
         if (revision != null) {
             this.repository.delete(revision);
+            estadoCompletadoService.verificarEstadoPaso10(revision.getUsuario());
         }
     }
 
@@ -55,6 +59,7 @@ public class RevisionContinuaServiceImpl implements RevisionContinuaService {
         RevisionContinua revision = this.repository.findRevisionByUsuario(nombreUsuario);
         if (revision != null) {
             this.repository.delete(revision);
+            estadoCompletadoService.verificarEstadoPaso10(revision.getUsuario());
         }
     }
 }
