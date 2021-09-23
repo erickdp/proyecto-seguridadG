@@ -11,6 +11,7 @@ import edu.uce.seguridad.service.service.EstimacionDanoService;
 import edu.uce.seguridad.service.service.EvacuacionYRescateService;
 import edu.uce.seguridad.service.service.FormularioRIPService;
 import edu.uce.seguridad.service.service.RecursoService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -23,19 +24,18 @@ import java.util.stream.Collectors;
 import static edu.uce.seguridad.util.Utileria.establecerEstimaciones;
 
 @Service
+@AllArgsConstructor
 public class FormularioRIPServiceImp implements FormularioRIPService {
 
-    @Autowired
     private FormularioRIPRepository formularioRIPRepository;
 
-    @Autowired
     private EstimacionDanoService estimacionDanoService;
 
-    @Autowired
     private RecursoService recursoService;
 
-    @Autowired
     private EvacuacionYRescateService evacuacionYRescateService;
+
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
 
     @Override
@@ -65,8 +65,9 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
 
         estimacionDano.setRecursosNecesarios(establecerEstimaciones(recurso));
         this.estimacionDanoService.agregar(estimacionDano);
-
-        return this.formularioRIPRepository.insert(pojo);
+        FormularioRIP aux = this.formularioRIPRepository.insert(pojo);
+        estadoCompletadoService.verificarEstadoPaso4(pojo.getUser());
+        return aux;
     }
 
     @Override
@@ -93,6 +94,7 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
             throw new NoEncontradoExcepcion("respuesta", "No se han encontrado registros de: ".concat(identificador));
         }
         this.formularioRIPRepository.delete(rip);
+        estadoCompletadoService.verificarEstadoPaso4(rip.getUser());
     }
 
     @Override
@@ -119,6 +121,7 @@ public class FormularioRIPServiceImp implements FormularioRIPService {
     @Transactional
     public void eliminarPorUsusario(String user) {
         this.formularioRIPRepository.deleteByUser(user);
+        estadoCompletadoService.verificarEstadoPaso4(user);
     }
 
     @Override // No trans porque delego ese proceso a otro metodo

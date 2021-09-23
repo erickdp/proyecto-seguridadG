@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +27,8 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
     private EstimacionDanoRepository estimacionDanoRepository;
 
     private ProteccionYMitigacionRepository proteccionYMitigacionRepository;
+
+    private EstadoCompletadoServiceImpl estadoCompletadoService;
 
     @Override
     @Transactional(readOnly = true)
@@ -77,8 +80,9 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
 
         proteccionYMitigacion.setRecursosMitigar(listaCompelta); // Agrego al forma de proteccion y mitigacion
         this.proteccionYMitigacionRepository.save(proteccionYMitigacion); // A la par que actualizo el 4.2 creo un 5.1
-
-        return this.estimacionDanoRepository.save(pojo);
+        EstimacionDano aux = this.estimacionDanoRepository.save(pojo);
+        estadoCompletadoService.verificarEstadoPaso4(pojo.getUsuario());
+        return aux;
     }
 
     @Override
@@ -97,6 +101,7 @@ public class EstimacionDanoServiceImp implements EstimacionDanoService {
         List<EstimacionDano> formularioEstimacion = this.estimacionDanoRepository.findByUsuario(identificador); // Como se eliminan varios forms devuelve una lista
         if (!formularioEstimacion.isEmpty()) {
             formularioEstimacion.forEach(form -> this.estimacionDanoRepository.deleteById(form.get_id()));
+            estadoCompletadoService.verificarEstadoPaso4(formularioEstimacion.get(0).getUsuario());
         }
     }
 
