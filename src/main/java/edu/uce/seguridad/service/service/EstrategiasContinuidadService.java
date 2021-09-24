@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface EstrategiasContinuidadService extends BaseService<EstrategiasContinuidad,String> {
     List<EstrategiasContinuidad> buscarPorUsuario(String usuario) throws NoEncontradoExcepcion;
+    EstrategiasContinuidad buscarPorUsuarioYEstrategia(String usuario, String estrategia) throws NoEncontradoExcepcion;
     void eliminarConUsuario(String usuario);
 }

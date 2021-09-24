@@ -19,21 +19,30 @@ public class EstrategiaContinuidadController {
     @GetMapping
     public ResponseEntity<?> getEstrategias() {
         List<EstrategiasContinuidad> estrategiasContinuidad = this.estrategiasContinuidadService.buscarTodos();
-        return new ResponseEntity<List<EstrategiasContinuidad>>(estrategiasContinuidad, HttpStatus.OK);
+        return new ResponseEntity<>(estrategiasContinuidad, HttpStatus.OK);
     }
 
     @GetMapping("/{usuario}")
-    public ResponseEntity<?> getEstrategiaByUser(@PathVariable("usuario") String usuario) {
+    public ResponseEntity<?> getEstrategiaByUser(
+            @PathVariable("usuario") String usuario) {
         List<EstrategiasContinuidad> estrategiasContinuidad = this.estrategiasContinuidadService.buscarPorUsuario(usuario);
-        return new ResponseEntity<List<EstrategiasContinuidad>>(estrategiasContinuidad, HttpStatus.OK);
+        return new ResponseEntity<>(estrategiasContinuidad, HttpStatus.OK);
+    }
+
+    @GetMapping("/{usuario}/{estrategia}")
+    public ResponseEntity<?> getEstrategiaByUserAndEstrategia(
+            @PathVariable("usuario") String usuario,
+            @PathVariable("estrategia") String estrategia) {
+        EstrategiasContinuidad estrategiasContinuidad = this.estrategiasContinuidadService.buscarPorUsuarioYEstrategia(usuario
+                                                                                                                            , estrategia);
+        return new ResponseEntity<>(estrategiasContinuidad, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Void> agregarEstrategia(
+    public ResponseEntity<?> agregarEstrategia(
             @RequestBody EstrategiasContinuidad estrategiasContinuidad
     ) {
-        this.estrategiasContinuidadService.actualizar(estrategiasContinuidad);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(this.estrategiasContinuidadService.actualizar(estrategiasContinuidad), HttpStatus.OK);
     }
 
 }

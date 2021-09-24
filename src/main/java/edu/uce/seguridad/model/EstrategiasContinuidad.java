@@ -2,6 +2,7 @@ package edu.uce.seguridad.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class EstrategiasContinuidad {
     @Id
     private String _id;
+    @Indexed(unique = true)
     private String actividadPrioritaria;
     private String usuario;
     private Map<String, List<RecursoPrioridad>> categorias;
