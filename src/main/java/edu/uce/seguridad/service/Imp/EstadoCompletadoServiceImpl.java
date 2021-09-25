@@ -1,5 +1,7 @@
 package edu.uce.seguridad.service.Imp;
 
+import edu.uce.seguridad.controller.BIAControlesAlineadosALosImpactosController;
+import edu.uce.seguridad.model.EstatusFinanciero;
 import edu.uce.seguridad.model.EstimacionDano;
 import edu.uce.seguridad.model.FormularioRevision;
 import edu.uce.seguridad.model.RevisionContinua;
@@ -207,9 +209,18 @@ public class EstadoCompletadoServiceImpl {
 
     public void verificarEstadoPaso8(String user) {
         int contador = 0;
+        int contadorMax = 0;
+        double balance = 0;
         int paso = 8;
         String respuesta = "No completado";
         this.verificarExistencia(user);
+
+        EstatusFinanciero ef = this.financieroRepository.findByUsuario(user);
+        if (ef != null) {
+            balance = ef.getBalanceABC(); // evito null pointer
+        }
+
+        contadorMax = (balance > 0) ? 4 : 5; // >= porque deben haber fondos y no quedarse en cero
 
         if (fondosDisponiblesRepository.findByUsaurio(user).isPresent()) {
             contador++;
@@ -223,14 +234,16 @@ public class EstadoCompletadoServiceImpl {
         if (financieroRepository.findByUsuario(user) != null) {
             contador++;
         }
-        if (!formularioMedidasFinancierasRepository.findByUserOrderByMedidasFinancieras(user).isEmpty()) {
-            contador++;
+        if (balance < 0) {
+            if (!formularioMedidasFinancierasRepository.findByUserOrderByMedidasFinancieras(user).isEmpty()) {
+                contador++;
+            }
         }
 
         if (contador > 0) {
             respuesta = "En curso";
         }
-        if (contador == 5) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
+        if (contador == contadorMax) { // CAMBIAR DEPENDIENDO EL NUMERO DE FORMULARIOS
             respuesta = "Completado";
         }
         guardar(respuesta, user, paso);
