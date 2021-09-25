@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -68,6 +69,15 @@ public class EstrategiasContinuidadServiceImp implements EstrategiasContinuidadS
             throw new NoEncontradoExcepcion("No se han encontrado registros para: ".concat(usuario));
         }
         return list;
+    }
+
+    @Override
+    public EstrategiasContinuidad buscarPorUsuarioYEstrategia(String usuario, String estrategia) throws NoEncontradoExcepcion {
+        Optional<EstrategiasContinuidad> optional = this.estrategiasContinuidadRepository.findByUsuarioAndActividadPrioritaria(usuario, estrategia);
+        if(optional.isPresent()) {
+            return optional.get();
+        }
+        throw new NoEncontradoExcepcion("mensaje", "No se han encontrado registros para ".concat(usuario).concat(" en ").concat(estrategia));
     }
 
     @Override
