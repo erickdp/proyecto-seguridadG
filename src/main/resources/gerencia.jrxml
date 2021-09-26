@@ -92,7 +92,7 @@
                 <textElement>
                     <font size="12" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Revisión de le gerencia]]></text>
+                <text><![CDATA[Revisión de la gerencia]]></text>
             </staticText>
             <line>
                 <reportElement x="30" y="38" width="490" height="1" uuid="45106b52-d642-45a6-a738-6de4089cea45"/>
@@ -134,12 +134,34 @@
         </band>
     </detail>
     <columnFooter>
-        <band height="45" splitType="Stretch"/>
+        <band height="14" splitType="Stretch"/>
     </columnFooter>
     <pageFooter>
-        <band height="54" splitType="Stretch"/>
+        <band height="37" splitType="Stretch">
+            <line>
+                <reportElement x="30" y="3" width="490" height="1" uuid="f139a84b-8865-4141-86fd-5b204eeec818"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <staticText>
+                <reportElement x="30" y="7" width="300" height="15" uuid="c7b439e5-627c-4ff9-9a63-64f81c16e9f8">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[ELABORADO POR EL SISTEMA DE GESTIÓN DE CONTINUIDAD DE NEGOCIO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="410" y="7" width="110" height="15" uuid="0e432a77-842d-41e9-8b3e-c488a1284f58">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[QUITO - ECUADOR 2021]]></text>
+            </staticText>
+        </band>
     </pageFooter>
-    <summary>
-        <band height="42" splitType="Stretch"/>
-    </summary>
 </jasperReport>
