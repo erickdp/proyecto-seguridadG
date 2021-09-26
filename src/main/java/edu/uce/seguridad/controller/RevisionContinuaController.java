@@ -4,13 +4,20 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.RevisionContinua;
 import edu.uce.seguridad.service.service.RevisionContinuaService;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
+import static org.springframework.http.MediaType.APPLICATION_PDF;
 
 @RestController
 @RequestMapping("/sgcnegocio/revisiones")
@@ -31,6 +38,19 @@ public class RevisionContinuaController {
     public ResponseEntity<List<RevisionContinua>> listar() {
         List<RevisionContinua> revisionesContinua = service.buscarTodos();
         return new ResponseEntity<List<RevisionContinua>>(revisionesContinua, HttpStatus.OK);
+    }
+
+    @GetMapping("/pdf/{user}")
+    public ResponseEntity<?> exportarPdf(
+            @PathVariable("user") String user
+    ) throws JRException, IOException {
+        byte[] pdf = this.service.generarPdfEnBytes(user);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("File-Name", "Revision Continua");
+        httpHeaders.set(CONTENT_DISPOSITION, "attachment");
+
+        return ResponseEntity.ok().headers(httpHeaders).contentType(APPLICATION_PDF).body(pdf);
     }
 
     /*

@@ -4,11 +4,19 @@ import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.service.service.*;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_PDF;
 
 @RestController
 @RequestMapping("/sgcnegocio")
@@ -121,6 +129,19 @@ public class ControladorPersona {
     ) {
         List<Persona> personas = this.personaService.buscarPersonaPorRoleYOrganizacion(role, organizacion);
         return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
+    }
+
+    @GetMapping("/pdf/{nombreOrganizacion}")
+    public ResponseEntity<?> exportarUsuariosOrganizacion(
+            @PathVariable("nombreOrganizacion") String organizacion
+    ) throws JRException, IOException {
+        byte[] pdf = this.personaService.generarPdfEnBytes(organizacion);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("File-Name", "Usuarios Organizacion");
+        httpHeaders.set(CONTENT_DISPOSITION, "attachment");
+
+        return ResponseEntity.ok().headers(httpHeaders).contentType(APPLICATION_PDF).body(pdf);
     }
 
     /*
