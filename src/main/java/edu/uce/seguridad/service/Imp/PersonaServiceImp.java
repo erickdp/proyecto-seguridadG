@@ -3,18 +3,25 @@ package edu.uce.seguridad.service.Imp;
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.FormularioRIP;
+import edu.uce.seguridad.model.HojaDeRevisionDeGerencia;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.PersonaRepository;
 import edu.uce.seguridad.service.service.*;
 import edu.uce.seguridad.util.Utileria;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JsonDataSource;
+import org.json.JSONObject;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -217,5 +224,36 @@ public class PersonaServiceImp implements PersonaService {
                     "respuesta", "No se han encontrado registros para: ".concat(departamento).concat(" en ").concat(organizacion));
         }
         return personas;
+    }
+
+    @Override
+    public byte[] generarPdfEnBytes(String organizacion) throws IOException, JRException {
+        List<Persona> data = this.personaRepository.findPersonaByOrganizacion(organizacion);
+        InputStream resource = new ClassPathResource("usuario.jrxml").getInputStream();
+
+        List<JSONObject> dataJson = new ArrayList<>();
+        if (!data.isEmpty()) {
+            data.forEach(var -> {
+
+                JSONObject aux = new JSONObject();
+                aux.put("nombre", var.getNombre());
+                aux.put("apellido", var.getApellido());
+                aux.put("role", var.getUsuario().getRole());
+                aux.put("nombreUsuario", var.getUsuario().getNombreUsuario());
+                aux.put("contrasena", var.getUsuario().getContrasena());
+                aux.put("organizacion", var.getOrganizacion());
+
+                dataJson.add(aux);
+
+            });
+            ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(dataJson.toString().getBytes());
+            JsonDataSource ds = new JsonDataSource(jsonDataStream);
+            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+            Map<String, Object> map = new HashMap<>();
+            map.put("createdBy", "sgcn");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, ds);
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        }
+        return new byte[0];
     }
 }

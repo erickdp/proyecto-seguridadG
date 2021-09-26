@@ -2,7 +2,9 @@ package edu.uce.seguridad.service.service;
 
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.Persona;
+import net.sf.jasperreports.engine.JRException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PersonaService extends BaseService<Persona, String> {
@@ -24,4 +26,6 @@ public interface PersonaService extends BaseService<Persona, String> {
     //    Metodo provisional en caso de que hayan varias personas encargadas de un mismo depar
     List<Persona> buscarPersonasPorOrganizacionYDepartamento(String organizacion,
                                                              String departamento) throws NoEncontradoExcepcion;
+
+    byte[] generarPdfEnBytes(String organizacion) throws IOException, JRException;
 }

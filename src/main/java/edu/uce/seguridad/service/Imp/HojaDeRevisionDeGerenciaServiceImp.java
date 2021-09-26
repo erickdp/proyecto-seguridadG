@@ -124,7 +124,7 @@ public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGeren
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, ds);
             return JasperExportManager.exportReportToPdf(jasperPrint);
         }
-        return null;
+        return new byte[0];
     }
 
 }
