@@ -1,7 +1,12 @@
 package edu.uce.seguridad.util;
 
 import edu.uce.seguridad.model.*;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JsonDataSource;
+import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -146,6 +151,15 @@ public class Utileria {
                 "9-1",
                 "10-1\n10-2");
         return forms.get(llave-1);
+    }
+
+    public static JasperPrint jasper(InputStream resource, List<JSONObject> dataJson) throws JRException {
+        ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(dataJson.toString().getBytes());
+        JsonDataSource ds = new JsonDataSource(jsonDataStream);
+        JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+        Map<String, Object> map = new HashMap<>();
+        map.put("createdBy", "sgcn");
+        return JasperFillManager.fillReport(jasperReport, map, ds);
     }
 
 }

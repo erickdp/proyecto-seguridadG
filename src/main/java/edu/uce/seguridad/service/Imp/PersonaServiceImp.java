@@ -2,8 +2,6 @@ package edu.uce.seguridad.service.Imp;
 
 import edu.uce.seguridad.exception.EliminacionException;
 import edu.uce.seguridad.exception.NoEncontradoExcepcion;
-import edu.uce.seguridad.model.FormularioRIP;
-import edu.uce.seguridad.model.HojaDeRevisionDeGerencia;
 import edu.uce.seguridad.model.Persona;
 import edu.uce.seguridad.model.Usuario;
 import edu.uce.seguridad.repository.PersonaRepository;
@@ -11,17 +9,17 @@ import edu.uce.seguridad.service.service.*;
 import edu.uce.seguridad.util.Utileria;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JsonDataSource;
 import org.json.JSONObject;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+
+import static edu.uce.seguridad.util.Utileria.jasper;
 
 @Service
 @AllArgsConstructor
@@ -246,13 +244,7 @@ public class PersonaServiceImp implements PersonaService {
                 dataJson.add(aux);
 
             });
-            ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(dataJson.toString().getBytes());
-            JsonDataSource ds = new JsonDataSource(jsonDataStream);
-            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
-            Map<String, Object> map = new HashMap<>();
-            map.put("createdBy", "sgcn");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, ds);
-            return JasperExportManager.exportReportToPdf(jasperPrint);
+            return JasperExportManager.exportReportToPdf(jasper(resource, dataJson));
         }
         return new byte[0];
     }

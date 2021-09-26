@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static edu.uce.seguridad.util.Utileria.jasper;
+
 @Service
 @AllArgsConstructor
 public class RevisionContinuaServiceImpl implements RevisionContinuaService {
@@ -93,14 +95,7 @@ public class RevisionContinuaServiceImpl implements RevisionContinuaService {
 
                 dataJson.add(aux);
             });
-
-            ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(dataJson.toString().getBytes());
-            JsonDataSource ds = new JsonDataSource(jsonDataStream);
-            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
-            Map<String, Object> map = new HashMap<>();
-            map.put("createdBy", "sgcn");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, ds);
-            return JasperExportManager.exportReportToPdf(jasperPrint);
+            return JasperExportManager.exportReportToPdf(jasper(resource, dataJson));
         }
         return new byte[0];
     }

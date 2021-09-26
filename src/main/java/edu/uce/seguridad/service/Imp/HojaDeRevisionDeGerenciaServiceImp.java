@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
+import static edu.uce.seguridad.util.Utileria.jasper;
+
 @Service
 @AllArgsConstructor
 public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGerenciaService{
@@ -116,13 +118,7 @@ public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGeren
                 dataJson.add(aux);
 
             });
-            ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(dataJson.toString().getBytes());
-            JsonDataSource ds = new JsonDataSource(jsonDataStream);
-            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
-            Map<String, Object> map = new HashMap<>();
-            map.put("createdBy", "sgcn");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, ds);
-            return JasperExportManager.exportReportToPdf(jasperPrint);
+            return JasperExportManager.exportReportToPdf(jasper(resource, dataJson));
         }
         return new byte[0];
     }
