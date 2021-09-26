@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tablaGerencia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ece5f1a5-19b4-42a3-b9b3-6438e08093ba">
+
+    <field name="PersonaACargo" class="java.lang.String"/>
+    <field name="altaGerencia" class="java.lang.String"/>
+    <field name="asuntoARevisaryVerificar" class="java.lang.String"/>
+    <field name="fechaLimite" class="java.lang.String"/>
+    <field name="user" class="java.lang.String"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="104" splitType="Stretch">
+            <image onErrorType="Icon">
+                <reportElement x="460" y="35" width="109" height="31" uuid="3a4bfd3c-eab3-4ad3-a3ae-d7820524ac20"/>
+                <imageExpression><![CDATA["src/main/resources/static/images/logo_seg_2.png"]]></imageExpression>
+            </image>
+            <image onErrorType="Icon">
+                <reportElement x="20" y="-2" width="120" height="105" uuid="21291ffe-94d5-4f36-b26e-f931c2224799"/>
+                <imageExpression><![CDATA["src/main/resources/static/images/logo_seg_1.png"]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement x="128" y="40" width="299" height="19" uuid="b7dc590f-cc9d-40ea-89a8-4a9fa6380d2f"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[SISTEMA DE GESTIÓN DE CONTINUIDAD DE NEGOCIO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="220" y="59" width="100" height="19" uuid="ca1361c8-abbb-4e71-b781-a282a83c4bba">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[REPORTES]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="182" y="78" width="190" height="19" uuid="53137c3c-4003-43fc-b9f5-91f727868cb1">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[TABLA DE REVISIÓN DE LA GERENCIA]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="94" splitType="Stretch">
+            <staticText>
+                <reportElement x="30" y="46" width="80" height="30" uuid="11680998-782e-4cf0-9058-b2b48dac1629">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Revisa y verifica tus artículos]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="270" y="46" width="70" height="30" uuid="3ccac6dc-aacc-42ac-9417-ec9f95c4a27c">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Persona encargada]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="360" y="46" width="70" height="30" uuid="c5b395a3-0ea7-42d6-867d-e1e082868e71">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Fecha de vencimiento]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="430" y="46" width="50" height="30" uuid="3281ca0c-0a1f-4af8-b2c1-7ddc2385b468">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Alta gerencia]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="30" y="20" width="161" height="18" uuid="4d3a10bf-c1e2-40e4-ba13-0112317282c6">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement>
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Revisión de le gerencia]]></text>
+            </staticText>
+            <line>
+                <reportElement x="30" y="38" width="490" height="1" uuid="45106b52-d642-45a6-a738-6de4089cea45"/>
+            </line>
+            <line>
+                <reportElement x="30" y="85" width="490" height="1" uuid="f562332c-b5ce-48d6-af03-9b0630cf2d36"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+        </band>
+    </pageHeader>
+    <detail>
+        <band height="15" splitType="Stretch">
+            <textField textAdjust="StretchHeight">
+                <reportElement x="270" y="0" width="82" height="15" uuid="57000294-55b2-4cf1-9f21-09bb0a57c3dc">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{PersonaACargo}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="360" y="0" width="60" height="15" uuid="3ee55203-38ea-4759-8908-e15da99dd1e8">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{fechaLimite}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="430" y="0" width="100" height="15" uuid="a7982267-8334-4a38-b996-e60a962f4cb8">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{altaGerencia}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="30" y="0" width="230" height="15" uuid="131e0d01-6e5b-46c4-bc54-497cf02b441d">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{asuntoARevisaryVerificar}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="45" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="54" splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band height="42" splitType="Stretch"/>
+    </summary>
+</jasperReport>

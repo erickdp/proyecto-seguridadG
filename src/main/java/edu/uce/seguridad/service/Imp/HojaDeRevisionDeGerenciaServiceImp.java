@@ -5,13 +5,27 @@ import edu.uce.seguridad.exception.NoEncontradoExcepcion;
 import edu.uce.seguridad.model.HojaDeRevisionDeGerencia;
 import edu.uce.seguridad.repository.HojaDeRevisionDeGerenciaRepository;
 import edu.uce.seguridad.service.service.HojaDeRevisionDeGerenciaService;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JsonDataSource;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
 @Service
 @AllArgsConstructor
@@ -83,6 +97,34 @@ public class HojaDeRevisionDeGerenciaServiceImp implements HojaDeRevisionDeGeren
         this.repository.delete(contatos);
         estadoCompletadoService.verificarEstadoPaso10(contatos.getUser());
     }
-        
-    
+
+    @Override
+    public byte[] generarPdfEnBytes(String user) throws IOException, JRException {
+        List<HojaDeRevisionDeGerencia> data = this.buscarPorUserFiltrarPorAsuntoARevisaryVerificar(user);
+        InputStream resource = new ClassPathResource("gerencia.jrxml").getInputStream();
+
+        List<JSONObject> dataJson = new ArrayList<>();
+        if (!data.isEmpty()) {
+            data.forEach(var -> {
+
+                JSONObject aux = new JSONObject();
+                aux.put("asuntoARevisaryVerificar", var.getAsuntoARevisaryVerificar());
+                aux.put("PersonaACargo", var.getPersonaACargo());
+                aux.put("fechaLimite", var.getFechaLimite().toString());
+                aux.put("altaGerencia", var.getAltaGerencia());
+
+                dataJson.add(aux);
+
+            });
+            ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(dataJson.toString().getBytes());
+            JsonDataSource ds = new JsonDataSource(jsonDataStream);
+            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+            Map<String, Object> map = new HashMap<>();
+            map.put("createdBy", "sgcn");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, ds);
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        }
+        return null;
+    }
+
 }
